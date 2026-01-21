@@ -1,0 +1,53 @@
+#接收器
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317" 
+
+  #自身监控：采集 Collector 自己的 CPU/内存等指标
+  prometheus/internal:
+    config:
+      scrape_configs:
+        - job_name: 'otel-collector-internal'
+          scrape_interval: 10s
+          static_configs:
+            - targets: ['0.0.0.0:8888']
+
+#处理器
+processors:
+  batch:
+
+#导出器=
+exporters:
+  otlp/jaeger:
+    endpoint: "jaeger:4317" 
+    tls:
+      insecure: true
+
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: "menggoods" # 给所有指标加前缀
+extensions:
+  health_check:
+    endpoint: "0.0.0.0:13133" # 检查存活
+  pprof:
+    endpoint: "0.0.0.0:1777"  # 性能分析
+  zpages:
+    endpoint: "0.0.0.0:55679" # 浏览器访问可看实时状态
+
+# 服务流水线
+service:
+  extensions: [health_check, pprof, zpages]
+  pipelines:
+    # 链路追踪流水线
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp/jaeger]
+
+    # 指标监控流水线
+    metrics:
+      receivers: [otlp, prometheus/internal] 
+      processors: [batch]
+      exporters: [prometheus]

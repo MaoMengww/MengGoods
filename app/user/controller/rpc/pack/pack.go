@@ -1,0 +1,27 @@
+package pack
+
+import (
+	domainModel "MengGoods/app/user/domain/model"
+	"MengGoods/kitex_gen/model"
+)
+
+func BuildUserInfo(user *domainModel.User) *model.UserInfo {
+	return &model.UserInfo{
+		Id:       user.Uid,
+		Username: user.Username,
+		Role: user.Role,
+	}
+}
+
+func BuildAddressList(address []*domainModel.Address) []*model.AddressInfo {
+	addressList := make([]*model.AddressInfo, 0)
+	for _, addr := range address {
+		addressList = append(addressList, &model.AddressInfo{
+			AddressID: addr.ID,
+			Province:  addr.Province,
+			City:      addr.City,
+			Detail:    addr.Detail,
+		})
+	}
+	return addressList
+}

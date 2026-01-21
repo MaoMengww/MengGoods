@@ -1,0 +1,31 @@
+filebeat.inputs:
+  - type: log
+    id: "menggoods"
+    paths:
+      - /usr/share/filebeat/logs/**/*.log # logs/{serviceName}/date/*.log   这是容器内部的目录
+    json.keys_under_root: true
+    json.add_error_key: true
+    json.overwrite_keys: true
+
+# Filebeat 输出配置
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+  index: "menggoods-logs"
+  retry:
+    max_retries: 5  # 最大重试次数
+    backoff: 5s     # 重试间隔
+setup.ilm.enabled: false
+# 模板配置
+setup.template:
+  name: "menggoods-logs-template"  # 模板名称
+  pattern: "menggoods-logs-*"        # 模板匹配模式
+  enabled: true              # 必须启用模板
+  overwrite: true            # 允许覆盖旧模板
+  append_fields:
+    - name: stacktrace
+      type: text
+      index: false
+  settings:
+    index:
+      number_of_shards: 1   # 分片数
+      number_of_replicas: 1 # 副本数
