@@ -615,3 +615,50 @@ var fieldIDToName_StockItem = map[int16]string{
 	1: "skuId",
 	2: "count",
 }
+
+type CartItem struct {
+	SkuId      int64 `thrift:"skuId,1" frugal:"1,default,i64" json:"skuId"`
+	Count      int32 `thrift:"count,2" frugal:"2,default,i32" json:"count"`
+	UpdateTime int64 `thrift:"updateTime,3" frugal:"3,default,i64" json:"updateTime"`
+}
+
+func NewCartItem() *CartItem {
+	return &CartItem{}
+}
+
+func (p *CartItem) InitDefault() {
+}
+
+func (p *CartItem) GetSkuId() (v int64) {
+	return p.SkuId
+}
+
+func (p *CartItem) GetCount() (v int32) {
+	return p.Count
+}
+
+func (p *CartItem) GetUpdateTime() (v int64) {
+	return p.UpdateTime
+}
+func (p *CartItem) SetSkuId(val int64) {
+	p.SkuId = val
+}
+func (p *CartItem) SetCount(val int32) {
+	p.Count = val
+}
+func (p *CartItem) SetUpdateTime(val int64) {
+	p.UpdateTime = val
+}
+
+func (p *CartItem) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CartItem(%+v)", *p)
+}
+
+var fieldIDToName_CartItem = map[int16]string{
+	1: "skuId",
+	2: "count",
+	3: "updateTime",
+}

@@ -77,6 +77,12 @@ struct StockItem {
     2: i32 count;
 }
 
+struct CartItem {
+    1: i64 skuId;
+    2: i32 count;
+    3: i64 updateTime
+}
+
 
 
 

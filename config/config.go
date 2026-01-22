@@ -59,6 +59,7 @@ type ServerConfig struct {
 	User    string `mapstructure:"user"`
 	Product string `mapstructure:"product"`
 	Stock   string `mapstructure:"stock"`
+	Cart    string `mapstructure:"cart"`
 }
 
 type OtelConfig struct {

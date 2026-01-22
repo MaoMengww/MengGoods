@@ -156,4 +156,16 @@ func VerifyCategoryName(name string) VerifyOps {
 	}
 }
 
+func VerifyCount(count int32) VerifyOps {
+	return func() error {
+		if count < 0 {
+			return merror.NewMerror(
+				merror.ParamCountInvalid,
+				"count invalid",
+			)
+		}
+		return nil
+	}
+}
+
 
