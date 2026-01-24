@@ -19,6 +19,7 @@ type Config struct {
 	Elasticsearch elasticsearch `mapstructure:"elasticsearch"`
 	Server ServerConfig `mapstructure:"server"`
 	OTEL OtelConfig `mapstructure:"otel"`
+	RabbitMQ RabbitMQConfig `mapstructure:"rabbitmq"`
 }
 
 // MySQLConfig MySQL配置结构体
@@ -27,7 +28,10 @@ type MySQLConfig struct {
 	Port     int    `mapstructure:"port"`
 	User     string `mapstructure:"user"`
 	UserDB   string `mapstructure:"userdb"`
-	PrductDB string `mapstructure:"productdb"`
+	ProductDB string `mapstructure:"productdb"`
+	CouponDB string `mapstructure:"coupondb"`
+	CartDB   string `mapstructure:"cartdb"`
+	StockDB  string `mapstructure:"stockdb"`
 	Password string `mapstructure:"password"`
 	Charset  string `mapstructure:"charset"`
 }
@@ -49,6 +53,10 @@ type KafkaConfig struct {
 	Password string `mapstructure:"password"`
 }
 
+type RabbitMQConfig struct {
+	Address string `mapstructure:"address"`
+}
+
 type elasticsearch struct {
 	Address string `mapstructure:"address"`
 	ProductIndex string `mapstructure:"productIndex"`
@@ -60,6 +68,7 @@ type ServerConfig struct {
 	Product string `mapstructure:"product"`
 	Stock   string `mapstructure:"stock"`
 	Cart    string `mapstructure:"cart"`
+	Coupon  string `mapstructure:"coupon"`
 }
 
 type OtelConfig struct {

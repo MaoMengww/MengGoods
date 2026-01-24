@@ -19,6 +19,15 @@ const (
 	ParamSkuDescriptionTooLong                //sku描述过长
 	ParamIDInvalid                            //商品ID无效
 	ParamCountInvalid                         //商品数量无效
+	ParamCouponDiscountAmountInvalid          //优惠券折扣金额无效
+	ParamCouponThresholdInvalid               //优惠券门槛无效
+	ParamCouponDiscountPercentInvalid         //优惠券折扣比例无效
+	ParamCouponNameTooLong                    //优惠券名称过长
+	ParamCouponRemarkTooLong                  //优惠券备注过长
+	ParamCouponDurationInvalid                //优惠券有效期无效
+	ParamCouponTypeInvalid                     //优惠券类型无效
+	ParamCouponStatusInvalid                  //优惠券状态无效
+	ParamCouponTotalNumInvalid                //优惠券总数量无效
 )
 
 // 业务相关
@@ -37,6 +46,7 @@ const (
 	StockNotEnough                             //库存不足
 	StockNotExist                              //库存不存在
 	CartIsEmptyCode                            //购物车为空
+	CouponIsUsedErrorCode                     //优惠券已被使用
 )
 
 // 系统内部错误
@@ -46,7 +56,8 @@ const (
 	InternalNetworkErrorCode                 //网络错误
 	InternalRpcErrorCode                     //rpc错误
 	InternalESErrorCode                      //es错误
-	InternalMqErrorCode                      //mq错误
+	InternalKafkaErrorCode                      //kafka错误
+	InternalRabbitMqErrorCode                      //rabbitmq错误
 )
 
 const (

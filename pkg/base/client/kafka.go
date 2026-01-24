@@ -78,7 +78,7 @@ func (k *Kafka) Publish(ctx context.Context, topic string, msg *kafka.Message) e
 		w, err = mkafka.NewWriter(topic)
 		if err != nil {
 			logger.Errorf("创建writer失败%v", err)
-			return merror.NewMerror(merror.InternalMqErrorCode, fmt.Sprintf("create writer error: %v", err))
+			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("create writer error: %v", err))
 		}
 		k.mu.Lock()
 		k.writers[topic] = w
@@ -86,7 +86,7 @@ func (k *Kafka) Publish(ctx context.Context, topic string, msg *kafka.Message) e
 	}
 	if err := w.WriteMessages(ctx, *msg); err != nil {
 		logger.Errorf("写入失败%v", err)
-		return merror.NewMerror(merror.InternalMqErrorCode, fmt.Sprintf("write message error: %v", err))
+		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("write message error: %v", err))
 	}
 	return nil
 }

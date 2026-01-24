@@ -19,6 +19,7 @@ require (
 	github.com/redis/go-redis/v9 v9.17.2
 	github.com/segmentio/kafka-go v0.4.49
 	github.com/spf13/viper v1.21.0
+	github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271
 	go.opentelemetry.io/otel v1.39.0
 	go.opentelemetry.io/otel/trace v1.39.0
 	go.uber.org/zap v1.27.1

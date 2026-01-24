@@ -21,7 +21,7 @@ processors:
 #导出器=
 exporters:
   otlp/jaeger:
-    endpoint: "jaeger:4317" 
+    endpoint: "jaeger-1:4317" 
     tls:
       insecure: true
 

@@ -38,7 +38,7 @@ services:
       - TZ=${TZ}
       - ALLOW_NONE_AUTHENTICATION=yes
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
-      - ETCD_ADVERTISE_CLIENT_URLS=http://127.0.0.1:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-1:2379
     ports:
       - "2379:2379"
     volumes:
@@ -219,5 +219,23 @@ services:
     environment:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-1:9092
+    networks:
+      - MengGoods
+  
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq-1
+    hostname: rabbitmq-server
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+      
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
     networks:
       - MengGoods

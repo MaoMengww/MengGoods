@@ -1,13 +1,13 @@
 package utils
 
 import (
+	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
 	"regexp"
 )
 
 //邮箱格式
 var emailRe = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
-
 
 //验证选项, 可插拔
 type VerifyOps func() error
@@ -162,6 +162,114 @@ func VerifyCount(count int32) VerifyOps {
 			return merror.NewMerror(
 				merror.ParamCountInvalid,
 				"count invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyCouponName(name string) VerifyOps {
+	return func() error {
+		if len(name) > 30 {
+			return merror.NewMerror(
+				merror.ParamCouponNameTooLong,
+				"coupon name too long",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyCouponRemark(remark string) VerifyOps {
+	return func() error {
+		if len(remark) > 200 {
+			return merror.NewMerror(
+				merror.ParamCouponRemarkTooLong,
+				"coupon remark too long",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyCouponType(t int) VerifyOps {
+	return func() error {
+		if t != constants.CouponTypeDiscount && t != constants.CouponTypePercent {
+			return merror.NewMerror(
+				merror.ParamCouponTypeInvalid,
+				"coupon type invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyCouponStatus(s int) VerifyOps {
+	return func() error {
+		if s != constants.CouponStatusUnused && s != constants.CouponStatusLocked && s != constants.CouponStatusUsed && s != constants.CouponStatusExpired {
+			return merror.NewMerror(
+				merror.ParamCouponStatusInvalid,
+				"coupon status invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyCouponThreshold(t int64) VerifyOps {
+	return func() error {
+		if t < 0 {
+			return merror.NewMerror(
+				merror.ParamCouponThresholdInvalid,
+				"coupon threshold invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyCouponDuration(d int) VerifyOps {
+	return func() error {
+		if d < 0 {
+			return merror.NewMerror(
+				merror.ParamCouponDurationInvalid,
+				"coupon duration invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyDiscountPercent(p int) VerifyOps {
+	return func() error {
+		if p < 0 || p > 100 {
+			return merror.NewMerror(
+				merror.ParamCouponDiscountPercentInvalid,
+				"coupon discount percent invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyDiscountAmount(a int64) VerifyOps {
+	return func() error {
+		if a < 0 {
+			return merror.NewMerror(
+				merror.ParamCouponDiscountAmountInvalid,
+				"coupon discount amount invalid",
+			)
+		}
+		return nil
+	}
+}
+
+func VerifyTotalNum(n int64) VerifyOps {
+	return func() error {
+		if n < 0 {
+			return merror.NewMerror(
+				merror.ParamCouponTotalNumInvalid,
+				"coupon total num invalid",
 			)
 		}
 		return nil

@@ -662,3 +662,277 @@ var fieldIDToName_CartItem = map[int16]string{
 	2: "count",
 	3: "updateTime",
 }
+
+type CouponBatchInfo struct {
+	Id         int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	BatchName  string `thrift:"batchName,2" frugal:"2,default,string" json:"batchName"`
+	Remark     string `thrift:"remark,3" frugal:"3,default,string" json:"remark"`
+	Type       int32  `thrift:"type,4" frugal:"4,default,i32" json:"type"`
+	Threshold  int64  `thrift:"threshold,5" frugal:"5,default,i64" json:"threshold"`
+	Amount     int64  `thrift:"amount,6" frugal:"6,default,i64" json:"amount"`
+	Rate       int64  `thrift:"rate,7" frugal:"7,default,i64" json:"rate"`
+	Total      int64  `thrift:"total,8" frugal:"8,default,i64" json:"total"`
+	UsedNum    int64  `thrift:"usedNum,9" frugal:"9,default,i64" json:"usedNum"`
+	StartTime  int64  `thrift:"startTime,10" frugal:"10,default,i64" json:"startTime"`
+	EndTime    int64  `thrift:"endTime,11" frugal:"11,default,i64" json:"endTime"`
+	Duration   int64  `thrift:"duration,12" frugal:"12,default,i64" json:"duration"`
+	CreateTime int64  `thrift:"createTime,13" frugal:"13,default,i64" json:"createTime"`
+	UpdateTime int64  `thrift:"updateTime,14" frugal:"14,default,i64" json:"updateTime"`
+}
+
+func NewCouponBatchInfo() *CouponBatchInfo {
+	return &CouponBatchInfo{}
+}
+
+func (p *CouponBatchInfo) InitDefault() {
+}
+
+func (p *CouponBatchInfo) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *CouponBatchInfo) GetBatchName() (v string) {
+	return p.BatchName
+}
+
+func (p *CouponBatchInfo) GetRemark() (v string) {
+	return p.Remark
+}
+
+func (p *CouponBatchInfo) GetType() (v int32) {
+	return p.Type
+}
+
+func (p *CouponBatchInfo) GetThreshold() (v int64) {
+	return p.Threshold
+}
+
+func (p *CouponBatchInfo) GetAmount() (v int64) {
+	return p.Amount
+}
+
+func (p *CouponBatchInfo) GetRate() (v int64) {
+	return p.Rate
+}
+
+func (p *CouponBatchInfo) GetTotal() (v int64) {
+	return p.Total
+}
+
+func (p *CouponBatchInfo) GetUsedNum() (v int64) {
+	return p.UsedNum
+}
+
+func (p *CouponBatchInfo) GetStartTime() (v int64) {
+	return p.StartTime
+}
+
+func (p *CouponBatchInfo) GetEndTime() (v int64) {
+	return p.EndTime
+}
+
+func (p *CouponBatchInfo) GetDuration() (v int64) {
+	return p.Duration
+}
+
+func (p *CouponBatchInfo) GetCreateTime() (v int64) {
+	return p.CreateTime
+}
+
+func (p *CouponBatchInfo) GetUpdateTime() (v int64) {
+	return p.UpdateTime
+}
+func (p *CouponBatchInfo) SetId(val int64) {
+	p.Id = val
+}
+func (p *CouponBatchInfo) SetBatchName(val string) {
+	p.BatchName = val
+}
+func (p *CouponBatchInfo) SetRemark(val string) {
+	p.Remark = val
+}
+func (p *CouponBatchInfo) SetType(val int32) {
+	p.Type = val
+}
+func (p *CouponBatchInfo) SetThreshold(val int64) {
+	p.Threshold = val
+}
+func (p *CouponBatchInfo) SetAmount(val int64) {
+	p.Amount = val
+}
+func (p *CouponBatchInfo) SetRate(val int64) {
+	p.Rate = val
+}
+func (p *CouponBatchInfo) SetTotal(val int64) {
+	p.Total = val
+}
+func (p *CouponBatchInfo) SetUsedNum(val int64) {
+	p.UsedNum = val
+}
+func (p *CouponBatchInfo) SetStartTime(val int64) {
+	p.StartTime = val
+}
+func (p *CouponBatchInfo) SetEndTime(val int64) {
+	p.EndTime = val
+}
+func (p *CouponBatchInfo) SetDuration(val int64) {
+	p.Duration = val
+}
+func (p *CouponBatchInfo) SetCreateTime(val int64) {
+	p.CreateTime = val
+}
+func (p *CouponBatchInfo) SetUpdateTime(val int64) {
+	p.UpdateTime = val
+}
+
+func (p *CouponBatchInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CouponBatchInfo(%+v)", *p)
+}
+
+var fieldIDToName_CouponBatchInfo = map[int16]string{
+	1:  "id",
+	2:  "batchName",
+	3:  "remark",
+	4:  "type",
+	5:  "threshold",
+	6:  "amount",
+	7:  "rate",
+	8:  "total",
+	9:  "usedNum",
+	10: "startTime",
+	11: "endTime",
+	12: "duration",
+	13: "createTime",
+	14: "updateTime",
+}
+
+type CouponInfo struct {
+	Id         int64 `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	BatchId    int64 `thrift:"batchId,2" frugal:"2,default,i64" json:"batchId"`
+	UserId     int64 `thrift:"userId,3" frugal:"3,default,i64" json:"userId"`
+	OrderId    int64 `thrift:"orderId,4" frugal:"4,default,i64" json:"orderId"`
+	Status     int64 `thrift:"status,5" frugal:"5,default,i64" json:"status"`
+	Type       int32 `thrift:"type,6" frugal:"6,default,i32" json:"type"`
+	Threshold  int64 `thrift:"threshold,7" frugal:"7,default,i64" json:"threshold"`
+	Amount     int64 `thrift:"amount,8" frugal:"8,default,i64" json:"amount"`
+	Rate       int64 `thrift:"rate,9" frugal:"9,default,i64" json:"rate"`
+	CreateTime int64 `thrift:"createTime,10" frugal:"10,default,i64" json:"createTime"`
+	ExpiredAt  int64 `thrift:"expiredAt,11" frugal:"11,default,i64" json:"expiredAt"`
+	UsedAt     int64 `thrift:"usedAt,12" frugal:"12,default,i64" json:"usedAt"`
+}
+
+func NewCouponInfo() *CouponInfo {
+	return &CouponInfo{}
+}
+
+func (p *CouponInfo) InitDefault() {
+}
+
+func (p *CouponInfo) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *CouponInfo) GetBatchId() (v int64) {
+	return p.BatchId
+}
+
+func (p *CouponInfo) GetUserId() (v int64) {
+	return p.UserId
+}
+
+func (p *CouponInfo) GetOrderId() (v int64) {
+	return p.OrderId
+}
+
+func (p *CouponInfo) GetStatus() (v int64) {
+	return p.Status
+}
+
+func (p *CouponInfo) GetType() (v int32) {
+	return p.Type
+}
+
+func (p *CouponInfo) GetThreshold() (v int64) {
+	return p.Threshold
+}
+
+func (p *CouponInfo) GetAmount() (v int64) {
+	return p.Amount
+}
+
+func (p *CouponInfo) GetRate() (v int64) {
+	return p.Rate
+}
+
+func (p *CouponInfo) GetCreateTime() (v int64) {
+	return p.CreateTime
+}
+
+func (p *CouponInfo) GetExpiredAt() (v int64) {
+	return p.ExpiredAt
+}
+
+func (p *CouponInfo) GetUsedAt() (v int64) {
+	return p.UsedAt
+}
+func (p *CouponInfo) SetId(val int64) {
+	p.Id = val
+}
+func (p *CouponInfo) SetBatchId(val int64) {
+	p.BatchId = val
+}
+func (p *CouponInfo) SetUserId(val int64) {
+	p.UserId = val
+}
+func (p *CouponInfo) SetOrderId(val int64) {
+	p.OrderId = val
+}
+func (p *CouponInfo) SetStatus(val int64) {
+	p.Status = val
+}
+func (p *CouponInfo) SetType(val int32) {
+	p.Type = val
+}
+func (p *CouponInfo) SetThreshold(val int64) {
+	p.Threshold = val
+}
+func (p *CouponInfo) SetAmount(val int64) {
+	p.Amount = val
+}
+func (p *CouponInfo) SetRate(val int64) {
+	p.Rate = val
+}
+func (p *CouponInfo) SetCreateTime(val int64) {
+	p.CreateTime = val
+}
+func (p *CouponInfo) SetExpiredAt(val int64) {
+	p.ExpiredAt = val
+}
+func (p *CouponInfo) SetUsedAt(val int64) {
+	p.UsedAt = val
+}
+
+func (p *CouponInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CouponInfo(%+v)", *p)
+}
+
+var fieldIDToName_CouponInfo = map[int16]string{
+	1:  "id",
+	2:  "batchId",
+	3:  "userId",
+	4:  "orderId",
+	5:  "status",
+	6:  "type",
+	7:  "threshold",
+	8:  "amount",
+	9:  "rate",
+	10: "createTime",
+	11: "expiredAt",
+	12: "usedAt",
+}

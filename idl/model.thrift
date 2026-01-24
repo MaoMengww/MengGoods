@@ -83,6 +83,37 @@ struct CartItem {
     3: i64 updateTime
 }
 
+struct CouponBatchInfo {
+    1: i64 id; //优惠券批次ID
+    2: string batchName;
+    3: string remark;
+    4: i32 type;
+    5: i64 threshold; //优惠券使用门槛
+    6: i64 amount;
+    7: i64 rate; //优惠券折扣率
+    8: i64 total;
+    9: i64 usedNum; //优惠券已发放数量
+    10: i64 startTime;
+    11: i64 endTime;
+    12: i64 duration; //优惠券持续时间(天)
+    13: i64 createTime;
+    14: i64 updateTime;
+}
+
+struct CouponInfo {
+    1: i64 id; //优惠券ID
+    2: i64 batchId; //优惠券批次ID
+    3: i64 userId;
+    4: i64 orderId;
+    5: i64 status;
+    6: i32 type;
+    7: i64 threshold; //优惠券使用门槛
+    8: i64 amount;
+    9: i64 rate; //优惠券折扣率
+    10: i64 createTime;
+    11: i64 expiredAt; //过期时间
+    12: i64 usedAt; 
+}
 
 
 

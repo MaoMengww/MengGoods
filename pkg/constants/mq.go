@@ -10,3 +10,7 @@ const (
 	KafkaReadTimeout = 5 * time.Second // 读取超时时间
 
 )
+
+const (
+	DelayTime = 15 * 60 * 1000//rabbitMq延迟15分钟
+)

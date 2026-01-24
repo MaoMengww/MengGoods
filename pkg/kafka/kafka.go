@@ -21,7 +21,7 @@ func GetConnection() *kafka.Conn {
 
 func NewReader(topic string, groupID string) (*kafka.Reader, error) {
 	if topic == "" || groupID == ""{
-		return nil, merror.NewMerror(merror.InternalMqErrorCode, "new reader topic or groupID is empty")
+		return nil, merror.NewMerror(merror.InternalKafkaErrorCode, "new reader topic or groupID is empty")
 	}
 	cfg := kafka.ReaderConfig{
 		Brokers:  []string{viper.GetString("kafka.address")},
