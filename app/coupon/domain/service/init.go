@@ -19,6 +19,6 @@ func NewCouponService(couponDB repository.CouponDB, couponCache repository.Coupo
 	}
 }
 
-func (s *CouponService) Init(){
+func (s *CouponService) Init() {
 	s.ConsumeClaimCoupon(context.Background())
 }

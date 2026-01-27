@@ -9,17 +9,17 @@ func BuildSkus(skus []*model.CreateSkuItem) []*mModel.Sku {
 	var skusResp []*mModel.Sku
 	for _, sku := range skus {
 		skusResp = append(skusResp, &mModel.Sku{
-			Name: sku.Name,
+			Name:        sku.Name,
 			Description: sku.Description,
-			Properties: sku.Properties,
-			ImageURL: sku.SkuImageURL,
-			Price: sku.Price,
+			Properties:  sku.Properties,
+			ImageURL:    sku.SkuImageURL,
+			Price:       sku.Price,
 		})
 	}
 	return skusResp
 }
 
-func BuildSpuInfoList (spus []*mModel.SpuEs) []*model.SpuInfo {
+func BuildSpuInfoList(spus []*mModel.SpuEs) []*model.SpuInfo {
 	var spusResp []*model.SpuInfo
 	for _, spu := range spus {
 		spusResp = append(spusResp, BuildSpuEsInfo(spu))
@@ -27,46 +27,46 @@ func BuildSpuInfoList (spus []*mModel.SpuEs) []*model.SpuInfo {
 	return spusResp
 }
 
-func BuildSpuInfo (spu *mModel.Spu) *model.SpuInfo {
+func BuildSpuInfo(spu *mModel.Spu) *model.SpuInfo {
 	return &model.SpuInfo{
-		Id: spu.Id,
-		CreatorId: spu.UserId,
-		Name: spu.Name,
-		Description: spu.Description,
-		CategoryId: spu.CategoryId,
-		Sku: BuildSkusResp(spu.Skus),
-		MainImageURL: spu.MainImageURL,
+		Id:              spu.Id,
+		CreatorId:       spu.UserId,
+		Name:            spu.Name,
+		Description:     spu.Description,
+		CategoryId:      spu.CategoryId,
+		Sku:             BuildSkusResp(spu.Skus),
+		MainImageURL:    spu.MainImageURL,
 		SliderImageURLs: spu.SliderImageURLs,
-		Status: model.SpuStatus(spu.Status),
-		CreateTime: spu.CreateTime.Unix(),
-		UpdateTime: spu.UpdateTime.Unix(),
-		DeleteTime: spu.DeleteTime.Unix(),
+		Status:          model.SpuStatus(spu.Status),
+		CreateTime:      spu.CreateTime.Unix(),
+		UpdateTime:      spu.UpdateTime.Unix(),
+		DeleteTime:      spu.DeleteTime.Unix(),
 	}
 }
 
-func BuildSpuEsInfo (spu *mModel.SpuEs) *model.SpuInfo {
+func BuildSpuEsInfo(spu *mModel.SpuEs) *model.SpuInfo {
 	return &model.SpuInfo{
-		Id: spu.Id,
-		CreatorId: spu.UserId,
-		Name: spu.Name,
-		Description: spu.Description,
-		CategoryId: spu.CategoryId,
+		Id:           spu.Id,
+		CreatorId:    spu.UserId,
+		Name:         spu.Name,
+		Description:  spu.Description,
+		CategoryId:   spu.CategoryId,
 		MainImageURL: spu.MainImageURL,
 	}
 
 }
 
-func BuildSkuInfo (sku *mModel.Sku) *model.SkuInfo {
+func BuildSkuInfo(sku *mModel.Sku) *model.SkuInfo {
 	return &model.SkuInfo{
-		Id: sku.Id,
-		Name: sku.Name,
+		Id:          sku.Id,
+		Name:        sku.Name,
 		Description: sku.Description,
-		Properties: sku.Properties,
+		Properties:  sku.Properties,
 		SkuImageURL: sku.ImageURL,
-		Price: sku.Price,
-		CreateTime: sku.CreateTime,
-		UpdateTime: sku.UpdateTime,
-		DeleteTime: sku.DeleteTime,
+		Price:       sku.Price,
+		CreateTime:  sku.CreateTime,
+		UpdateTime:  sku.UpdateTime,
+		DeleteTime:  sku.DeleteTime,
 	}
 }
 

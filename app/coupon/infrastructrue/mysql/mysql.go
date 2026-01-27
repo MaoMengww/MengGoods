@@ -20,6 +20,15 @@ func NewCouponDB(db *gorm.DB) *CouponDB {
 	}
 }
 
+func (c *CouponDB) GetCouponInfo(ctx context.Context, couponId int64) (*model.Coupon, error) {
+	var coupon model.Coupon
+	err := c.db.WithContext(ctx).Where("coupon_id = ?", couponId).First(&coupon).Error
+	if err != nil {
+		return nil, err
+	}
+	return &coupon, nil
+}
+
 func (c *CouponDB) GetCouponBatchByID(ctx context.Context, batchId int64) (*model.CouponBatch, error) {
 	var couponBatch model.CouponBatch
 	err := c.db.WithContext(ctx).Where("batch_id = ?", batchId).First(&couponBatch).Error
@@ -31,16 +40,16 @@ func (c *CouponDB) GetCouponBatchByID(ctx context.Context, batchId int64) (*mode
 
 func (c *CouponDB) CreateCouponBatch(ctx context.Context, batch *model.CouponBatch) (int64, error) {
 	CouponBatch := &model.CouponBatch{
-		BatchName:      batch.BatchName,
-		Remark:         batch.Remark,
-		Type:           batch.Type,
-		Threshold:      batch.Threshold, 
-		DiscountAmount: batch.DiscountAmount,
+		BatchName:       batch.BatchName,
+		Remark:          batch.Remark,
+		Type:            batch.Type,
+		Threshold:       batch.Threshold,
+		DiscountAmount:  batch.DiscountAmount,
 		DiscountPercent: batch.DiscountPercent,
-		TotalNum:       batch.TotalNum,
-		StartTime:      batch.StartTime,
-		EndTime:        batch.EndTime,
-		Duration:       batch.Duration,
+		TotalNum:        batch.TotalNum,
+		StartTime:       batch.StartTime,
+		EndTime:         batch.EndTime,
+		Duration:        batch.Duration,
 	}
 	err := c.db.WithContext(ctx).Create(CouponBatch).Error
 	if err != nil {
@@ -57,8 +66,6 @@ func (c *CouponDB) IsUnusedCoupon(ctx context.Context, couponId int64) (bool, er
 	}
 	return coupon.Status == constants.CouponStatusUnused, nil
 }
-
-
 
 func (c *CouponDB) CreateCoupon(ctx context.Context, coupon *model.Coupon) error {
 	err := c.db.WithContext(ctx).Create(coupon).Error
@@ -112,6 +119,14 @@ func (c *CouponDB) RedeemCoupon(ctx context.Context, couponId int64, orderId int
 	}
 	//使优惠卷已使用加一
 	err = c.db.WithContext(ctx).Model(&model.CouponBatch{}).Where("batch_id = ?", couponId).Update("used_num", gorm.Expr("used_num + ?", 1)).Error
+	if err != nil {
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
+	}
+	return nil
+}
+
+func (c *CouponDB) LetCouponExpire(ctx context.Context, couponId int64) error {
+	err := c.db.WithContext(ctx).Model(&model.Coupon{}).Where("coupon_id = ?", couponId).Update("status", constants.CouponStatusExpired).Error
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}

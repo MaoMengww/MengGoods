@@ -12,8 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
-
 type PrductDB struct {
 	db *gorm.DB
 }
@@ -163,17 +161,17 @@ func (p *PrductDB) GetSpuById(ctx context.Context, spuId int64) (*model.Spu, err
 		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("查询spu失败: %v", err))
 	}
 	return &model.Spu{
-		Id:          spu.ID,
-		UserId:      spu.Creator,
-		Name:        spu.Name,
-		Description: spu.Description,
-		CategoryId:  int64(spu.Category),
+		Id:              spu.ID,
+		UserId:          spu.Creator,
+		Name:            spu.Name,
+		Description:     spu.Description,
+		CategoryId:      int64(spu.Category),
 		MainImageURL:    spu.MainImageURL,
 		SliderImageURLs: spu.SliderImageURLs,
-		CreateTime: spu.CreateAt,
-		UpdateTime: spu.UpdateAt,
-		Status:     int32(spu.Status),
-		Price:      spu.Price,
+		CreateTime:      spu.CreateAt,
+		UpdateTime:      spu.UpdateAt,
+		Status:          int32(spu.Status),
+		Price:           spu.Price,
 	}, nil
 }
 

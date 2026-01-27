@@ -8,6 +8,91 @@ import (
 	"fmt"
 )
 
+type GetCouponInfoReq struct {
+	CouponId int64 `thrift:"CouponId,1" frugal:"1,default,i64" json:"CouponId"`
+}
+
+func NewGetCouponInfoReq() *GetCouponInfoReq {
+	return &GetCouponInfoReq{}
+}
+
+func (p *GetCouponInfoReq) InitDefault() {
+}
+
+func (p *GetCouponInfoReq) GetCouponId() (v int64) {
+	return p.CouponId
+}
+func (p *GetCouponInfoReq) SetCouponId(val int64) {
+	p.CouponId = val
+}
+
+func (p *GetCouponInfoReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetCouponInfoReq(%+v)", *p)
+}
+
+var fieldIDToName_GetCouponInfoReq = map[int16]string{
+	1: "CouponId",
+}
+
+type GetCouponInfoResp struct {
+	Base   *model.BaseResp   `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	Coupon *model.CouponInfo `thrift:"coupon,2" frugal:"2,default,model.CouponInfo" json:"coupon"`
+}
+
+func NewGetCouponInfoResp() *GetCouponInfoResp {
+	return &GetCouponInfoResp{}
+}
+
+func (p *GetCouponInfoResp) InitDefault() {
+}
+
+var GetCouponInfoResp_Base_DEFAULT *model.BaseResp
+
+func (p *GetCouponInfoResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return GetCouponInfoResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+var GetCouponInfoResp_Coupon_DEFAULT *model.CouponInfo
+
+func (p *GetCouponInfoResp) GetCoupon() (v *model.CouponInfo) {
+	if !p.IsSetCoupon() {
+		return GetCouponInfoResp_Coupon_DEFAULT
+	}
+	return p.Coupon
+}
+func (p *GetCouponInfoResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *GetCouponInfoResp) SetCoupon(val *model.CouponInfo) {
+	p.Coupon = val
+}
+
+func (p *GetCouponInfoResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *GetCouponInfoResp) IsSetCoupon() bool {
+	return p.Coupon != nil
+}
+
+func (p *GetCouponInfoResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetCouponInfoResp(%+v)", *p)
+}
+
+var fieldIDToName_GetCouponInfoResp = map[int16]string{
+	1: "base",
+	2: "coupon",
+}
+
 type CreateCouponBatchReq struct {
 	BatchName string `thrift:"batchName,1" frugal:"1,default,string" json:"batchName"`
 	Remark    string `thrift:"remark,2" frugal:"2,default,string" json:"remark"`
@@ -545,7 +630,76 @@ var fieldIDToName_RedeemCouponResp = map[int16]string{
 	1: "base",
 }
 
+type LetCouponExpireReq struct {
+	CouponId int64 `thrift:"couponId,1" frugal:"1,default,i64" json:"couponId"`
+}
+
+func NewLetCouponExpireReq() *LetCouponExpireReq {
+	return &LetCouponExpireReq{}
+}
+
+func (p *LetCouponExpireReq) InitDefault() {
+}
+
+func (p *LetCouponExpireReq) GetCouponId() (v int64) {
+	return p.CouponId
+}
+func (p *LetCouponExpireReq) SetCouponId(val int64) {
+	p.CouponId = val
+}
+
+func (p *LetCouponExpireReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("LetCouponExpireReq(%+v)", *p)
+}
+
+var fieldIDToName_LetCouponExpireReq = map[int16]string{
+	1: "couponId",
+}
+
+type LetCouponExpireResp struct {
+	Base *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+}
+
+func NewLetCouponExpireResp() *LetCouponExpireResp {
+	return &LetCouponExpireResp{}
+}
+
+func (p *LetCouponExpireResp) InitDefault() {
+}
+
+var LetCouponExpireResp_Base_DEFAULT *model.BaseResp
+
+func (p *LetCouponExpireResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return LetCouponExpireResp_Base_DEFAULT
+	}
+	return p.Base
+}
+func (p *LetCouponExpireResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+
+func (p *LetCouponExpireResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *LetCouponExpireResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("LetCouponExpireResp(%+v)", *p)
+}
+
+var fieldIDToName_LetCouponExpireResp = map[int16]string{
+	1: "base",
+}
+
 type CouponService interface {
+	GetCouponInfo(ctx context.Context, req *GetCouponInfoReq) (r *GetCouponInfoResp, err error)
+
 	CreateCouponBatch(ctx context.Context, req *CreateCouponBatchReq) (r *CreateCouponBatchResp, err error)
 
 	GetCoupon(ctx context.Context, req *GetCouponReq) (r *GetCouponResp, err error)
@@ -557,6 +711,84 @@ type CouponService interface {
 	ReleaseCoupon(ctx context.Context, req *ReleaseCouponReq) (r *ReleaseCouponResp, err error)
 
 	RedeemCoupon(ctx context.Context, req *RedeemCouponReq) (r *RedeemCouponResp, err error)
+
+	LetCouponExpire(ctx context.Context, req *LetCouponExpireReq) (r *LetCouponExpireResp, err error)
+}
+
+type CouponServiceGetCouponInfoArgs struct {
+	Req *GetCouponInfoReq `thrift:"req,1" frugal:"1,default,GetCouponInfoReq" json:"req"`
+}
+
+func NewCouponServiceGetCouponInfoArgs() *CouponServiceGetCouponInfoArgs {
+	return &CouponServiceGetCouponInfoArgs{}
+}
+
+func (p *CouponServiceGetCouponInfoArgs) InitDefault() {
+}
+
+var CouponServiceGetCouponInfoArgs_Req_DEFAULT *GetCouponInfoReq
+
+func (p *CouponServiceGetCouponInfoArgs) GetReq() (v *GetCouponInfoReq) {
+	if !p.IsSetReq() {
+		return CouponServiceGetCouponInfoArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *CouponServiceGetCouponInfoArgs) SetReq(val *GetCouponInfoReq) {
+	p.Req = val
+}
+
+func (p *CouponServiceGetCouponInfoArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *CouponServiceGetCouponInfoArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CouponServiceGetCouponInfoArgs(%+v)", *p)
+}
+
+var fieldIDToName_CouponServiceGetCouponInfoArgs = map[int16]string{
+	1: "req",
+}
+
+type CouponServiceGetCouponInfoResult struct {
+	Success *GetCouponInfoResp `thrift:"success,0,optional" frugal:"0,optional,GetCouponInfoResp" json:"success,omitempty"`
+}
+
+func NewCouponServiceGetCouponInfoResult() *CouponServiceGetCouponInfoResult {
+	return &CouponServiceGetCouponInfoResult{}
+}
+
+func (p *CouponServiceGetCouponInfoResult) InitDefault() {
+}
+
+var CouponServiceGetCouponInfoResult_Success_DEFAULT *GetCouponInfoResp
+
+func (p *CouponServiceGetCouponInfoResult) GetSuccess() (v *GetCouponInfoResp) {
+	if !p.IsSetSuccess() {
+		return CouponServiceGetCouponInfoResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *CouponServiceGetCouponInfoResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetCouponInfoResp)
+}
+
+func (p *CouponServiceGetCouponInfoResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *CouponServiceGetCouponInfoResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CouponServiceGetCouponInfoResult(%+v)", *p)
+}
+
+var fieldIDToName_CouponServiceGetCouponInfoResult = map[int16]string{
+	0: "success",
 }
 
 type CouponServiceCreateCouponBatchArgs struct {
@@ -1012,5 +1244,81 @@ func (p *CouponServiceRedeemCouponResult) String() string {
 }
 
 var fieldIDToName_CouponServiceRedeemCouponResult = map[int16]string{
+	0: "success",
+}
+
+type CouponServiceLetCouponExpireArgs struct {
+	Req *LetCouponExpireReq `thrift:"req,1" frugal:"1,default,LetCouponExpireReq" json:"req"`
+}
+
+func NewCouponServiceLetCouponExpireArgs() *CouponServiceLetCouponExpireArgs {
+	return &CouponServiceLetCouponExpireArgs{}
+}
+
+func (p *CouponServiceLetCouponExpireArgs) InitDefault() {
+}
+
+var CouponServiceLetCouponExpireArgs_Req_DEFAULT *LetCouponExpireReq
+
+func (p *CouponServiceLetCouponExpireArgs) GetReq() (v *LetCouponExpireReq) {
+	if !p.IsSetReq() {
+		return CouponServiceLetCouponExpireArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *CouponServiceLetCouponExpireArgs) SetReq(val *LetCouponExpireReq) {
+	p.Req = val
+}
+
+func (p *CouponServiceLetCouponExpireArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *CouponServiceLetCouponExpireArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CouponServiceLetCouponExpireArgs(%+v)", *p)
+}
+
+var fieldIDToName_CouponServiceLetCouponExpireArgs = map[int16]string{
+	1: "req",
+}
+
+type CouponServiceLetCouponExpireResult struct {
+	Success *LetCouponExpireResp `thrift:"success,0,optional" frugal:"0,optional,LetCouponExpireResp" json:"success,omitempty"`
+}
+
+func NewCouponServiceLetCouponExpireResult() *CouponServiceLetCouponExpireResult {
+	return &CouponServiceLetCouponExpireResult{}
+}
+
+func (p *CouponServiceLetCouponExpireResult) InitDefault() {
+}
+
+var CouponServiceLetCouponExpireResult_Success_DEFAULT *LetCouponExpireResp
+
+func (p *CouponServiceLetCouponExpireResult) GetSuccess() (v *LetCouponExpireResp) {
+	if !p.IsSetSuccess() {
+		return CouponServiceLetCouponExpireResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *CouponServiceLetCouponExpireResult) SetSuccess(x interface{}) {
+	p.Success = x.(*LetCouponExpireResp)
+}
+
+func (p *CouponServiceLetCouponExpireResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *CouponServiceLetCouponExpireResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CouponServiceLetCouponExpireResult(%+v)", *p)
+}
+
+var fieldIDToName_CouponServiceLetCouponExpireResult = map[int16]string{
 	0: "success",
 }

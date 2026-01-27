@@ -14,6 +14,7 @@ type UserUsecase interface {
 	LogOut(ctx context.Context) error
 	AddAddress(ctx context.Context, address *model.Address) (int64, error)
 	GetAddressList(ctx context.Context) ([]*model.Address, error)
+	GetAddress(ctx context.Context, uid int64) (*model.Address, error)
 	BanUser(ctx context.Context, uid int64) error
 	UnBanUser(ctx context.Context, uid int64) error
 	SetAdmin(ctx context.Context, password string, uid int64) error

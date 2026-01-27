@@ -29,9 +29,7 @@ func NewProductRpc(userRpc userservice.Client) *ProductRpc {
 	}
 }
 
-
-
-func NewProductClient() userservice.Client{
+func NewProductClient() userservice.Client {
 	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
 	if err != nil {
 		logger.Fatalf("calc rpc Init Falied: err: %v", err)
@@ -71,4 +69,3 @@ func (p *ProductRpc) IsAdmin(ctx context.Context) (bool, error) {
 	}
 	return resp.UserInfo.Role == constants.Admin, nil
 }
-

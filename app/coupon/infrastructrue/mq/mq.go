@@ -9,8 +9,9 @@ import (
 
 	"github.com/segmentio/kafka-go"
 )
+
 type CouponMq struct {
-	kafka *client.Kafka 
+	kafka *client.Kafka
 }
 
 func NewCouponMq(kafka *client.Kafka) *CouponMq {
@@ -21,7 +22,7 @@ func NewCouponMq(kafka *client.Kafka) *CouponMq {
 
 func (p *CouponMq) SendClaimCoupon(ctx context.Context, couponId int64) error {
 	return p.kafka.Publish(ctx, "coupon_claim", &kafka.Message{
-		Key: []byte(strconv.FormatInt(couponId, 10)),
+		Key:   []byte(strconv.FormatInt(couponId, 10)),
 		Value: nil,
 	})
 }
@@ -32,8 +33,8 @@ func (p *CouponMq) ConsumeClaimCoupon(ctx context.Context, fn func(ctx context.C
 		if err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("parse coupon id error: %v", err))
 		}
-		return fn(ctx, couponId)	
-	}, ctx); err != nil { 
+		return fn(ctx, couponId)
+	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}
 	return nil

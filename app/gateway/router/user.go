@@ -27,4 +27,3 @@ func InitUserRouter(h *server.Hertz) {
 		user.POST("/resetPassword", api.ResetPassword)
 	}
 }
-

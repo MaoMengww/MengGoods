@@ -16,10 +16,9 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
-	"github.com/kitex-contrib/registry-etcd"
+	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/spf13/viper"
 )
-
 
 func Init() {
 	config.Init()
@@ -27,7 +26,7 @@ func Init() {
 	utils.InitSnowflake(0)
 }
 
-func main(){
+func main() {
 	Init()
 	shutdown := base.InitTracing("product")
 	defer shutdown(context.Background())
@@ -48,7 +47,7 @@ func main(){
 		}),
 		server.WithLimit(&limit.Option{
 			MaxConnections: constants.MaxConnection,
-			MaxQPS: constants.MaxQPS,
+			MaxQPS:         constants.MaxQPS,
 		}),
 		server.WithSuite(tracing.NewServerSuite()),
 		//server.WithMiddleware(middleware.PackResp()),

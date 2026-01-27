@@ -49,9 +49,9 @@ func (p *CartCache) AddCartItem(ctx context.Context, cartItem *model.CartItem) e
 			return merror.NewMerror(merror.InternalCacheErrorCode, "failed to add cart item")
 		}
 		oldCartItem.Count += cartItem.Count
-        pipe := p.Client.Pipeline()
+		pipe := p.Client.Pipeline()
 		pipe.HSet(ctx, key, strconv.FormatInt(cartItem.SkuID, 10), oldCartItem)
-        pipe.Expire(ctx, key, time.Duration(constants.CartExpireTime))
+		pipe.Expire(ctx, key, time.Duration(constants.CartExpireTime))
 		_, err = pipe.Exec(ctx)
 		if err != nil {
 			return merror.NewMerror(merror.InternalCacheErrorCode, "failed to add cart item")
@@ -93,7 +93,7 @@ func (p *CartCache) DeleteCart(ctx context.Context) error {
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, "failed to delete cart")
 	}
-    return nil
+	return nil
 }
 
 func (p *CartCache) UpdateCartItem(ctx context.Context, cartItem *model.CartItem) error {

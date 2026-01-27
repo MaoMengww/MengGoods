@@ -34,5 +34,3 @@ func WithUserIDInContext(ctx context.Context, uid int64) context.Context {
 func WithStreamUserIDInContext(ctx context.Context, uid int64) context.Context {
 	return metainfo.WithPersistentValue(ctx, "stream_uid", strconv.FormatInt(uid, 10))
 }
-
-

@@ -30,7 +30,7 @@ func (s *CouponService) LockCoupon(ctx context.Context, couponId int64) error {
 		return err
 	}
 	if !isUnused {
-		return merror.NewMerror(merror.CouponIsUsedErrorCode, "coupon is used")
+		return merror.NewMerror(merror.CouponIsUsed, "coupon is used")
 	}
 	return s.CouponDB.LockCoupon(ctx, couponId)
 }

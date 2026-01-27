@@ -57,7 +57,7 @@ func GetUserInfo(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	
+
 	// 使用从context获取的用户ID构建请求
 	req := user.GetUserInfoReq{
 		UserId: uid,
@@ -80,7 +80,7 @@ func AddAddress(ctx context.Context, c *app.RequestContext) {
 	var req user.AddAddressReq
 	err := c.BindAndValidate(&req)
 	if err != nil {
-		base.ResErr(c, err)	
+		base.ResErr(c, err)
 		return
 	}
 	resp, err := rpc.AddAddress(ctx, &req)
@@ -92,7 +92,7 @@ func AddAddress(ctx context.Context, c *app.RequestContext) {
 }
 
 func GetAddressList(ctx context.Context, c *app.RequestContext) {
-	var req user.GetAddressReq
+	var req user.GetAddressesReq
 	err := c.BindAndValidate(&req)
 	if err != nil {
 		base.ResErr(c, err)

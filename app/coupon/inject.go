@@ -13,7 +13,7 @@ import (
 )
 
 func InjectCouponServiceImpl() *api.CouponServiceImpl {
-    gormDB, err := client.NewMySQLClient(viper.GetString("mysql.coupondb"))
+	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.coupondb"))
 	if err != nil {
 		panic(err)
 	}

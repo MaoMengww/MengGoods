@@ -7,7 +7,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
-
 func InitProductRouter(h *server.Hertz) {
 	h.Use(mw.Sentinel())
 	product := h.Group("/api/v1/product")
@@ -19,7 +18,7 @@ func InitProductRouter(h *server.Hertz) {
 	product.Use(mw.AuthMiddleware())
 	{
 		product.POST("/spu/:spu_Id/update", api.UpdateSpu)
-		product.POST("/sku/:sku_Id/update", api.UpdateSku)	
+		product.POST("/sku/:sku_Id/update", api.UpdateSku)
 		product.POST("/spu/create", api.CreateSpu)
 		product.POST("/spu/:spu_Id/delete", api.DeleteSpu)
 		product.POST("/sku/:sku_Id/delete", api.DeleteSku)

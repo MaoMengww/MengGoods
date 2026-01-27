@@ -8,6 +8,7 @@ import (
 
 type CouponDB interface {
 	IsUnusedCoupon(ctx context.Context, couponId int64) (bool, error)
+	GetCouponInfo(ctx context.Context, couponId int64) (*model.Coupon, error)
 	GetCouponBatchByID(ctx context.Context, batchId int64) (*model.CouponBatch, error)
 	CreateCouponBatch(ctx context.Context, batch *model.CouponBatch) (int64, error)
 	CreateCoupon(ctx context.Context, coupon *model.Coupon) error
@@ -16,6 +17,7 @@ type CouponDB interface {
 	LockCoupon(ctx context.Context, couponId int64) error
 	ReleaseCoupon(ctx context.Context, couponId int64) error
 	RedeemCoupon(ctx context.Context, couponId int64, orderId int64) error
+	LetCouponExpire(ctx context.Context, couponId int64) error
 }
 
 type CouponCache interface {

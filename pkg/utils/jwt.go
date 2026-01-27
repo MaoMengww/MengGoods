@@ -10,17 +10,15 @@ import (
 	"github.com/spf13/viper"
 )
 
-
 type Claims struct {
 	Type int64 `json:"type"`
-	Uid int64 `json:"uid"`
+	Uid  int64 `json:"uid"`
 	jwt.StandardClaims
 }
 
-
-//创建两种网关token,一种是access token，第二种是 refresh token
+// 创建两种网关token,一种是access token，第二种是 refresh token
 func CreateGatewayToken(uid int64) (string, string, error) {
-	accessToken, err := CreateToken(constants.TypeAccess, uid)   //创建access token
+	accessToken, err := CreateToken(constants.TypeAccess, uid) //创建access token
 	if err != nil {
 		return "", "", err
 	}
@@ -31,7 +29,7 @@ func CreateGatewayToken(uid int64) (string, string, error) {
 	return accessToken, refreshToken, nil
 }
 
-//根据token的Type和用户uid创建token
+// 根据token的Type和用户uid创建token
 func CreateToken(tokenType int64, uid int64) (string, error) {
 	var expiredDurationStr string
 	switch tokenType {
@@ -66,7 +64,7 @@ func CreateToken(tokenType int64, uid int64) (string, error) {
 	return tokenString, nil
 }
 
-//jwt解析私钥
+// jwt解析私钥
 func parsePrivateKey(key string) (interface{}, error) {
 	parsedKey, err := jwt.ParseEdPrivateKeyFromPEM([]byte(key))
 	if err != nil {
@@ -75,7 +73,7 @@ func parsePrivateKey(key string) (interface{}, error) {
 	return parsedKey, nil
 }
 
-//jwt解析公钥
+// jwt解析公钥
 func parsePublicKey(key string) (interface{}, error) {
 	parsedKey, err := jwt.ParseEdPublicKeyFromPEM([]byte(key))
 	if err != nil {
@@ -84,7 +82,7 @@ func parsePublicKey(key string) (interface{}, error) {
 	return parsedKey, nil
 }
 
-//验证并解析claims
+// 验证并解析claims
 func verifyToken(token string, key interface{}) (*Claims, error) {
 	parsedToken, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodEd25519); !ok {
@@ -102,7 +100,7 @@ func verifyToken(token string, key interface{}) (*Claims, error) {
 	return claims, nil
 }
 
-//验证token
+// 验证token
 func CheckToken(token string) (*Claims, error) {
 	publicKey, err := parsePublicKey(viper.GetString("jwt.publicKey"))
 	if err != nil {
@@ -114,7 +112,3 @@ func CheckToken(token string) (*Claims, error) {
 	}
 	return claims, nil
 }
-
-
-
-

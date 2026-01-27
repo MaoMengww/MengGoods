@@ -39,12 +39,21 @@ struct AddAddressResp {
 }
 
 //获取地址(userID由context隐式透传)
+struct GetAddressesReq {
+}
+
+struct GetAddressesResp {
+    1: required model.BaseResp base;
+    2: required list<model.AddressInfo> address;
+}
+
 struct GetAddressReq {
+    1: required i64 addressId;
 }
 
 struct GetAddressResp {
     1: required model.BaseResp base;
-    2: required list<model.AddressInfo> address;
+    2: required model.AddressInfo address;
 }
 
 
@@ -124,6 +133,7 @@ service UserService {
     RegisterResp Register(1: RegisterReq req);
     LoginResp Login(1: LoginReq req);
     AddAddressResp AddAddress(1: AddAddressReq req);
+    GetAddressesResp GetAddresses(1: GetAddressesReq req);
     GetAddressResp GetAddress(1: GetAddressReq req);
     BanUserResp BanUser(1: BanUserReq req);
     UnBanUserResp UnBanUser(1: UnBanUserReq req);

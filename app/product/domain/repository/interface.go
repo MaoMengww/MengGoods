@@ -6,7 +6,7 @@ import (
 	"context"
 )
 
-//负责写和精确查找spu
+// 负责写和精确查找spu
 type ProductDB interface {
 	CreateSpu(ctx context.Context, spu *model.Spu) (int64, error)
 	CreateCategory(ctx context.Context, category *model.Category) (int64, error)
@@ -20,20 +20,20 @@ type ProductDB interface {
 	GetSpuById(ctx context.Context, spuId int64) (*model.Spu, error)
 	GetSkuById(ctx context.Context, skuId int64) (*model.Sku, error)
 	GetSpusByIds(ctx context.Context, spuIds []int64) ([]*model.Spu, error)
-	GetSkusByIds(ctx context.Context, skuIds []int64) ([]*model.Sku, error)   //用于购物车相关
+	GetSkusByIds(ctx context.Context, skuIds []int64) ([]*model.Sku, error) //用于购物车相关
 	GetSkusBySpuId(ctx context.Context, spuId int64) ([]*model.Sku, error)
 
 	IsSpuOwer(ctx context.Context, spuId int64) (bool, error)
 	IsSkuOwer(ctx context.Context, skuId int64) (bool, error)
-	
+
 	IsSpuExist(ctx context.Context, spuId int64) (bool, error)
 	IsSkuExist(ctx context.Context, skuId int64) (bool, error)
 	IsCategoryExist(ctx context.Context, categoryId int64) (bool, error)
 }
 
 type ProductCache interface {
-    GetSpuKey(ctx context.Context, spuId int64) string
-    GetSkuKey(ctx context.Context, skuId int64) string
+	GetSpuKey(ctx context.Context, spuId int64) string
+	GetSkuKey(ctx context.Context, skuId int64) string
 	SetSpu(ctx context.Context, spu *model.SpuEs) error
 	SetSku(ctx context.Context, sku *model.SkuEs) error
 	GetSpu(ctx context.Context, key string) (string, error)
@@ -42,7 +42,7 @@ type ProductCache interface {
 	DeleteSku(ctx context.Context, key string) error
 }
 
-type ProductMq interface { 
+type ProductMq interface {
 	SendCreateSpuInfo(ctx context.Context, spu *model.SpuEs) error
 	SendUpdateSpuInfo(ctx context.Context, spu *model.SpuEs) error
 	SendDeleteSpuInfo(ctx context.Context, id int64) error
@@ -50,8 +50,6 @@ type ProductMq interface {
 	ConsumeUpdateSpuInfo(ctx context.Context, fn func(ctx context.Context, spu *model.SpuEs) error) error
 	ConsumeDeleteSpuInfo(ctx context.Context, fn func(ctx context.Context, spuId int64) error) error
 }
-
-
 
 type ProductEs interface {
 	AddSpuItem(ctx context.Context, spu *model.SpuEs) error
@@ -61,5 +59,5 @@ type ProductEs interface {
 }
 
 type ProductRpc interface {
-	IsAdmin(ctx context.Context)(bool, error)
+	IsAdmin(ctx context.Context) (bool, error)
 }

@@ -12,7 +12,6 @@ struct AddCartItemResp {
 }
 
 struct GetCartItemReq {
-    1: i64 userId;
 }
 
 struct GetCartItemResp {

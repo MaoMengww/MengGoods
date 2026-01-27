@@ -101,7 +101,8 @@ var fieldIDToName_BaseResp = map[int16]string{
 type UserInfo struct {
 	Id       int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
 	Username string `thrift:"username,2" frugal:"2,default,string" json:"username"`
-	Role     int64  `thrift:"role,3" frugal:"3,default,i64" json:"role"`
+	Email    string `thrift:"email,3" frugal:"3,default,string" json:"email"`
+	Role     int64  `thrift:"role,4" frugal:"4,default,i64" json:"role"`
 }
 
 func NewUserInfo() *UserInfo {
@@ -119,6 +120,10 @@ func (p *UserInfo) GetUsername() (v string) {
 	return p.Username
 }
 
+func (p *UserInfo) GetEmail() (v string) {
+	return p.Email
+}
+
 func (p *UserInfo) GetRole() (v int64) {
 	return p.Role
 }
@@ -127,6 +132,9 @@ func (p *UserInfo) SetId(val int64) {
 }
 func (p *UserInfo) SetUsername(val string) {
 	p.Username = val
+}
+func (p *UserInfo) SetEmail(val string) {
+	p.Email = val
 }
 func (p *UserInfo) SetRole(val int64) {
 	p.Role = val
@@ -142,7 +150,8 @@ func (p *UserInfo) String() string {
 var fieldIDToName_UserInfo = map[int16]string{
 	1: "id",
 	2: "username",
-	3: "role",
+	3: "email",
+	4: "role",
 }
 
 type AddressInfo struct {
@@ -935,4 +944,518 @@ var fieldIDToName_CouponInfo = map[int16]string{
 	10: "createTime",
 	11: "expiredAt",
 	12: "usedAt",
+}
+
+type OrderInfo struct {
+	Id               int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	UserId           int64  `thrift:"userId,2" frugal:"2,default,i64" json:"userId"`
+	Status           int32  `thrift:"status,3" frugal:"3,default,i32" json:"status"`
+	TotalPrice       int64  `thrift:"totalPrice,4" frugal:"4,default,i64" json:"totalPrice"`
+	PaymentPrice     int64  `thrift:"paymentPrice,5" frugal:"5,default,i64" json:"paymentPrice"`
+	ReceiverName     string `thrift:"receiverName,6" frugal:"6,default,string" json:"receiverName"`
+	ReceiverEmail    string `thrift:"receiverEmail,7" frugal:"7,default,string" json:"receiverEmail"`
+	ReceiverProvince string `thrift:"receiverProvince,8" frugal:"8,default,string" json:"receiverProvince"`
+	ReceiverCity     string `thrift:"receiverCity,9" frugal:"9,default,string" json:"receiverCity"`
+	ReceiverDetail   string `thrift:"receiverDetail,10" frugal:"10,default,string" json:"receiverDetail"`
+	CreateTime       int64  `thrift:"createTime,11" frugal:"11,default,i64" json:"createTime"`
+	UpdateTime       int64  `thrift:"updateTime,12" frugal:"12,default,i64" json:"updateTime"`
+	ExpireTime       int64  `thrift:"expireTime,13" frugal:"13,default,i64" json:"expireTime"`
+	PayTime          int64  `thrift:"payTime,14" frugal:"14,default,i64" json:"payTime"`
+	CancelTime       int64  `thrift:"cancelTime,15" frugal:"15,default,i64" json:"cancelTime"`
+	CancelReason     string `thrift:"cancelReason,16" frugal:"16,default,string" json:"cancelReason"`
+}
+
+func NewOrderInfo() *OrderInfo {
+	return &OrderInfo{}
+}
+
+func (p *OrderInfo) InitDefault() {
+}
+
+func (p *OrderInfo) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *OrderInfo) GetUserId() (v int64) {
+	return p.UserId
+}
+
+func (p *OrderInfo) GetStatus() (v int32) {
+	return p.Status
+}
+
+func (p *OrderInfo) GetTotalPrice() (v int64) {
+	return p.TotalPrice
+}
+
+func (p *OrderInfo) GetPaymentPrice() (v int64) {
+	return p.PaymentPrice
+}
+
+func (p *OrderInfo) GetReceiverName() (v string) {
+	return p.ReceiverName
+}
+
+func (p *OrderInfo) GetReceiverEmail() (v string) {
+	return p.ReceiverEmail
+}
+
+func (p *OrderInfo) GetReceiverProvince() (v string) {
+	return p.ReceiverProvince
+}
+
+func (p *OrderInfo) GetReceiverCity() (v string) {
+	return p.ReceiverCity
+}
+
+func (p *OrderInfo) GetReceiverDetail() (v string) {
+	return p.ReceiverDetail
+}
+
+func (p *OrderInfo) GetCreateTime() (v int64) {
+	return p.CreateTime
+}
+
+func (p *OrderInfo) GetUpdateTime() (v int64) {
+	return p.UpdateTime
+}
+
+func (p *OrderInfo) GetExpireTime() (v int64) {
+	return p.ExpireTime
+}
+
+func (p *OrderInfo) GetPayTime() (v int64) {
+	return p.PayTime
+}
+
+func (p *OrderInfo) GetCancelTime() (v int64) {
+	return p.CancelTime
+}
+
+func (p *OrderInfo) GetCancelReason() (v string) {
+	return p.CancelReason
+}
+func (p *OrderInfo) SetId(val int64) {
+	p.Id = val
+}
+func (p *OrderInfo) SetUserId(val int64) {
+	p.UserId = val
+}
+func (p *OrderInfo) SetStatus(val int32) {
+	p.Status = val
+}
+func (p *OrderInfo) SetTotalPrice(val int64) {
+	p.TotalPrice = val
+}
+func (p *OrderInfo) SetPaymentPrice(val int64) {
+	p.PaymentPrice = val
+}
+func (p *OrderInfo) SetReceiverName(val string) {
+	p.ReceiverName = val
+}
+func (p *OrderInfo) SetReceiverEmail(val string) {
+	p.ReceiverEmail = val
+}
+func (p *OrderInfo) SetReceiverProvince(val string) {
+	p.ReceiverProvince = val
+}
+func (p *OrderInfo) SetReceiverCity(val string) {
+	p.ReceiverCity = val
+}
+func (p *OrderInfo) SetReceiverDetail(val string) {
+	p.ReceiverDetail = val
+}
+func (p *OrderInfo) SetCreateTime(val int64) {
+	p.CreateTime = val
+}
+func (p *OrderInfo) SetUpdateTime(val int64) {
+	p.UpdateTime = val
+}
+func (p *OrderInfo) SetExpireTime(val int64) {
+	p.ExpireTime = val
+}
+func (p *OrderInfo) SetPayTime(val int64) {
+	p.PayTime = val
+}
+func (p *OrderInfo) SetCancelTime(val int64) {
+	p.CancelTime = val
+}
+func (p *OrderInfo) SetCancelReason(val string) {
+	p.CancelReason = val
+}
+
+func (p *OrderInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderInfo(%+v)", *p)
+}
+
+var fieldIDToName_OrderInfo = map[int16]string{
+	1:  "id",
+	2:  "userId",
+	3:  "status",
+	4:  "totalPrice",
+	5:  "paymentPrice",
+	6:  "receiverName",
+	7:  "receiverEmail",
+	8:  "receiverProvince",
+	9:  "receiverCity",
+	10: "receiverDetail",
+	11: "createTime",
+	12: "updateTime",
+	13: "expireTime",
+	14: "payTime",
+	15: "cancelTime",
+	16: "cancelReason",
+}
+
+type OrderItem struct {
+	Id                int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	SellerId          int64  `thrift:"sellerId,2" frugal:"2,default,i64" json:"sellerId"`
+	OrderId           int64  `thrift:"orderId,3" frugal:"3,default,i64" json:"orderId"`
+	ProductId         int64  `thrift:"productId,4" frugal:"4,default,i64" json:"productId"`
+	ProductName       string `thrift:"productName,5" frugal:"5,default,string" json:"productName"`
+	ProductPrice      int64  `thrift:"productPrice,6" frugal:"6,default,i64" json:"productPrice"`
+	ProductImage      string `thrift:"productImage,7" frugal:"7,default,string" json:"productImage"`
+	ProductNum        int64  `thrift:"productNum,8" frugal:"8,default,i64" json:"productNum"`
+	ProductTotalPrice int64  `thrift:"productTotalPrice,9" frugal:"9,default,i64" json:"productTotalPrice"`
+	ProductProperties string `thrift:"productProperties,10" frugal:"10,default,string" json:"productProperties"`
+}
+
+func NewOrderItem() *OrderItem {
+	return &OrderItem{}
+}
+
+func (p *OrderItem) InitDefault() {
+}
+
+func (p *OrderItem) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *OrderItem) GetSellerId() (v int64) {
+	return p.SellerId
+}
+
+func (p *OrderItem) GetOrderId() (v int64) {
+	return p.OrderId
+}
+
+func (p *OrderItem) GetProductId() (v int64) {
+	return p.ProductId
+}
+
+func (p *OrderItem) GetProductName() (v string) {
+	return p.ProductName
+}
+
+func (p *OrderItem) GetProductPrice() (v int64) {
+	return p.ProductPrice
+}
+
+func (p *OrderItem) GetProductImage() (v string) {
+	return p.ProductImage
+}
+
+func (p *OrderItem) GetProductNum() (v int64) {
+	return p.ProductNum
+}
+
+func (p *OrderItem) GetProductTotalPrice() (v int64) {
+	return p.ProductTotalPrice
+}
+
+func (p *OrderItem) GetProductProperties() (v string) {
+	return p.ProductProperties
+}
+func (p *OrderItem) SetId(val int64) {
+	p.Id = val
+}
+func (p *OrderItem) SetSellerId(val int64) {
+	p.SellerId = val
+}
+func (p *OrderItem) SetOrderId(val int64) {
+	p.OrderId = val
+}
+func (p *OrderItem) SetProductId(val int64) {
+	p.ProductId = val
+}
+func (p *OrderItem) SetProductName(val string) {
+	p.ProductName = val
+}
+func (p *OrderItem) SetProductPrice(val int64) {
+	p.ProductPrice = val
+}
+func (p *OrderItem) SetProductImage(val string) {
+	p.ProductImage = val
+}
+func (p *OrderItem) SetProductNum(val int64) {
+	p.ProductNum = val
+}
+func (p *OrderItem) SetProductTotalPrice(val int64) {
+	p.ProductTotalPrice = val
+}
+func (p *OrderItem) SetProductProperties(val string) {
+	p.ProductProperties = val
+}
+
+func (p *OrderItem) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderItem(%+v)", *p)
+}
+
+var fieldIDToName_OrderItem = map[int16]string{
+	1:  "id",
+	2:  "sellerId",
+	3:  "orderId",
+	4:  "productId",
+	5:  "productName",
+	6:  "productPrice",
+	7:  "productImage",
+	8:  "productNum",
+	9:  "productTotalPrice",
+	10: "productProperties",
+}
+
+type OrderWithItems struct {
+	OrderInfo  *OrderInfo   `thrift:"orderInfo,1" frugal:"1,default,OrderInfo" json:"orderInfo"`
+	OrderItems []*OrderItem `thrift:"orderItems,2" frugal:"2,default,list<OrderItem>" json:"orderItems"`
+}
+
+func NewOrderWithItems() *OrderWithItems {
+	return &OrderWithItems{}
+}
+
+func (p *OrderWithItems) InitDefault() {
+}
+
+var OrderWithItems_OrderInfo_DEFAULT *OrderInfo
+
+func (p *OrderWithItems) GetOrderInfo() (v *OrderInfo) {
+	if !p.IsSetOrderInfo() {
+		return OrderWithItems_OrderInfo_DEFAULT
+	}
+	return p.OrderInfo
+}
+
+func (p *OrderWithItems) GetOrderItems() (v []*OrderItem) {
+	return p.OrderItems
+}
+func (p *OrderWithItems) SetOrderInfo(val *OrderInfo) {
+	p.OrderInfo = val
+}
+func (p *OrderWithItems) SetOrderItems(val []*OrderItem) {
+	p.OrderItems = val
+}
+
+func (p *OrderWithItems) IsSetOrderInfo() bool {
+	return p.OrderInfo != nil
+}
+
+func (p *OrderWithItems) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderWithItems(%+v)", *p)
+}
+
+var fieldIDToName_OrderWithItems = map[int16]string{
+	1: "orderInfo",
+	2: "orderItems",
+}
+
+type PaymentOrderInfo struct {
+	Id            int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	OrderId       int64  `thrift:"orderId,2" frugal:"2,default,i64" json:"orderId"`
+	PaymentNo     string `thrift:"paymentNo,3" frugal:"3,default,string" json:"paymentNo"`
+	Amount        int64  `thrift:"amount,4" frugal:"4,default,i64" json:"amount"`
+	PaymentMethod string `thrift:"paymentMethod,5" frugal:"5,default,string" json:"paymentMethod"`
+	Status        int32  `thrift:"status,6" frugal:"6,default,i32" json:"status"`
+	CreateTime    int64  `thrift:"createTime,7" frugal:"7,default,i64" json:"createTime"`
+	UpdateTime    int64  `thrift:"updateTime,8" frugal:"8,default,i64" json:"updateTime"`
+}
+
+func NewPaymentOrderInfo() *PaymentOrderInfo {
+	return &PaymentOrderInfo{}
+}
+
+func (p *PaymentOrderInfo) InitDefault() {
+}
+
+func (p *PaymentOrderInfo) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *PaymentOrderInfo) GetOrderId() (v int64) {
+	return p.OrderId
+}
+
+func (p *PaymentOrderInfo) GetPaymentNo() (v string) {
+	return p.PaymentNo
+}
+
+func (p *PaymentOrderInfo) GetAmount() (v int64) {
+	return p.Amount
+}
+
+func (p *PaymentOrderInfo) GetPaymentMethod() (v string) {
+	return p.PaymentMethod
+}
+
+func (p *PaymentOrderInfo) GetStatus() (v int32) {
+	return p.Status
+}
+
+func (p *PaymentOrderInfo) GetCreateTime() (v int64) {
+	return p.CreateTime
+}
+
+func (p *PaymentOrderInfo) GetUpdateTime() (v int64) {
+	return p.UpdateTime
+}
+func (p *PaymentOrderInfo) SetId(val int64) {
+	p.Id = val
+}
+func (p *PaymentOrderInfo) SetOrderId(val int64) {
+	p.OrderId = val
+}
+func (p *PaymentOrderInfo) SetPaymentNo(val string) {
+	p.PaymentNo = val
+}
+func (p *PaymentOrderInfo) SetAmount(val int64) {
+	p.Amount = val
+}
+func (p *PaymentOrderInfo) SetPaymentMethod(val string) {
+	p.PaymentMethod = val
+}
+func (p *PaymentOrderInfo) SetStatus(val int32) {
+	p.Status = val
+}
+func (p *PaymentOrderInfo) SetCreateTime(val int64) {
+	p.CreateTime = val
+}
+func (p *PaymentOrderInfo) SetUpdateTime(val int64) {
+	p.UpdateTime = val
+}
+
+func (p *PaymentOrderInfo) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("PaymentOrderInfo(%+v)", *p)
+}
+
+var fieldIDToName_PaymentOrderInfo = map[int16]string{
+	1: "id",
+	2: "orderId",
+	3: "paymentNo",
+	4: "amount",
+	5: "paymentMethod",
+	6: "status",
+	7: "createTime",
+	8: "updateTime",
+}
+
+type PaymentRefundItem struct {
+	Id           int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	OrderId      int64  `thrift:"orderId,2" frugal:"2,default,i64" json:"orderId"`
+	SellerId     int64  `thrift:"sellerId,3" frugal:"3,default,i64" json:"sellerId"`
+	UserId       int64  `thrift:"userId,4" frugal:"4,default,i64" json:"userId"`
+	RefundNo     int64  `thrift:"RefundNo,5" frugal:"5,default,i64" json:"RefundNo"`
+	RefundAmount int64  `thrift:"refundAmount,6" frugal:"6,default,i64" json:"refundAmount"`
+	RefundReason string `thrift:"refundReason,7" frugal:"7,default,string" json:"refundReason"`
+	CreateTime   int64  `thrift:"createTime,8" frugal:"8,default,i64" json:"createTime"`
+	UpdateTime   int64  `thrift:"updateTime,9" frugal:"9,default,i64" json:"updateTime"`
+}
+
+func NewPaymentRefundItem() *PaymentRefundItem {
+	return &PaymentRefundItem{}
+}
+
+func (p *PaymentRefundItem) InitDefault() {
+}
+
+func (p *PaymentRefundItem) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *PaymentRefundItem) GetOrderId() (v int64) {
+	return p.OrderId
+}
+
+func (p *PaymentRefundItem) GetSellerId() (v int64) {
+	return p.SellerId
+}
+
+func (p *PaymentRefundItem) GetUserId() (v int64) {
+	return p.UserId
+}
+
+func (p *PaymentRefundItem) GetRefundNo() (v int64) {
+	return p.RefundNo
+}
+
+func (p *PaymentRefundItem) GetRefundAmount() (v int64) {
+	return p.RefundAmount
+}
+
+func (p *PaymentRefundItem) GetRefundReason() (v string) {
+	return p.RefundReason
+}
+
+func (p *PaymentRefundItem) GetCreateTime() (v int64) {
+	return p.CreateTime
+}
+
+func (p *PaymentRefundItem) GetUpdateTime() (v int64) {
+	return p.UpdateTime
+}
+func (p *PaymentRefundItem) SetId(val int64) {
+	p.Id = val
+}
+func (p *PaymentRefundItem) SetOrderId(val int64) {
+	p.OrderId = val
+}
+func (p *PaymentRefundItem) SetSellerId(val int64) {
+	p.SellerId = val
+}
+func (p *PaymentRefundItem) SetUserId(val int64) {
+	p.UserId = val
+}
+func (p *PaymentRefundItem) SetRefundNo(val int64) {
+	p.RefundNo = val
+}
+func (p *PaymentRefundItem) SetRefundAmount(val int64) {
+	p.RefundAmount = val
+}
+func (p *PaymentRefundItem) SetRefundReason(val string) {
+	p.RefundReason = val
+}
+func (p *PaymentRefundItem) SetCreateTime(val int64) {
+	p.CreateTime = val
+}
+func (p *PaymentRefundItem) SetUpdateTime(val int64) {
+	p.UpdateTime = val
+}
+
+func (p *PaymentRefundItem) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("PaymentRefundItem(%+v)", *p)
+}
+
+var fieldIDToName_PaymentRefundItem = map[int16]string{
+	1: "id",
+	2: "orderId",
+	3: "sellerId",
+	4: "userId",
+	5: "RefundNo",
+	6: "refundAmount",
+	7: "refundReason",
+	8: "createTime",
+	9: "updateTime",
 }

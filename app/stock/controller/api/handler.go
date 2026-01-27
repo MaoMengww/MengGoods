@@ -10,7 +10,7 @@ import (
 )
 
 // StockServiceImpl implements the last service interface defined in the IDL.
-type StockServiceImpl struct{
+type StockServiceImpl struct {
 	usecase *usecase.StockUsecase
 }
 

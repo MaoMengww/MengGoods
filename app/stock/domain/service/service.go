@@ -108,4 +108,3 @@ func (s *StockService) ConsumeUnlockStock(ctx context.Context) error {
 func (s *StockService) ConsumeDeductStock(ctx context.Context) error {
 	return s.StockMq.ConsumeDeductStock(ctx, s.StockDB.DeductStock)
 }
-

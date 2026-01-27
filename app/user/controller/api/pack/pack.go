@@ -9,7 +9,7 @@ func BuildUserInfo(user *domainModel.User) *model.UserInfo {
 	return &model.UserInfo{
 		Id:       user.Uid,
 		Username: user.Username,
-		Role: user.Role,
+		Role:     user.Role,
 	}
 }
 
@@ -24,4 +24,13 @@ func BuildAddressList(address []*domainModel.Address) []*model.AddressInfo {
 		})
 	}
 	return addressList
+}
+
+func BuildAddress(address *domainModel.Address) *model.AddressInfo {
+	return &model.AddressInfo{
+		AddressID: address.ID,
+		Province:  address.Province,
+		City:      address.City,
+		Detail:    address.Detail,
+	}
 }

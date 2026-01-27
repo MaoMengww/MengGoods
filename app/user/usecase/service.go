@@ -9,13 +9,13 @@ import (
 	"context"
 	"fmt"
 
-	"go.opentelemetry.io/otel"
 	"github.com/spf13/viper"
+	"go.opentelemetry.io/otel"
 )
 
 var tracer = otel.Tracer("MengGoods/app/user/usecase")
 
-//注册用户
+// 注册用户
 func (u *userUsecase) Register(ctx context.Context, user *model.User) (int64, error) {
 	//校验输入合法性
 	if err := utils.Verify(utils.VerifyEmail(user.Email), utils.VerifyPassword(user.Password), utils.VerifyUsername(user.Username)); err != nil {
@@ -52,7 +52,7 @@ func (u *userUsecase) Register(ctx context.Context, user *model.User) (int64, er
 	return uid, nil
 }
 
-//登录用户
+// 登录用户
 func (u *userUsecase) Login(ctx context.Context, user *model.User) (*model.User, error) {
 	if err := utils.Verify(utils.VerifyUsername(user.Username), utils.VerifyPassword(user.Password)); err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (u *userUsecase) Login(ctx context.Context, user *model.User) (*model.User,
 	return Dbuser, nil
 }
 
-//封禁用户
+// 封禁用户
 func (u *userUsecase) BanUser(ctx context.Context, uid int64) error {
 	if err := u.service.BanUser(ctx, uid); err != nil {
 		return err
@@ -96,7 +96,7 @@ func (u *userUsecase) BanUser(ctx context.Context, uid int64) error {
 	return nil
 }
 
-//解封用户
+// 解封用户
 func (u *userUsecase) UnBanUser(ctx context.Context, uid int64) error {
 	if err := u.service.UnBanUser(ctx, uid); err != nil {
 		return err
@@ -104,7 +104,7 @@ func (u *userUsecase) UnBanUser(ctx context.Context, uid int64) error {
 	return nil
 }
 
-//添加地址
+// 添加地址
 func (u *userUsecase) AddAddress(ctx context.Context, address *model.Address) (int64, error) {
 	addressId, err := u.service.AddAddress(ctx, address)
 	if err != nil {
@@ -113,7 +113,7 @@ func (u *userUsecase) AddAddress(ctx context.Context, address *model.Address) (i
 	return addressId, nil
 }
 
-//获取用户地址列表
+// 获取用户地址列表
 func (u *userUsecase) GetAddressList(ctx context.Context) ([]*model.Address, error) {
 	uid, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
@@ -124,6 +124,14 @@ func (u *userUsecase) GetAddressList(ctx context.Context) ([]*model.Address, err
 		return nil, err
 	}
 	return addressList, nil
+}
+
+func (u *userUsecase) GetAddress(ctx context.Context, addressId int64) (*model.Address, error) {
+	address, err := u.service.GetAddressByID(ctx, addressId)
+	if err != nil {
+		return nil, err
+	}
+	return address, nil
 }
 
 func (u *userUsecase) SetAdmin(ctx context.Context, password string, uid int64) error {
@@ -184,6 +192,3 @@ func (u *userUsecase) LogOut(ctx context.Context) error {
 	}
 	return nil
 }
-
-
-

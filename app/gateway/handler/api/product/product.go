@@ -5,7 +5,7 @@ import (
 	"MengGoods/kitex_gen/product"
 	"MengGoods/pkg/base"
 	"MengGoods/pkg/merror"
-	"context"	
+	"context"
 
 	"strconv"
 
@@ -90,7 +90,7 @@ func UpdateSku(ctx context.Context, app *app.RequestContext) {
 	base.ResData(app, resp)
 }
 
-func DeleteSku(ctx context.Context, app *app.RequestContext) { 
+func DeleteSku(ctx context.Context, app *app.RequestContext) {
 	var req product.DeleteSkuReq
 	err := app.Bind(&req)
 	if err != nil {
@@ -111,7 +111,7 @@ func DeleteSku(ctx context.Context, app *app.RequestContext) {
 	base.ResData(app, resp)
 }
 
-func GetSpuById(ctx context.Context, app *app.RequestContext) { 
+func GetSpuById(ctx context.Context, app *app.RequestContext) {
 	var req product.GetSpuByIdReq
 	idStr := app.Param("spu_id")
 	spuId, err := strconv.ParseInt(idStr, 10, 64)
@@ -128,7 +128,7 @@ func GetSpuById(ctx context.Context, app *app.RequestContext) {
 	base.ResData(app, resp)
 }
 
-func GetSku (ctx context.Context, app *app.RequestContext) { 
+func GetSku(ctx context.Context, app *app.RequestContext) {
 	var req product.GetSkuReq
 	idStr := app.Param("sku_id")
 	skuId, err := strconv.ParseInt(idStr, 10, 64)
@@ -160,7 +160,7 @@ func CreateCategory(ctx context.Context, app *app.RequestContext) {
 	base.ResData(app, resp)
 }
 
-func DeleteCategory(ctx context.Context, app *app.RequestContext) { 
+func DeleteCategory(ctx context.Context, app *app.RequestContext) {
 	var req product.DeleteCategoryReq
 	err := app.BindAndValidate(&req)
 	if err != nil {
@@ -178,7 +178,7 @@ func DeleteCategory(ctx context.Context, app *app.RequestContext) {
 func GetSpu(ctx context.Context, app *app.RequestContext) {
 	var req product.GetSpuReq
 	err := app.BindAndValidate(&req)
-		if err != nil {
+	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
@@ -204,5 +204,3 @@ func UpdateCategory(ctx context.Context, app *app.RequestContext) {
 	}
 	base.ResData(app, resp)
 }
-
-

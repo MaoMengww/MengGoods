@@ -8,7 +8,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-//lua脚本, 防止超卖
+// lua脚本, 防止超卖
 const LuaReduceStock = `
 	local failed_status = -1
 	for i = 1, #KEYS do
@@ -27,7 +27,6 @@ const LuaReduceStock = `
 	end
 	return 1
 `
-
 
 type StockCache struct {
 	*redis.Client
@@ -85,4 +84,3 @@ func (p *StockCache) RedStock(ctx context.Context, stockItems map[string]int32) 
 	}
 	return nil
 }
-

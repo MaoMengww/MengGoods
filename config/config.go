@@ -12,28 +12,29 @@ var Conf Config
 
 // Config 总配置结构体
 type Config struct {
-	MySQL  MySQLConfig  `mapstructure:"mysql"`
-	Redis  RedisConfig  `mapstructure:"redis"`
-	Etcd   EtcdConfig   `mapstructure:"etcd"`
-	Kafka  KafkaConfig  `mapstructure:"kafka"`
-	Elasticsearch elasticsearch `mapstructure:"elasticsearch"`
-	Server ServerConfig `mapstructure:"server"`
-	OTEL OtelConfig `mapstructure:"otel"`
-	RabbitMQ RabbitMQConfig `mapstructure:"rabbitmq"`
+	MySQL         MySQLConfig    `mapstructure:"mysql"`
+	Redis         RedisConfig    `mapstructure:"redis"`
+	Etcd          EtcdConfig     `mapstructure:"etcd"`
+	Kafka         KafkaConfig    `mapstructure:"kafka"`
+	Elasticsearch elasticsearch  `mapstructure:"elasticsearch"`
+	Server        ServerConfig   `mapstructure:"server"`
+	OTEL          OtelConfig     `mapstructure:"otel"`
+	RabbitMQ      RabbitMQConfig `mapstructure:"rabbitmq"`
 }
 
 // MySQLConfig MySQL配置结构体
 type MySQLConfig struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	User     string `mapstructure:"user"`
-	UserDB   string `mapstructure:"userdb"`
+	Host      string `mapstructure:"host"`
+	Port      int    `mapstructure:"port"`
+	User      string `mapstructure:"user"`
+	UserDB    string `mapstructure:"userdb"`
 	ProductDB string `mapstructure:"productdb"`
-	CouponDB string `mapstructure:"coupondb"`
-	CartDB   string `mapstructure:"cartdb"`
-	StockDB  string `mapstructure:"stockdb"`
-	Password string `mapstructure:"password"`
-	Charset  string `mapstructure:"charset"`
+	CouponDB  string `mapstructure:"coupondb"`
+	CartDB    string `mapstructure:"cartdb"`
+	StockDB   string `mapstructure:"stockdb"`
+	OrderDB   string `mapstructure:"orderdb"`
+	Password  string `mapstructure:"password"`
+	Charset   string `mapstructure:"charset"`
 }
 
 type RedisConfig struct {
@@ -54,13 +55,19 @@ type KafkaConfig struct {
 }
 
 type RabbitMQConfig struct {
-	Address string `mapstructure:"address"`
+	User         string `mapstructure:"user"`
+	Password     string `mapstructure:"password"`
+	Address      string `mapstructure:"address"`
+	Exchange     string `mapstructure:"exchange"`
+	DelayQueue   string `mapstructure:"delayqueue"`
+	ProcessQueue string `mapstructure:"processqueue"`
+	RoutingKey   string `mapstructure:"routingkey"`
 }
 
 type elasticsearch struct {
-	Address string `mapstructure:"address"`
+	Address      string `mapstructure:"address"`
 	ProductIndex string `mapstructure:"productIndex"`
-}	
+}
 
 type ServerConfig struct {
 	Gateway string `mapstructure:"gateway"`

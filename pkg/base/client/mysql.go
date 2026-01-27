@@ -5,11 +5,11 @@ import (
 	"MengGoods/pkg/merror"
 	"fmt"
 
-	"gorm.io/plugin/opentelemetry/tracing"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	"gorm.io/plugin/opentelemetry/tracing"
 )
 
 func NewMySQLClient(dbName string) (*gorm.DB, error) {
@@ -46,7 +46,6 @@ func NewMySQLClient(dbName string) (*gorm.DB, error) {
 	sqlDB.SetMaxOpenConns(constants.MaxConnections)
 	sqlDB.SetConnMaxLifetime(constants.ConnMaxLifetime)
 	sqlDB.SetConnMaxIdleTime(constants.ConnMaxIdleTime)
-	
 
 	//进行测试连接
 	if err := sqlDB.Ping(); err != nil {

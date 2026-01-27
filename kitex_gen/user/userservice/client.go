@@ -14,6 +14,7 @@ type Client interface {
 	Register(ctx context.Context, req *user.RegisterReq, callOptions ...callopt.Option) (r *user.RegisterResp, err error)
 	Login(ctx context.Context, req *user.LoginReq, callOptions ...callopt.Option) (r *user.LoginResp, err error)
 	AddAddress(ctx context.Context, req *user.AddAddressReq, callOptions ...callopt.Option) (r *user.AddAddressResp, err error)
+	GetAddresses(ctx context.Context, req *user.GetAddressesReq, callOptions ...callopt.Option) (r *user.GetAddressesResp, err error)
 	GetAddress(ctx context.Context, req *user.GetAddressReq, callOptions ...callopt.Option) (r *user.GetAddressResp, err error)
 	BanUser(ctx context.Context, req *user.BanUserReq, callOptions ...callopt.Option) (r *user.BanUserResp, err error)
 	UnBanUser(ctx context.Context, req *user.UnBanUserReq, callOptions ...callopt.Option) (r *user.UnBanUserResp, err error)
@@ -66,6 +67,11 @@ func (p *kUserServiceClient) Login(ctx context.Context, req *user.LoginReq, call
 func (p *kUserServiceClient) AddAddress(ctx context.Context, req *user.AddAddressReq, callOptions ...callopt.Option) (r *user.AddAddressResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.AddAddress(ctx, req)
+}
+
+func (p *kUserServiceClient) GetAddresses(ctx context.Context, req *user.GetAddressesReq, callOptions ...callopt.Option) (r *user.GetAddressesResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetAddresses(ctx, req)
 }
 
 func (p *kUserServiceClient) GetAddress(ctx context.Context, req *user.GetAddressReq, callOptions ...callopt.Option) (r *user.GetAddressResp, err error) {

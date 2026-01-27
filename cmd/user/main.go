@@ -48,7 +48,7 @@ func main() {
 			MaxConnections: constants.MaxConnection,
 			MaxQPS:         constants.MaxQPS,
 		}),
-		server.WithSuite(tracing.NewServerSuite()), // 添加PackResp中间件
+		server.WithSuite(tracing.NewServerSuite()),   // 添加PackResp中间件
 		server.WithMiddleware(middleware.ErrorLog()), // 保持原有的ErrorLog中间件
 	)
 	svr.Run()

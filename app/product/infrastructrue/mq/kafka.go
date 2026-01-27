@@ -22,16 +22,15 @@ func NewProductMq(client *client.Kafka) *ProductMq {
 	}
 }
 
-
 func (p *ProductMq) SendCreateSpuInfo(ctx context.Context, spu *model.SpuEs) error {
-		msg, err := json.Marshal(spu)
-		if err != nil {
-			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("json marshal error: %v", err))
-		}
-		return p.Publish(ctx, "product_create_spu", &kafka.Message{
-			Key: []byte(strconv.FormatInt(spu.Id, 10)),
-			Value: msg,
-		})
+	msg, err := json.Marshal(spu)
+	if err != nil {
+		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("json marshal error: %v", err))
+	}
+	return p.Publish(ctx, "product_create_spu", &kafka.Message{
+		Key:   []byte(strconv.FormatInt(spu.Id, 10)),
+		Value: msg,
+	})
 }
 
 func (p *ProductMq) SendUpdateSpuInfo(ctx context.Context, spu *model.SpuEs) error {
@@ -40,7 +39,7 @@ func (p *ProductMq) SendUpdateSpuInfo(ctx context.Context, spu *model.SpuEs) err
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("json marshal error: %v", err))
 	}
 	return p.Publish(ctx, "product_update_spu", &kafka.Message{
-		Key: []byte(strconv.FormatInt(spu.Id, 10)),
+		Key:   []byte(strconv.FormatInt(spu.Id, 10)),
 		Value: msg,
 	})
 }
@@ -57,8 +56,8 @@ func (p *ProductMq) ConsumeCreateSpuInfo(ctx context.Context, fn func(ctx contex
 		if err := json.Unmarshal(msg.Value, &spu); err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("json unmarshal error: %v", err))
 		}
-		return fn(ctx, &spu)	
-	}, ctx); err != nil { 
+		return fn(ctx, &spu)
+	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}
 	return nil
@@ -70,7 +69,7 @@ func (p *ProductMq) ConsumeUpdateSpuInfo(ctx context.Context, fn func(ctx contex
 		if err := json.Unmarshal(msg.Value, &spu); err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("json unmarshal error: %v", err))
 		}
-		return fn(ctx, &spu)	
+		return fn(ctx, &spu)
 	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}
@@ -83,7 +82,7 @@ func (p *ProductMq) ConsumeDeleteSpuInfo(ctx context.Context, fn func(ctx contex
 		if err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("parse id error: %v", err))
 		}
-		return fn(ctx, id)	
+		return fn(ctx, id)
 	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}

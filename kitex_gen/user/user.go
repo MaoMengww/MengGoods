@@ -290,7 +290,74 @@ var fieldIDToName_AddAddressResp = map[int16]string{
 	2: "addressId",
 }
 
+type GetAddressesReq struct {
+}
+
+func NewGetAddressesReq() *GetAddressesReq {
+	return &GetAddressesReq{}
+}
+
+func (p *GetAddressesReq) InitDefault() {
+}
+
+func (p *GetAddressesReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetAddressesReq(%+v)", *p)
+}
+
+var fieldIDToName_GetAddressesReq = map[int16]string{}
+
+type GetAddressesResp struct {
+	Base    *model.BaseResp      `thrift:"base,1,required" frugal:"1,required,model.BaseResp" json:"base"`
+	Address []*model.AddressInfo `thrift:"address,2,required" frugal:"2,required,list<model.AddressInfo>" json:"address"`
+}
+
+func NewGetAddressesResp() *GetAddressesResp {
+	return &GetAddressesResp{}
+}
+
+func (p *GetAddressesResp) InitDefault() {
+}
+
+var GetAddressesResp_Base_DEFAULT *model.BaseResp
+
+func (p *GetAddressesResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return GetAddressesResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+func (p *GetAddressesResp) GetAddress() (v []*model.AddressInfo) {
+	return p.Address
+}
+func (p *GetAddressesResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *GetAddressesResp) SetAddress(val []*model.AddressInfo) {
+	p.Address = val
+}
+
+func (p *GetAddressesResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *GetAddressesResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetAddressesResp(%+v)", *p)
+}
+
+var fieldIDToName_GetAddressesResp = map[int16]string{
+	1: "base",
+	2: "address",
+}
+
 type GetAddressReq struct {
+	AddressId int64 `thrift:"addressId,1,required" frugal:"1,required,i64" json:"addressId"`
 }
 
 func NewGetAddressReq() *GetAddressReq {
@@ -300,6 +367,13 @@ func NewGetAddressReq() *GetAddressReq {
 func (p *GetAddressReq) InitDefault() {
 }
 
+func (p *GetAddressReq) GetAddressId() (v int64) {
+	return p.AddressId
+}
+func (p *GetAddressReq) SetAddressId(val int64) {
+	p.AddressId = val
+}
+
 func (p *GetAddressReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -307,11 +381,13 @@ func (p *GetAddressReq) String() string {
 	return fmt.Sprintf("GetAddressReq(%+v)", *p)
 }
 
-var fieldIDToName_GetAddressReq = map[int16]string{}
+var fieldIDToName_GetAddressReq = map[int16]string{
+	1: "addressId",
+}
 
 type GetAddressResp struct {
-	Base    *model.BaseResp      `thrift:"base,1,required" frugal:"1,required,model.BaseResp" json:"base"`
-	Address []*model.AddressInfo `thrift:"address,2,required" frugal:"2,required,list<model.AddressInfo>" json:"address"`
+	Base    *model.BaseResp    `thrift:"base,1,required" frugal:"1,required,model.BaseResp" json:"base"`
+	Address *model.AddressInfo `thrift:"address,2,required" frugal:"2,required,model.AddressInfo" json:"address"`
 }
 
 func NewGetAddressResp() *GetAddressResp {
@@ -330,18 +406,27 @@ func (p *GetAddressResp) GetBase() (v *model.BaseResp) {
 	return p.Base
 }
 
-func (p *GetAddressResp) GetAddress() (v []*model.AddressInfo) {
+var GetAddressResp_Address_DEFAULT *model.AddressInfo
+
+func (p *GetAddressResp) GetAddress() (v *model.AddressInfo) {
+	if !p.IsSetAddress() {
+		return GetAddressResp_Address_DEFAULT
+	}
 	return p.Address
 }
 func (p *GetAddressResp) SetBase(val *model.BaseResp) {
 	p.Base = val
 }
-func (p *GetAddressResp) SetAddress(val []*model.AddressInfo) {
+func (p *GetAddressResp) SetAddress(val *model.AddressInfo) {
 	p.Address = val
 }
 
 func (p *GetAddressResp) IsSetBase() bool {
 	return p.Base != nil
+}
+
+func (p *GetAddressResp) IsSetAddress() bool {
+	return p.Address != nil
 }
 
 func (p *GetAddressResp) String() string {
@@ -876,6 +961,8 @@ type UserService interface {
 
 	AddAddress(ctx context.Context, req *AddAddressReq) (r *AddAddressResp, err error)
 
+	GetAddresses(ctx context.Context, req *GetAddressesReq) (r *GetAddressesResp, err error)
+
 	GetAddress(ctx context.Context, req *GetAddressReq) (r *GetAddressResp, err error)
 
 	BanUser(ctx context.Context, req *BanUserReq) (r *BanUserResp, err error)
@@ -1118,6 +1205,82 @@ func (p *UserServiceAddAddressResult) String() string {
 }
 
 var fieldIDToName_UserServiceAddAddressResult = map[int16]string{
+	0: "success",
+}
+
+type UserServiceGetAddressesArgs struct {
+	Req *GetAddressesReq `thrift:"req,1" frugal:"1,default,GetAddressesReq" json:"req"`
+}
+
+func NewUserServiceGetAddressesArgs() *UserServiceGetAddressesArgs {
+	return &UserServiceGetAddressesArgs{}
+}
+
+func (p *UserServiceGetAddressesArgs) InitDefault() {
+}
+
+var UserServiceGetAddressesArgs_Req_DEFAULT *GetAddressesReq
+
+func (p *UserServiceGetAddressesArgs) GetReq() (v *GetAddressesReq) {
+	if !p.IsSetReq() {
+		return UserServiceGetAddressesArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *UserServiceGetAddressesArgs) SetReq(val *GetAddressesReq) {
+	p.Req = val
+}
+
+func (p *UserServiceGetAddressesArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *UserServiceGetAddressesArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserServiceGetAddressesArgs(%+v)", *p)
+}
+
+var fieldIDToName_UserServiceGetAddressesArgs = map[int16]string{
+	1: "req",
+}
+
+type UserServiceGetAddressesResult struct {
+	Success *GetAddressesResp `thrift:"success,0,optional" frugal:"0,optional,GetAddressesResp" json:"success,omitempty"`
+}
+
+func NewUserServiceGetAddressesResult() *UserServiceGetAddressesResult {
+	return &UserServiceGetAddressesResult{}
+}
+
+func (p *UserServiceGetAddressesResult) InitDefault() {
+}
+
+var UserServiceGetAddressesResult_Success_DEFAULT *GetAddressesResp
+
+func (p *UserServiceGetAddressesResult) GetSuccess() (v *GetAddressesResp) {
+	if !p.IsSetSuccess() {
+		return UserServiceGetAddressesResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *UserServiceGetAddressesResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetAddressesResp)
+}
+
+func (p *UserServiceGetAddressesResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UserServiceGetAddressesResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserServiceGetAddressesResult(%+v)", *p)
+}
+
+var fieldIDToName_UserServiceGetAddressesResult = map[int16]string{
 	0: "success",
 }
 

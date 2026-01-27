@@ -9,7 +9,6 @@ import (
 	"fmt"
 )
 
-
 func (s *ProductUsecase) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
 	// 创建商品
 	spuId, err := s.db.CreateSpu(ctx, spu)
@@ -17,17 +16,19 @@ func (s *ProductUsecase) CreateSpu(ctx context.Context, spu *model.Spu) (int64, 
 		return 0, err
 	}
 	// 发送创建商品消息
-	if err := s.mq.SendCreateSpuInfo(ctx, &model.SpuEs{
-		Id: spuId,
-		UserId: spu.UserId,
-		Name: spu.Name,
-		Description: spu.Description,
-		CategoryId: spu.CategoryId,
-		MainImageURL: spu.MainImageURL,
-		Price: spu.Price,
-	}); err != nil {
-		logger.Error(ctx, "send create spu info error: %v", err)
-	}
+	go func() {
+		if err := s.mq.SendCreateSpuInfo(ctx, &model.SpuEs{
+			Id:           spuId,
+			UserId:       spu.UserId,
+			Name:         spu.Name,
+			Description:  spu.Description,
+			CategoryId:   spu.CategoryId,
+			MainImageURL: spu.MainImageURL,
+			Price:        spu.Price,
+		}); err != nil {
+			logger.Error(ctx, "send create spu info error: %v", err)
+		}
+	}()
 	return spuId, nil
 }
 
@@ -36,18 +37,20 @@ func (s *ProductUsecase) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 	if err := s.db.UpdateSpu(ctx, spu); err != nil {
 		return err
 	}
-
-	if err := s.mq.SendUpdateSpuInfo(ctx, &model.SpuEs{
-		Id: spu.Id,
-		UserId: spu.UserId,
-		Name: spu.Name,
-		Description: spu.Description,
-		CategoryId: spu.CategoryId,
-		MainImageURL: spu.MainImageURL,
-		Price: spu.Price,
-	}); err != nil {
-		logger.Error(ctx, "send update spu info error: %v", err)
-	}
+	go func() {
+		// 创建商品索引
+		if err := s.es.AddSpuItem(ctx, &model.SpuEs{
+			Id:           spu.Id,
+			UserId:       spu.UserId,
+			Name:         spu.Name,
+			Description:  spu.Description,
+			CategoryId:   spu.CategoryId,
+			MainImageURL: spu.MainImageURL,
+			Price:        spu.Price,
+		}); err != nil {
+			logger.Error(ctx, "add spu item error: %v", err)
+		}
+	}()
 	return nil
 }
 
@@ -65,13 +68,15 @@ func (s *ProductUsecase) DeleteSpu(ctx context.Context, spuId int64) error {
 		return err
 	}
 
-	if err := s.mq.SendDeleteSpuInfo(ctx, spuId); err != nil {
-		logger.Error(ctx, "send delete spu info error: %v", err)
-	}
+	go func() {
+		if err := s.mq.SendDeleteSpuInfo(ctx, spuId); err != nil {
+			logger.Error(ctx, "send delete spu info error: %v", err)
+		}
+	}()
 	return nil
 }
 
-func(s *ProductUsecase) VerifySpu (spu *model.Spu) error {
+func (s *ProductUsecase) VerifySpu(spu *model.Spu) error {
 	if err := utils.Verify(utils.VerifySpuName(spu.Name), utils.VerifySpuDescription(spu.Description)); err != nil {
 		return err
 	}
@@ -83,7 +88,7 @@ func(s *ProductUsecase) VerifySpu (spu *model.Spu) error {
 	return nil
 }
 
-func(s *ProductUsecase) CreateCategory(ctx context.Context, category *model.Category) (int64, error) {
+func (s *ProductUsecase) CreateCategory(ctx context.Context, category *model.Category) (int64, error) {
 	// 检查是否为管理员
 	res, err := s.rpc.IsAdmin(ctx)
 	if err != nil {
@@ -100,7 +105,7 @@ func(s *ProductUsecase) CreateCategory(ctx context.Context, category *model.Cate
 	return categoryId, nil
 }
 
-func (s *ProductUsecase) DeleteCategory(ctx context.Context, categoryId int64) error { 
+func (s *ProductUsecase) DeleteCategory(ctx context.Context, categoryId int64) error {
 	// 检查是否为管理员
 	res, err := s.rpc.IsAdmin(ctx)
 	if err != nil {
@@ -132,24 +137,14 @@ func (s *ProductUsecase) UpdateCategory(ctx context.Context, category *model.Cat
 	return nil
 }
 
-
-
-func (s *ProductUsecase) ConsumeCreateSpuInfo(ctx context.Context) error { 
+func (s *ProductUsecase) ConsumeCreateSpuInfo(ctx context.Context) error {
 	return s.mq.ConsumeCreateSpuInfo(ctx, s.es.AddSpuItem)
 }
 
-func (s *ProductUsecase) ConsumeUpdateSpuInfo(ctx context.Context) error { 
+func (s *ProductUsecase) ConsumeUpdateSpuInfo(ctx context.Context) error {
 	return s.mq.ConsumeUpdateSpuInfo(ctx, s.es.UptateSpuItem)
 }
 
-func (s *ProductUsecase) ConsumeDeleteSpuInfo(ctx context.Context) error { 
+func (s *ProductUsecase) ConsumeDeleteSpuInfo(ctx context.Context) error {
 	return s.mq.ConsumeDeleteSpuInfo(ctx, s.es.DeleteSpuItem)
 }
-
-
-
-
-
-
-
-

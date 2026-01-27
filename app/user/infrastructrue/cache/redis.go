@@ -60,7 +60,3 @@ func (u *UserCache) GetBanKey(ctx context.Context, uid int64) string {
 func (u *UserCache) GetInKey(ctx context.Context, uid int64) string {
 	return fmt.Sprintf("MengGoods:User:In:%v", uid)
 }
-
-
-
-

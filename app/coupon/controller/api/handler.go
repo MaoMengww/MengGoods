@@ -20,6 +20,18 @@ func NewCouponServiceImpl(usecase *usecase.CouponUsecase) *CouponServiceImpl {
 	}
 }
 
+func (s *CouponServiceImpl) GetCouponInfo(ctx context.Context, req *coupon.GetCouponInfoReq) (resp *coupon.GetCouponInfoResp, err error) {
+	resp = new(coupon.GetCouponInfoResp)
+	coupon, err := s.Usecase.GetCouponInfo(ctx, req.CouponId)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(nil)
+		return resp, nil
+	}
+	resp.Coupon = pack.ToRpcCoupon(coupon)
+	resp.Base = base.BuildBaseResp(nil)
+	return
+}
+
 // CreateCouponBatch implements the CouponServiceImpl interface.
 func (s *CouponServiceImpl) CreateCouponBatch(ctx context.Context, req *coupon.CreateCouponBatchReq) (resp *coupon.CreateCouponBatchResp, err error) {
 	resp = new(coupon.CreateCouponBatchResp)
@@ -100,6 +112,17 @@ func (s *CouponServiceImpl) ReleaseCoupon(ctx context.Context, req *coupon.Relea
 func (s *CouponServiceImpl) RedeemCoupon(ctx context.Context, req *coupon.RedeemCouponReq) (resp *coupon.RedeemCouponResp, err error) {
 	resp = new(coupon.RedeemCouponResp)
 	err = s.Usecase.RedeemCoupon(ctx, req.CouponId, req.OrderId)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(nil)
+		return resp, nil
+	}
+	resp.Base = base.BuildBaseResp(nil)
+	return resp, nil
+}
+
+func (s *CouponServiceImpl) LetCouponExpire(ctx context.Context, req *coupon.LetCouponExpireReq) (resp *coupon.LetCouponExpireResp, err error) {
+	resp = new(coupon.LetCouponExpireResp)
+	err = s.Usecase.LetCouponExpire(ctx, req.CouponId)
 	if err != nil {
 		resp.Base = base.BuildBaseResp(nil)
 		return resp, nil

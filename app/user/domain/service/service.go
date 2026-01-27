@@ -50,6 +50,17 @@ func (s *UserService) GetAddress(ctx context.Context, uid int64) ([]*model.Addre
 	return addresses, nil
 }
 
+func (s *UserService) GetAddressByID(ctx context.Context, addressId int64) (*model.Address, error) {
+	address, err := s.db.GetAddressByID(ctx, addressId)
+	if err != nil {
+		return nil, merror.NewMerror(
+			merror.InternalDatabaseErrorCode,
+			fmt.Sprintf("failed to get address, err:%v", err),
+		)
+	}
+	return address, nil
+}
+
 func (s *UserService) AddAddress(ctx context.Context, address *model.Address) (int64, error) {
 	addrID, err := s.db.AddAddress(ctx, address)
 	if err != nil {
@@ -80,7 +91,7 @@ func (s *UserService) UserLogin(ctx context.Context, uid int64) error {
 		return merror.NewMerror(
 			merror.InternalCacheErrorCode,
 			fmt.Sprintf("failed to check if user login, err:%v", err),
-		)	
+		)
 	}
 	var token string
 	if exist {
@@ -222,7 +233,7 @@ func (s *UserService) UnBanUser(ctx context.Context, uid int64) error {
 		return merror.NewMerror(
 			merror.InternalDatabaseErrorCode,
 			fmt.Sprintf("failed to get user info, err:%v", err),
-				)
+		)
 	}
 	if user.Role == constants.Admin {
 		return merror.NewMerror(
@@ -265,11 +276,3 @@ func (s *UserService) UserLogOut(ctx context.Context, uid int64) error {
 	}
 	return nil
 }
-
-
-
-
-
-
-
-

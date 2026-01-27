@@ -2,7 +2,7 @@ package resp
 
 import "MengGoods/kitex_gen/model"
 
-type  RegisterResp struct {
+type RegisterResp struct {
 	UserId int64 `json:"uid"`
 }
 

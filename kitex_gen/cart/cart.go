@@ -94,7 +94,6 @@ var fieldIDToName_AddCartItemResp = map[int16]string{
 }
 
 type GetCartItemReq struct {
-	UserId int64 `thrift:"userId,1" frugal:"1,default,i64" json:"userId"`
 }
 
 func NewGetCartItemReq() *GetCartItemReq {
@@ -104,13 +103,6 @@ func NewGetCartItemReq() *GetCartItemReq {
 func (p *GetCartItemReq) InitDefault() {
 }
 
-func (p *GetCartItemReq) GetUserId() (v int64) {
-	return p.UserId
-}
-func (p *GetCartItemReq) SetUserId(val int64) {
-	p.UserId = val
-}
-
 func (p *GetCartItemReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -118,9 +110,7 @@ func (p *GetCartItemReq) String() string {
 	return fmt.Sprintf("GetCartItemReq(%+v)", *p)
 }
 
-var fieldIDToName_GetCartItemReq = map[int16]string{
-	1: "userId",
-}
+var fieldIDToName_GetCartItemReq = map[int16]string{}
 
 type GetCartItemResp struct {
 	Base      *model.BaseResp   `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`

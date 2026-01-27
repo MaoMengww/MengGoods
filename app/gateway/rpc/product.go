@@ -8,6 +8,7 @@ import (
 	"MengGoods/kitex_gen/product/productservice"
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
+
 	//"MengGoods/pkg/middleware"
 	"context"
 	"time"
@@ -67,7 +68,7 @@ func GetSpuById(ctx context.Context, req *product.GetSpuByIdReq) (resp *mresp.Ge
 	return
 }
 
-func CreateSpu (ctx context.Context, req *product.CreateSpuReq) (resp *mresp.CreateSpuResp, err error) {
+func CreateSpu(ctx context.Context, req *product.CreateSpuReq) (resp *mresp.CreateSpuResp, err error) {
 	r, err := ProductClient.CreateSpu(ctx, req)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -130,8 +131,6 @@ func DeleteSku(ctx context.Context, req *product.DeleteSkuReq) (resp *mresp.Dele
 	return
 }
 
-
-
 func GetSku(ctx context.Context, req *product.GetSkuReq) (resp *mresp.GetSkuResp, err error) {
 	r, err := ProductClient.GetSku(ctx, req)
 	if err != nil {
@@ -193,7 +192,7 @@ func GetSpuList(ctx context.Context, req *product.GetSpuReq) (resp *mresp.GetSpu
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
 	}
 	resp = &mresp.GetSpuResp{
-		Spus: SpuList(r.SpuList),
+		Spus:  SpuList(r.SpuList),
 		Total: r.Total,
 	}
 	return
@@ -203,16 +202,14 @@ func SpuList(spus []*model.SpuInfo) []*mModel.SpuEs {
 	var list []*mModel.SpuEs
 	for _, spu := range spus {
 		item := &mModel.SpuEs{
-			Id: spu.Id,
-			Name: spu.Name,
-			CategoryId: spu.CategoryId,
-			Description: spu.Description,
+			Id:           spu.Id,
+			Name:         spu.Name,
+			CategoryId:   spu.CategoryId,
+			Description:  spu.Description,
 			MainImageURL: spu.MainImageURL,
 		}
-			list = append(list, item)
-		
+		list = append(list, item)
+
 	}
 	return list
 }
-
-

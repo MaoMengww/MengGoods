@@ -5,7 +5,6 @@ import (
 	"MengGoods/app/product/domain/service"
 )
 
-
 type ProductUsecase struct {
 	service *service.ProductUsecase
 	db      repository.ProductDB
@@ -25,4 +24,3 @@ func NewProductUsecase(db repository.ProductDB, cache repository.ProductCache, m
 		rpc:     rpc,
 	}
 }
-

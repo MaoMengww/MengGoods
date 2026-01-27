@@ -11,12 +11,14 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
+	GetCouponInfo(ctx context.Context, req *coupon.GetCouponInfoReq, callOptions ...callopt.Option) (r *coupon.GetCouponInfoResp, err error)
 	CreateCouponBatch(ctx context.Context, req *coupon.CreateCouponBatchReq, callOptions ...callopt.Option) (r *coupon.CreateCouponBatchResp, err error)
 	GetCoupon(ctx context.Context, req *coupon.GetCouponReq, callOptions ...callopt.Option) (r *coupon.GetCouponResp, err error)
 	GetCouponList(ctx context.Context, req *coupon.GetCouponListReq, callOptions ...callopt.Option) (r *coupon.GetCouponListResp, err error)
 	LockCoupon(ctx context.Context, req *coupon.LockCouponReq, callOptions ...callopt.Option) (r *coupon.LockCouponResp, err error)
 	ReleaseCoupon(ctx context.Context, req *coupon.ReleaseCouponReq, callOptions ...callopt.Option) (r *coupon.ReleaseCouponResp, err error)
 	RedeemCoupon(ctx context.Context, req *coupon.RedeemCouponReq, callOptions ...callopt.Option) (r *coupon.RedeemCouponResp, err error)
+	LetCouponExpire(ctx context.Context, req *coupon.LetCouponExpireReq, callOptions ...callopt.Option) (r *coupon.LetCouponExpireResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -48,6 +50,11 @@ type kCouponServiceClient struct {
 	*kClient
 }
 
+func (p *kCouponServiceClient) GetCouponInfo(ctx context.Context, req *coupon.GetCouponInfoReq, callOptions ...callopt.Option) (r *coupon.GetCouponInfoResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetCouponInfo(ctx, req)
+}
+
 func (p *kCouponServiceClient) CreateCouponBatch(ctx context.Context, req *coupon.CreateCouponBatchReq, callOptions ...callopt.Option) (r *coupon.CreateCouponBatchResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.CreateCouponBatch(ctx, req)
@@ -76,4 +83,9 @@ func (p *kCouponServiceClient) ReleaseCoupon(ctx context.Context, req *coupon.Re
 func (p *kCouponServiceClient) RedeemCoupon(ctx context.Context, req *coupon.RedeemCouponReq, callOptions ...callopt.Option) (r *coupon.RedeemCouponResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.RedeemCoupon(ctx, req)
+}
+
+func (p *kCouponServiceClient) LetCouponExpire(ctx context.Context, req *coupon.LetCouponExpireReq, callOptions ...callopt.Option) (r *coupon.LetCouponExpireResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.LetCouponExpire(ctx, req)
 }

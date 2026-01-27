@@ -6,13 +6,13 @@ import (
 	"regexp"
 )
 
-//邮箱格式
+// 邮箱格式
 var emailRe = regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
 
-//验证选项, 可插拔
+// 验证选项, 可插拔
 type VerifyOps func() error
 
-//验证多个选项
+// 验证多个选项
 func Verify(ops ...VerifyOps) error {
 	for _, op := range ops {
 		if err := op(); err != nil {
@@ -22,7 +22,7 @@ func Verify(ops ...VerifyOps) error {
 	return nil
 }
 
-//验证密码(长度应处于8-16之间)
+// 验证密码(长度应处于8-16之间)
 func VerifyPassword(password string) VerifyOps {
 	return func() error {
 		if len(password) < 8 {
@@ -33,7 +33,7 @@ func VerifyPassword(password string) VerifyOps {
 		}
 		if len(password) > 16 {
 			return merror.NewMerror(
-				merror.ParamPasswordTooLong,	
+				merror.ParamPasswordTooLong,
 				"password too long",
 			)
 		}
@@ -41,8 +41,7 @@ func VerifyPassword(password string) VerifyOps {
 	}
 }
 
-
-//验证邮箱格式
+// 验证邮箱格式
 func VerifyEmail(email string) VerifyOps {
 	return func() error {
 		if !emailRe.MatchString(email) {
@@ -55,7 +54,7 @@ func VerifyEmail(email string) VerifyOps {
 	}
 }
 
-//验证用户名(最多 10 个中文字符或等长英文字符)
+// 验证用户名(最多 10 个中文字符或等长英文字符)
 func VerifyUsername(username string) VerifyOps {
 	return func() error {
 		if len(username) > 30 {
@@ -69,8 +68,6 @@ func VerifyUsername(username string) VerifyOps {
 }
 
 //验证Spu以及下属sku
-
-
 
 func VerifySpuName(name string) VerifyOps {
 	return func() error {
@@ -275,5 +272,3 @@ func VerifyTotalNum(n int64) VerifyOps {
 		return nil
 	}
 }
-
-

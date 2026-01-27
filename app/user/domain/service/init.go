@@ -5,7 +5,7 @@ import (
 )
 
 type UserService struct {
-	db repository.UserDB
+	db    repository.UserDB
 	cache repository.UserCache
 }
 
@@ -14,7 +14,7 @@ func NewUserService(db repository.UserDB, cache repository.UserCache) *UserServi
 		panic("db or cache is nil")
 	}
 	return &UserService{
-		db: db,
+		db:    db,
 		cache: cache,
 	}
 }

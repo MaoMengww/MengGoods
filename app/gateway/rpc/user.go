@@ -7,8 +7,9 @@ import (
 	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
+
 	//"MengGoods/pkg/middleware"
-	"context"	
+	"context"
 
 	"time"
 
@@ -83,7 +84,7 @@ func Login(ctx context.Context, req *user.LoginReq) (resp *mresp.LoginResp, err 
 	return resp, nil
 }
 
-func AddAddress(ctx context.Context, req *user.AddAddressReq) (resp *mresp.AddAddressResp, err error) { 
+func AddAddress(ctx context.Context, req *user.AddAddressReq) (resp *mresp.AddAddressResp, err error) {
 	r, err := UserClient.AddAddress(ctx, req)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -99,8 +100,8 @@ func AddAddress(ctx context.Context, req *user.AddAddressReq) (resp *mresp.AddAd
 	return resp, nil
 }
 
-func GetAddressList(ctx context.Context, req *user.GetAddressReq) (resp *mresp.GetAddressResp, err error) {
-	r, err := UserClient.GetAddress(ctx, req)
+func GetAddressList(ctx context.Context, req *user.GetAddressesReq) (resp *mresp.GetAddressResp, err error) {
+	r, err := UserClient.GetAddresses(ctx, req)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
 		return nil, merror.NewMerror(merror.InternalServerErrorCode, err.Error())
@@ -115,7 +116,7 @@ func GetAddressList(ctx context.Context, req *user.GetAddressReq) (resp *mresp.G
 	return resp, nil
 }
 
-func BanUser(ctx context.Context, c *user.BanUserReq) (resp *mresp.BanUserResp, err error){ 
+func BanUser(ctx context.Context, c *user.BanUserReq) (resp *mresp.BanUserResp, err error) {
 	r, err := UserClient.BanUser(ctx, c)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -128,7 +129,7 @@ func BanUser(ctx context.Context, c *user.BanUserReq) (resp *mresp.BanUserResp, 
 	return resp, nil
 }
 
-func UnBanUser(ctx context.Context, c *user.UnBanUserReq) (resp *mresp.UnBanUserResp, err error){ 
+func UnBanUser(ctx context.Context, c *user.UnBanUserReq) (resp *mresp.UnBanUserResp, err error) {
 	r, err := UserClient.UnBanUser(ctx, c)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -140,7 +141,7 @@ func UnBanUser(ctx context.Context, c *user.UnBanUserReq) (resp *mresp.UnBanUser
 	return resp, nil
 }
 
-func SetAdmin (ctx context.Context, c *user.SetAdminReq) (resp *mresp.SetAdminResp, err error){ 
+func SetAdmin(ctx context.Context, c *user.SetAdminReq) (resp *mresp.SetAdminResp, err error) {
 	r, err := UserClient.SetAdmin(ctx, c)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -152,7 +153,7 @@ func SetAdmin (ctx context.Context, c *user.SetAdminReq) (resp *mresp.SetAdminRe
 	return resp, nil
 }
 
-func GetUserInfo (ctx context.Context, c *user.GetUserInfoReq) (resp *mresp.GetUserInfoResp, err error){ 
+func GetUserInfo(ctx context.Context, c *user.GetUserInfoReq) (resp *mresp.GetUserInfoResp, err error) {
 	ctx = mcontext.WithUserIDInContext(ctx, c.UserId)
 	r, err := UserClient.GetUserInfo(ctx, c)
 	if err != nil {
@@ -169,7 +170,7 @@ func GetUserInfo (ctx context.Context, c *user.GetUserInfoReq) (resp *mresp.GetU
 	return resp, nil
 }
 
-func Logout (ctx context.Context, c *user.LogoutReq) (resp *mresp.LogoutResp, err error){ 
+func Logout(ctx context.Context, c *user.LogoutReq) (resp *mresp.LogoutResp, err error) {
 	r, err := UserClient.Logout(ctx, c)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -181,7 +182,7 @@ func Logout (ctx context.Context, c *user.LogoutReq) (resp *mresp.LogoutResp, er
 	return resp, nil
 }
 
-func SendCode (ctx context.Context, c *user.SendCodeReq) (resp *mresp.SendCodeResp, err error){
+func SendCode(ctx context.Context, c *user.SendCodeReq) (resp *mresp.SendCodeResp, err error) {
 	r, err := UserClient.SendCode(ctx, c)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())
@@ -193,7 +194,7 @@ func SendCode (ctx context.Context, c *user.SendCodeReq) (resp *mresp.SendCodeRe
 	return resp, nil
 }
 
-func ResetPwd (ctx context.Context, c *user.ResetPwdReq) (resp *mresp.ResetPwdResp, err error){
+func ResetPwd(ctx context.Context, c *user.ResetPwdReq) (resp *mresp.ResetPwdResp, err error) {
 	r, err := UserClient.ResetPwd(ctx, c)
 	if err != nil {
 		logger.CtxErrorf(ctx, err.Error())

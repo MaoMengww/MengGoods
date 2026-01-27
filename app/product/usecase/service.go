@@ -11,8 +11,6 @@ import (
 	"github.com/go-redis/redis"
 )
 
-
-
 func (u *ProductUsecase) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
 	//校验输入合法性
 	if err := u.service.VerifySpu(spu); err != nil {
@@ -32,7 +30,7 @@ func (u *ProductUsecase) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 		return err
 	}
 	//验证权限
-	 isOwner, err := u.db.IsSpuOwer(ctx, spu.Id)
+	isOwner, err := u.db.IsSpuOwer(ctx, spu.Id)
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
@@ -43,13 +41,13 @@ func (u *ProductUsecase) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 	return u.service.UpdateSpu(ctx, spu)
 }
 
-func (u *ProductUsecase) UpdateSku(ctx context.Context, sku *model.Sku) error { 
+func (u *ProductUsecase) UpdateSku(ctx context.Context, sku *model.Sku) error {
 	//校验输入合法性
 	if err := utils.Verify(utils.VerifySkuName(sku.Name), utils.VerifySkuDescription(sku.Description)); err != nil {
 		return err
 	}
 	//验证权限
-	 isOwner, err := u.db.IsSkuOwer(ctx, sku.Id)
+	isOwner, err := u.db.IsSkuOwer(ctx, sku.Id)
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
@@ -60,7 +58,7 @@ func (u *ProductUsecase) UpdateSku(ctx context.Context, sku *model.Sku) error {
 	return u.service.UpdateSku(ctx, sku)
 }
 
-func (u *ProductUsecase) UpdateCategory(ctx context.Context, category *model.Category) error { 
+func (u *ProductUsecase) UpdateCategory(ctx context.Context, category *model.Category) error {
 	//校验输入合法性
 	if err := utils.Verify(utils.VerifyCategoryName(category.Name)); err != nil {
 		return err
@@ -77,11 +75,9 @@ func (u *ProductUsecase) UpdateCategory(ctx context.Context, category *model.Cat
 	return u.db.UpdateCategory(ctx, category)
 }
 
-
-
 func (u *ProductUsecase) DeleteSpu(ctx context.Context, spuId int64) error {
 	//验证权限
-	 isOwner, err := u.db.IsSpuOwer(ctx, spuId)
+	isOwner, err := u.db.IsSpuOwer(ctx, spuId)
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
@@ -92,9 +88,9 @@ func (u *ProductUsecase) DeleteSpu(ctx context.Context, spuId int64) error {
 	return u.service.DeleteSpu(ctx, spuId)
 }
 
-func(u *ProductUsecase) DeleteSku(ctx context.Context, skuId int64) error {
+func (u *ProductUsecase) DeleteSku(ctx context.Context, skuId int64) error {
 	//验证权限
-	 isOwner, err := u.db.IsSkuOwer(ctx, skuId)
+	isOwner, err := u.db.IsSkuOwer(ctx, skuId)
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
@@ -145,21 +141,18 @@ func (s *ProductUsecase) CreateCategory(ctx context.Context, category *model.Cat
 	return s.db.CreateCategory(ctx, category)
 }
 
-func (s *ProductUsecase) GetSkuById(ctx context.Context, skuId int64) (*model.Sku, error) { 
+func (s *ProductUsecase) GetSkuById(ctx context.Context, skuId int64) (*model.Sku, error) {
 	return s.db.GetSkuById(ctx, skuId)
 }
 
-func (s *ProductUsecase) GetSpusByIds(ctx context.Context, ids []int64) ([]*model.Spu, error) { 
+func (s *ProductUsecase) GetSpusByIds(ctx context.Context, ids []int64) ([]*model.Spu, error) {
 	return s.db.GetSpusByIds(ctx, ids)
 }
 
-func (s *ProductUsecase) GetSkusByIds(ctx context.Context, ids []int64) ([]*model.Sku, error) { 
+func (s *ProductUsecase) GetSkusByIds(ctx context.Context, ids []int64) ([]*model.Sku, error) {
 	return s.db.GetSkusByIds(ctx, ids)
 }
 
-func (s *ProductUsecase) GetSpuList(ctx context.Context, req *product.GetSpuReq) ([]*model.SpuEs, int64, error) { 
+func (s *ProductUsecase) GetSpuList(ctx context.Context, req *product.GetSpuReq) ([]*model.SpuEs, int64, error) {
 	return s.es.SearchSpu(ctx, req)
 }
-
-
-

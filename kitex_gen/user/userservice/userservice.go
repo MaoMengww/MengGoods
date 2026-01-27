@@ -6,7 +6,6 @@ import (
 	user "MengGoods/kitex_gen/user"
 	"context"
 	"errors"
-
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 )
@@ -32,6 +31,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		addAddressHandler,
 		newUserServiceAddAddressArgs,
 		newUserServiceAddAddressResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"GetAddresses": kitex.NewMethodInfo(
+		getAddressesHandler,
+		newUserServiceGetAddressesArgs,
+		newUserServiceGetAddressesResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -209,6 +215,24 @@ func newUserServiceAddAddressArgs() interface{} {
 
 func newUserServiceAddAddressResult() interface{} {
 	return user.NewUserServiceAddAddressResult()
+}
+
+func getAddressesHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceGetAddressesArgs)
+	realResult := result.(*user.UserServiceGetAddressesResult)
+	success, err := handler.(user.UserService).GetAddresses(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceGetAddressesArgs() interface{} {
+	return user.NewUserServiceGetAddressesArgs()
+}
+
+func newUserServiceGetAddressesResult() interface{} {
+	return user.NewUserServiceGetAddressesResult()
 }
 
 func getAddressHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -390,6 +414,16 @@ func (p *kClient) AddAddress(ctx context.Context, req *user.AddAddressReq) (r *u
 	_args.Req = req
 	var _result user.UserServiceAddAddressResult
 	if err = p.c.Call(ctx, "AddAddress", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetAddresses(ctx context.Context, req *user.GetAddressesReq) (r *user.GetAddressesResp, err error) {
+	var _args user.UserServiceGetAddressesArgs
+	_args.Req = req
+	var _result user.UserServiceGetAddressesResult
+	if err = p.c.Call(ctx, "GetAddresses", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

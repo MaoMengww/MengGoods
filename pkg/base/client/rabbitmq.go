@@ -11,16 +11,16 @@ import (
 )
 
 type RabbitMq struct {
-	conn         *amqp.Connection
-	ch           *amqp.Channel
-	exchangeName string
-	DelayQueueName    string
+	conn             *amqp.Connection
+	ch               *amqp.Channel
+	exchangeName     string
+	DelayQueueName   string
 	ProcessQueueName string
-	routingKey   string
+	routingKey       string
 }
 
 func NewRabbitMq(exchangeName string, delayQueueName string, processQueueName string, routingKey string) *RabbitMq {
-	conn, err := amqp.Dial(fmt.Sprintf("amqp://guest:guest@localhost:%v/", viper.GetString("config.rabbitmq.address")))
+	conn, err := amqp.Dial(fmt.Sprintf("amqp://%v:%v@%v/", viper.GetString("rabbitmq.user"), viper.GetString("rabbitmq.password"), viper.GetString("rabbitmq.address")))
 	if err != nil {
 		logger.Fatalf("创建rabbitmq连接失败%v", err)
 		return nil
@@ -47,10 +47,10 @@ func NewRabbitMq(exchangeName string, delayQueueName string, processQueueName st
 	//业务队列,有消费者
 	_, err = ch.QueueDeclare(
 		processQueueName, // 队列名称
-		true,      // 是否持久化
-		false,     // 是否自动删除
-		false,     // 是否排他
-		false,     // 是否等待服务器确认
+		true,             // 是否持久化
+		false,            // 是否自动删除
+		false,            // 是否排他
+		false,            // 是否等待服务器确认
 		nil,
 	)
 	if err != nil {
@@ -59,11 +59,11 @@ func NewRabbitMq(exchangeName string, delayQueueName string, processQueueName st
 	}
 	//绑定业务队列到交换器
 	err = ch.QueueBind(
-		processQueueName,   
-		routingKey,   
-		exchangeName, 
-		false,        
-		nil,          
+		processQueueName,
+		routingKey,
+		exchangeName,
+		false,
+		nil,
 	)
 	if err != nil {
 		logger.Fatalf("绑定死信队列到死信交换器失败%v", err)
@@ -72,14 +72,14 @@ func NewRabbitMq(exchangeName string, delayQueueName string, processQueueName st
 	//缓冲队列,无消费者
 	_, err = ch.QueueDeclare(
 		delayQueueName, // 队列名称
-		true,      // 是否持久化
-		false,     // 是否自动删除
-		false,     // 是否排他
-		false,     // 是否等待服务器确认
+		true,           // 是否持久化
+		false,          // 是否自动删除
+		false,          // 是否排他
+		false,          // 是否等待服务器确认
 		amqp.Table{
-			"x-dead-letter-exchange": exchangeName,
+			"x-dead-letter-exchange":    exchangeName,
 			"x-dead-letter-routing-key": routingKey,
-			"x-message-ttl": constants.DelayTime, // 消息过期时间,15分钟
+			"x-message-ttl":             constants.DelayTime, // 消息过期时间,15分钟
 		},
 	)
 	if err != nil {
@@ -89,23 +89,23 @@ func NewRabbitMq(exchangeName string, delayQueueName string, processQueueName st
 	//绑定缓冲队列到死信交换器
 	delayRoutingKey := routingKey + "_delay"
 	err = ch.QueueBind(
-		delayQueueName,    // 队列名称
-		delayRoutingKey,   // 路由键
-		exchangeName, // 交换器名称
-		false,        // 是否等待服务器确认
-		nil,          // 其他属性
+		delayQueueName,  // 队列名称
+		delayRoutingKey, // 路由键
+		exchangeName,    // 交换器名称
+		false,           // 是否等待服务器确认
+		nil,             // 其他属性
 	)
 	if err != nil {
 		logger.Fatalf("绑定普通队列到死信交换器失败%v", err)
 		return nil
 	}
 	return &RabbitMq{
-		conn:         conn,
-		ch:           ch,
-		exchangeName: exchangeName,
-		DelayQueueName:    delayQueueName,
+		conn:             conn,
+		ch:               ch,
+		exchangeName:     exchangeName,
+		DelayQueueName:   delayQueueName,
 		ProcessQueueName: processQueueName,
-		routingKey:   delayRoutingKey,
+		routingKey:       delayRoutingKey,
 	}
 }
 

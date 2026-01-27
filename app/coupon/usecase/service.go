@@ -28,14 +28,22 @@ func (u *CouponUsecase) GetCouponList(ctx context.Context, statu int) ([]*model.
 	return u.couponDB.GetCouponList(ctx, statu)
 }
 
-func(u *CouponUsecase) LockCoupon(ctx context.Context, couponId int64) error {
+func (u *CouponUsecase) LockCoupon(ctx context.Context, couponId int64) error {
 	return u.couponDB.LockCoupon(ctx, couponId)
 }
 
-func(u *CouponUsecase) ReleaseCoupon(ctx context.Context, couponId int64) error {
+func (u *CouponUsecase) ReleaseCoupon(ctx context.Context, couponId int64) error {
 	return u.couponDB.ReleaseCoupon(ctx, couponId)
 }
 
-func(u *CouponUsecase) RedeemCoupon(ctx context.Context, couponId int64, orderId int64) error {
+func (u *CouponUsecase) RedeemCoupon(ctx context.Context, couponId int64, orderId int64) error {
 	return u.couponDB.RedeemCoupon(ctx, couponId, orderId)
+}
+
+func (u *CouponUsecase) GetCouponInfo(ctx context.Context, couponId int64) (*model.Coupon, error) {
+	return u.couponDB.GetCouponInfo(ctx, couponId)
+}
+
+func (u *CouponUsecase) LetCouponExpire(ctx context.Context, couponId int64) error {
+	return u.couponDB.LetCouponExpire(ctx, couponId)
 }

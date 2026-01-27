@@ -13,4 +13,3 @@ func NewCartUsecase(cache repository.CartCache) *CartUsecase {
 		cache: cache,
 	}
 }
-

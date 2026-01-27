@@ -9,7 +9,7 @@ import (
 )
 
 // CartServiceImpl implements the last service interface defined in the IDL.
-type CartServiceImpl struct{
+type CartServiceImpl struct {
 	CartUsecase *usecase.CartUsecase
 }
 
@@ -38,7 +38,7 @@ func (s *CartServiceImpl) GetCartItem(ctx context.Context, req *cart.GetCartItem
 	cartItems, err := s.CartUsecase.GetCart(ctx)
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
-		return 
+		return
 	}
 	resp.CartItems = pack.ToRpcCartItems(cartItems)
 	resp.Base = base.BuildBaseResp(nil)

@@ -14,7 +14,7 @@ import (
 )
 
 func InjectStockUsecaseImpl() stock.StockService {
-    gormDB, err := client.NewMySQLClient(viper.GetString("mysql.stockdb"))
+	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.stockdb"))
 	if err != nil {
 		panic(err)
 	}

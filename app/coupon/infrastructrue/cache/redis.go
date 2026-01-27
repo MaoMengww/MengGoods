@@ -8,7 +8,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-//lua脚本
+// lua脚本
 const verifyDiscountScript = `
 local couponKey = KEYS[1]
 

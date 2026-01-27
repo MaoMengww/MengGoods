@@ -6,17 +6,17 @@ import (
 )
 
 type CouponUsecase struct {
-	service *service.CouponService
+	service     *service.CouponService
 	couponCache repository.CouponCache
-	couponDB repository.CouponDB
-	couponMq repository.CouponMq
+	couponDB    repository.CouponDB
+	couponMq    repository.CouponMq
 }
 
 func NewCouponUsecase(service *service.CouponService, couponCache repository.CouponCache, couponDB repository.CouponDB, couponMq repository.CouponMq) *CouponUsecase {
 	return &CouponUsecase{
-		service: service,
+		service:     service,
 		couponCache: couponCache,
-		couponDB: couponDB,
-		couponMq: couponMq,
+		couponDB:    couponDB,
+		couponMq:    couponMq,
 	}
 }

@@ -12,7 +12,6 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-
 type StockMq struct {
 	*client.Kafka
 }
@@ -66,7 +65,7 @@ func (p *StockMq) ConsumeLockStock(ctx context.Context, fn func(ctx context.Cont
 		if err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("parse id error: %v", err))
 		}
-		return fn(ctx, orderID, items)	
+		return fn(ctx, orderID, items)
 	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}
@@ -83,7 +82,7 @@ func (p *StockMq) ConsumeUnlockStock(ctx context.Context, fn func(ctx context.Co
 		if err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("parse id error: %v", err))
 		}
-		return fn(ctx, orderID, items)	
+		return fn(ctx, orderID, items)
 	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}
@@ -100,7 +99,7 @@ func (p *StockMq) ConsumeDeductStock(ctx context.Context, fn func(ctx context.Co
 		if err != nil {
 			return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("parse id error: %v", err))
 		}
-		return fn(ctx, orderID, items)	
+		return fn(ctx, orderID, items)
 	}, ctx); err != nil {
 		return merror.NewMerror(merror.InternalKafkaErrorCode, fmt.Sprintf("consumer error: %v", err))
 	}

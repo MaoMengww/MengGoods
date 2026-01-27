@@ -1,7 +1,7 @@
-package rpc
+package api
 
 import (
-	"MengGoods/app/user/controller/rpc/pack"
+	"MengGoods/app/user/controller/api/pack"
 	"MengGoods/app/user/domain/model"
 	"MengGoods/app/user/usecase"
 	user "MengGoods/kitex_gen/user"
@@ -77,8 +77,20 @@ func (s *UserServiceImpl) AddAddress(ctx context.Context, req *user.AddAddressRe
 // GetAddress implements the UserServiceImpl interface.
 func (s *UserServiceImpl) GetAddress(ctx context.Context, req *user.GetAddressReq) (resp *user.GetAddressResp, err error) {
 	r := new(user.GetAddressResp)
-	var addressList []*model.Address
-	addressList, err = s.usecase.GetAddressList(ctx)
+	address, err := s.usecase.GetAddress(ctx, req.AddressId)
+	if err != nil {
+		r.Base = base.BuildBaseResp(err)
+		return r, nil
+	}
+	r.Base = base.BuildBaseResp(nil)
+	r.Address = pack.BuildAddress(address)
+	resp = r
+	return r, nil
+}
+
+func (s *UserServiceImpl) GetAddresses(ctx context.Context, req *user.GetAddressesReq) (resp *user.GetAddressesResp, err error) {
+	r := new(user.GetAddressesResp)
+	addressList, err := s.usecase.GetAddressList(ctx)
 	if err != nil {
 		r.Base = base.BuildBaseResp(err)
 		return r, nil

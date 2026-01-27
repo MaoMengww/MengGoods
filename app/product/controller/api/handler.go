@@ -29,7 +29,7 @@ func (s *ProductServiceImpl) CreateSpu(ctx context.Context, req *product.CreateS
 		CategoryId:      req.CategoryId,
 		MainImageURL:    req.MainSpuImageURL,
 		SliderImageURLs: req.SliderSpuImageURLs,
-		Skus: pack.BuildSkus(req.Sku),
+		Skus:            pack.BuildSkus(req.Sku),
 	})
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
@@ -83,10 +83,10 @@ func (s *ProductServiceImpl) DeleteSpu(ctx context.Context, req *product.DeleteS
 	err = s.usecase.DeleteSpu(ctx, req.SpuId)
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
-		return  resp, nil
+		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
-	return  resp, nil
+	return resp, nil
 }
 
 // DeleteSku implements the ProductServiceImpl interface.
@@ -163,10 +163,10 @@ func (s *ProductServiceImpl) DeleteCategory(ctx context.Context, req *product.De
 	err = s.usecase.DeleteCategory(ctx, req.CategoryId)
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
-		return  resp, nil
+		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
-	return  resp, nil
+	return resp, nil
 }
 
 // GetSpuList implements the ProductServiceImpl interface.
@@ -175,10 +175,10 @@ func (s *ProductServiceImpl) GetSpuList(ctx context.Context, req *product.GetSpu
 	spus, total, err := s.usecase.GetSpuList(ctx, req)
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
-		return  resp, nil
+		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
 	resp.SpuList = pack.BuildSpuInfoList(spus)
 	resp.Total = total
-	return   resp, nil
+	return resp, nil
 }

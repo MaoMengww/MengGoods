@@ -2,6 +2,15 @@ namespace go coupon
 
 include "model.thrift"
 
+struct GetCouponInfoReq {
+    1: i64 CouponId;
+}
+
+struct GetCouponInfoResp {
+    1: model.BaseResp base;
+    2: model.CouponInfo coupon;
+}
+
 struct CreateCouponBatchReq {
     1: string batchName;
     2: string remark;
@@ -66,13 +75,23 @@ struct RedeemCouponResp {
     1: model.BaseResp base;
 }
 
+struct LetCouponExpireReq {
+    1: i64 couponId;
+}
+
+struct LetCouponExpireResp {
+    1: model.BaseResp base;
+}
+
 service CouponService {
+    GetCouponInfoResp GetCouponInfo(1: GetCouponInfoReq req);
     CreateCouponBatchResp CreateCouponBatch(1: CreateCouponBatchReq req);
     GetCouponResp GetCoupon(1: GetCouponReq req);
     GetCouponListResp GetCouponList(1: GetCouponListReq req);
     LockCouponResp LockCoupon(1: LockCouponReq req);
     ReleaseCouponResp ReleaseCoupon(1: ReleaseCouponReq req);
     RedeemCouponResp RedeemCoupon(1: RedeemCouponReq req);
+    LetCouponExpireResp LetCouponExpire(1: LetCouponExpireReq req);
 }
 
 

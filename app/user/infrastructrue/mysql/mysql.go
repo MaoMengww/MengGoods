@@ -9,7 +9,7 @@ import (
 )
 
 type User struct {
-	Uid      int64 `gorm:"primaryKey;column:id"`
+	Uid      int64  `gorm:"primaryKey;column:id"`
 	Username string `gorm:"column:username"`
 	Password string `gorm:"column:password"`
 	Email    string `gorm:"column:email"`
@@ -17,7 +17,7 @@ type User struct {
 }
 
 type Address struct {
-	ID     int64 `gorm:"primaryKey"`
+	ID       int64  `gorm:"primaryKey"`
 	Province string `gorm:"column:province"`
 	City     string `gorm:"column:city"`
 	Detail   string `gorm:"column:detail"`
@@ -27,7 +27,7 @@ type UserDB struct {
 	db *gorm.DB
 }
 
-func NewUserDB(db *gorm.DB) *UserDB{
+func NewUserDB(db *gorm.DB) *UserDB {
 	return &UserDB{db: db}
 }
 
@@ -80,28 +80,41 @@ func (u *UserDB) GetUserByName(ctx context.Context, username string) (*model.Use
 	}, nil
 }
 
-func (u *UserDB) GetAddress(ctx context.Context, uid int64) ([]*model.Address, error) {
+func (u *UserDB) GetAddress(ctx context.Context, id int64) ([]*model.Address, error) {
 	var addrs []*Address
-	if err := u.db.WithContext(ctx).Where("uid = ?", uid).Find(&addrs).Error; err != nil {
+	if err := u.db.WithContext(ctx).Where("uid = ?", id).Find(&addrs).Error; err != nil {
 		return nil, err
 	}
-	
+
 	// 将数据库模型转换为领域模型
 	result := make([]*model.Address, 0, len(addrs))
 	for _, addr := range addrs {
 		result = append(result, &model.Address{
 			ID:       addr.ID,
-			Province: addr.Province,  
-			City:     addr.City,   
+			Province: addr.Province,
+			City:     addr.City,
 			Detail:   addr.Detail,
 		})
 	}
 	return result, nil
 }
 
+func (u *UserDB) GetAddressByID(ctx context.Context, addressId int64) (*model.Address, error) {
+	var addr Address
+	if err := u.db.WithContext(ctx).First(&addr, addressId).Error; err != nil {
+		return nil, err
+	}
+	return &model.Address{
+		ID:       addr.ID,
+		Province: addr.Province,
+		City:     addr.City,
+		Detail:   addr.Detail,
+	}, nil
+}
+
 func (u *UserDB) AddAddress(ctx context.Context, addr *model.Address) (int64, error) {
 	if err := u.db.WithContext(ctx).Create(&Address{
-		ID:     addr.ID,
+		ID:       addr.ID,
 		Province: addr.Province,
 		City:     addr.City,
 		Detail:   addr.Detail,
@@ -117,6 +130,3 @@ func (u *UserDB) SetUserAdmin(ctx context.Context, uid int64) error {
 	}
 	return nil
 }
-
-
-

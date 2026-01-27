@@ -8,7 +8,8 @@ struct BaseResp {
 struct UserInfo {
     1: i64 id;
     2: string username;
-    3: i64 role;
+    3: string email;
+    4: i64 role;
 }
 
 //userID放在context中隐式透传
@@ -114,6 +115,70 @@ struct CouponInfo {
     11: i64 expiredAt; //过期时间
     12: i64 usedAt; 
 }
+
+struct OrderInfo { 
+    1: i64 id; 
+    2: i64 userId;
+    3: i32 status;
+    4: i64 totalPrice;
+    5: i64 paymentPrice;
+    6: string receiverName;
+    7: string receiverEmail;
+    8: string receiverProvince;
+    9: string receiverCity;
+    10: string receiverDetail;
+    11: i64 createTime;
+    12: i64 updateTime;
+    13: i64 expireTime;
+    14: i64 payTime;
+    15: i64 cancelTime;
+    16: string cancelReason;
+}
+
+struct OrderItem {
+    1: i64 id;
+    2: i64 sellerId; //商家id
+    3: i64 orderId;
+    4: i64 productId;
+    5: string productName;
+    6: i64 productPrice;
+    7: string productImage;
+    8: i64 productNum;
+    9: i64 productTotalPrice;
+    10: string productProperties;
+}
+
+
+
+struct OrderWithItems {
+    1: OrderInfo orderInfo;
+    2: list<OrderItem> orderItems;
+}
+
+struct PaymentOrderInfo {
+    1: i64 id;
+    2: i64 orderId;
+    3: string paymentNo;
+    4: i64 amount;
+    5: string paymentMethod;
+    6: i32 status;
+    7: i64 createTime;
+    8: i64 updateTime;
+}
+
+struct PaymentRefundItem {
+    1: i64 id;
+    2: i64 orderId;
+    3: i64 sellerId;
+    4: i64 userId;
+    5: i64 RefundNo;
+    6: i64 refundAmount;
+    7: string refundReason;
+    8: i64 createTime;
+    9: i64 updateTime;
+}
+
+
 
 
 

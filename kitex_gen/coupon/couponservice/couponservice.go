@@ -13,6 +13,13 @@ import (
 var errInvalidMessageType = errors.New("invalid message type for service method handler")
 
 var serviceMethods = map[string]kitex.MethodInfo{
+	"GetCouponInfo": kitex.NewMethodInfo(
+		getCouponInfoHandler,
+		newCouponServiceGetCouponInfoArgs,
+		newCouponServiceGetCouponInfoResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 	"CreateCouponBatch": kitex.NewMethodInfo(
 		createCouponBatchHandler,
 		newCouponServiceCreateCouponBatchArgs,
@@ -52,6 +59,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		redeemCouponHandler,
 		newCouponServiceRedeemCouponArgs,
 		newCouponServiceRedeemCouponResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"LetCouponExpire": kitex.NewMethodInfo(
+		letCouponExpireHandler,
+		newCouponServiceLetCouponExpireArgs,
+		newCouponServiceLetCouponExpireResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -119,6 +133,24 @@ func newServiceInfo(hasStreaming bool, keepStreamingMethods bool, keepNonStreami
 		Extra:           extra,
 	}
 	return svcInfo
+}
+
+func getCouponInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*coupon.CouponServiceGetCouponInfoArgs)
+	realResult := result.(*coupon.CouponServiceGetCouponInfoResult)
+	success, err := handler.(coupon.CouponService).GetCouponInfo(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCouponServiceGetCouponInfoArgs() interface{} {
+	return coupon.NewCouponServiceGetCouponInfoArgs()
+}
+
+func newCouponServiceGetCouponInfoResult() interface{} {
+	return coupon.NewCouponServiceGetCouponInfoResult()
 }
 
 func createCouponBatchHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -229,6 +261,24 @@ func newCouponServiceRedeemCouponResult() interface{} {
 	return coupon.NewCouponServiceRedeemCouponResult()
 }
 
+func letCouponExpireHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*coupon.CouponServiceLetCouponExpireArgs)
+	realResult := result.(*coupon.CouponServiceLetCouponExpireResult)
+	success, err := handler.(coupon.CouponService).LetCouponExpire(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newCouponServiceLetCouponExpireArgs() interface{} {
+	return coupon.NewCouponServiceLetCouponExpireArgs()
+}
+
+func newCouponServiceLetCouponExpireResult() interface{} {
+	return coupon.NewCouponServiceLetCouponExpireResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -237,6 +287,16 @@ func newServiceClient(c client.Client) *kClient {
 	return &kClient{
 		c: c,
 	}
+}
+
+func (p *kClient) GetCouponInfo(ctx context.Context, req *coupon.GetCouponInfoReq) (r *coupon.GetCouponInfoResp, err error) {
+	var _args coupon.CouponServiceGetCouponInfoArgs
+	_args.Req = req
+	var _result coupon.CouponServiceGetCouponInfoResult
+	if err = p.c.Call(ctx, "GetCouponInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
 }
 
 func (p *kClient) CreateCouponBatch(ctx context.Context, req *coupon.CreateCouponBatchReq) (r *coupon.CreateCouponBatchResp, err error) {
@@ -294,6 +354,16 @@ func (p *kClient) RedeemCoupon(ctx context.Context, req *coupon.RedeemCouponReq)
 	_args.Req = req
 	var _result coupon.CouponServiceRedeemCouponResult
 	if err = p.c.Call(ctx, "RedeemCoupon", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) LetCouponExpire(ctx context.Context, req *coupon.LetCouponExpireReq) (r *coupon.LetCouponExpireResp, err error) {
+	var _args coupon.CouponServiceLetCouponExpireArgs
+	_args.Req = req
+	var _result coupon.CouponServiceLetCouponExpireResult
+	if err = p.c.Call(ctx, "LetCouponExpire", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
