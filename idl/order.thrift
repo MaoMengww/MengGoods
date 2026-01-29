@@ -69,6 +69,35 @@ struct GetPayAmountResp {
     2: i64 amount;
 }
 
+struct IsOrderExistReq {
+    1: i64 orderId;
+}
+
+struct IsOrderExistResp {
+    1: model.BaseResp base;
+    2: bool exist;
+    3: i64 expiredAt;
+}
+
+struct GetOrderItemReq {
+    1: i64 orderItemId;
+}
+
+struct GetOrderItemResp {
+    1: model.BaseResp base;
+    2: model.OrderItem orderItem;
+}
+
+struct GetOrderInfoReq {
+    1: i64 orderId;
+}
+
+struct GetOrderInfoResp {
+    1: model.BaseResp base;
+    2: model.OrderInfo orderInfo;
+}
+
+
 
 service OrderService {
     CreateOrderResp CreateOrder(1: CreateOrderReq req);
@@ -78,5 +107,8 @@ service OrderService {
     ConfirmReceiptOrderResp ConfirmReceiptOrder(1: ConfirmReceiptOrderReq req);
     MarkOrderPaidResp MarkOrderPaid(1: MarkOrderPaidReq req);
     GetPayAmountResp GetPayAmount(1: GetPayAmountReq req);
+    GetOrderInfoResp GetOrderInfo(1: GetOrderInfoReq req);
+    GetOrderItemResp GetOrderItem(1: GetOrderItemReq req);
+    IsOrderExistResp IsOrderExist(1: IsOrderExistReq req);
 }
 

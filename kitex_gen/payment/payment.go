@@ -9,8 +9,8 @@ import (
 )
 
 type GetPaymentTokenReq struct {
-	OrderId       int64  `thrift:"orderId,1" frugal:"1,default,i64" json:"orderId"`
-	PaymentMethod string `thrift:"paymentMethod,2" frugal:"2,default,string" json:"paymentMethod"`
+	OrderId       int64 `thrift:"orderId,1" frugal:"1,default,i64" json:"orderId"`
+	PaymentMethod int32 `thrift:"paymentMethod,2" frugal:"2,default,i32" json:"paymentMethod"`
 }
 
 func NewGetPaymentTokenReq() *GetPaymentTokenReq {
@@ -24,13 +24,13 @@ func (p *GetPaymentTokenReq) GetOrderId() (v int64) {
 	return p.OrderId
 }
 
-func (p *GetPaymentTokenReq) GetPaymentMethod() (v string) {
+func (p *GetPaymentTokenReq) GetPaymentMethod() (v int32) {
 	return p.PaymentMethod
 }
 func (p *GetPaymentTokenReq) SetOrderId(val int64) {
 	p.OrderId = val
 }
-func (p *GetPaymentTokenReq) SetPaymentMethod(val string) {
+func (p *GetPaymentTokenReq) SetPaymentMethod(val int32) {
 	p.PaymentMethod = val
 }
 
@@ -49,6 +49,7 @@ var fieldIDToName_GetPaymentTokenReq = map[int16]string{
 type GetPaymentTokenResp struct {
 	Base         *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
 	PaymentToken string          `thrift:"paymentToken,2" frugal:"2,default,string" json:"paymentToken"`
+	ExpiredAt    int64           `thrift:"expiredAt,3" frugal:"3,default,i64" json:"expiredAt"`
 }
 
 func NewGetPaymentTokenResp() *GetPaymentTokenResp {
@@ -70,11 +71,18 @@ func (p *GetPaymentTokenResp) GetBase() (v *model.BaseResp) {
 func (p *GetPaymentTokenResp) GetPaymentToken() (v string) {
 	return p.PaymentToken
 }
+
+func (p *GetPaymentTokenResp) GetExpiredAt() (v int64) {
+	return p.ExpiredAt
+}
 func (p *GetPaymentTokenResp) SetBase(val *model.BaseResp) {
 	p.Base = val
 }
 func (p *GetPaymentTokenResp) SetPaymentToken(val string) {
 	p.PaymentToken = val
+}
+func (p *GetPaymentTokenResp) SetExpiredAt(val int64) {
+	p.ExpiredAt = val
 }
 
 func (p *GetPaymentTokenResp) IsSetBase() bool {
@@ -91,6 +99,7 @@ func (p *GetPaymentTokenResp) String() string {
 var fieldIDToName_GetPaymentTokenResp = map[int16]string{
 	1: "base",
 	2: "paymentToken",
+	3: "expiredAt",
 }
 
 type PaymentReq struct {
@@ -169,136 +178,118 @@ var fieldIDToName_PaymentResp = map[int16]string{
 	1: "base",
 }
 
-type GetRefundTokenReq struct {
-	OrderId       int64  `thrift:"orderId,1" frugal:"1,default,i64" json:"orderId"`
-	PaymentMethod string `thrift:"paymentMethod,2" frugal:"2,default,string" json:"paymentMethod"`
+type PaymentRefundReq struct {
+	OrderItemId  int64  `thrift:"orderItemId,1" frugal:"1,default,i64" json:"orderItemId"`
+	RefundReason string `thrift:"refundReason,2" frugal:"2,default,string" json:"refundReason"`
 }
 
-func NewGetRefundTokenReq() *GetRefundTokenReq {
-	return &GetRefundTokenReq{}
+func NewPaymentRefundReq() *PaymentRefundReq {
+	return &PaymentRefundReq{}
 }
 
-func (p *GetRefundTokenReq) InitDefault() {
+func (p *PaymentRefundReq) InitDefault() {
 }
 
-func (p *GetRefundTokenReq) GetOrderId() (v int64) {
-	return p.OrderId
+func (p *PaymentRefundReq) GetOrderItemId() (v int64) {
+	return p.OrderItemId
 }
 
-func (p *GetRefundTokenReq) GetPaymentMethod() (v string) {
-	return p.PaymentMethod
+func (p *PaymentRefundReq) GetRefundReason() (v string) {
+	return p.RefundReason
 }
-func (p *GetRefundTokenReq) SetOrderId(val int64) {
-	p.OrderId = val
+func (p *PaymentRefundReq) SetOrderItemId(val int64) {
+	p.OrderItemId = val
 }
-func (p *GetRefundTokenReq) SetPaymentMethod(val string) {
-	p.PaymentMethod = val
+func (p *PaymentRefundReq) SetRefundReason(val string) {
+	p.RefundReason = val
 }
 
-func (p *GetRefundTokenReq) String() string {
+func (p *PaymentRefundReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GetRefundTokenReq(%+v)", *p)
+	return fmt.Sprintf("PaymentRefundReq(%+v)", *p)
 }
 
-var fieldIDToName_GetRefundTokenReq = map[int16]string{
-	1: "orderId",
-	2: "paymentMethod",
+var fieldIDToName_PaymentRefundReq = map[int16]string{
+	1: "orderItemId",
+	2: "refundReason",
 }
 
-type GetRefundTokenResp struct {
-	Base        *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
-	RefundToken string          `thrift:"refundToken,2" frugal:"2,default,string" json:"refundToken"`
+type PaymentRefundResp struct {
+	Base *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
 }
 
-func NewGetRefundTokenResp() *GetRefundTokenResp {
-	return &GetRefundTokenResp{}
+func NewPaymentRefundResp() *PaymentRefundResp {
+	return &PaymentRefundResp{}
 }
 
-func (p *GetRefundTokenResp) InitDefault() {
+func (p *PaymentRefundResp) InitDefault() {
 }
 
-var GetRefundTokenResp_Base_DEFAULT *model.BaseResp
+var PaymentRefundResp_Base_DEFAULT *model.BaseResp
 
-func (p *GetRefundTokenResp) GetBase() (v *model.BaseResp) {
+func (p *PaymentRefundResp) GetBase() (v *model.BaseResp) {
 	if !p.IsSetBase() {
-		return GetRefundTokenResp_Base_DEFAULT
+		return PaymentRefundResp_Base_DEFAULT
 	}
 	return p.Base
 }
-
-func (p *GetRefundTokenResp) GetRefundToken() (v string) {
-	return p.RefundToken
-}
-func (p *GetRefundTokenResp) SetBase(val *model.BaseResp) {
+func (p *PaymentRefundResp) SetBase(val *model.BaseResp) {
 	p.Base = val
 }
-func (p *GetRefundTokenResp) SetRefundToken(val string) {
-	p.RefundToken = val
-}
 
-func (p *GetRefundTokenResp) IsSetBase() bool {
+func (p *PaymentRefundResp) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *GetRefundTokenResp) String() string {
+func (p *PaymentRefundResp) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GetRefundTokenResp(%+v)", *p)
+	return fmt.Sprintf("PaymentRefundResp(%+v)", *p)
 }
 
-var fieldIDToName_GetRefundTokenResp = map[int16]string{
+var fieldIDToName_PaymentRefundResp = map[int16]string{
 	1: "base",
-	2: "refundToken",
 }
 
-type RefundReq struct {
-	OrderId      int64  `thrift:"orderId,1" frugal:"1,default,i64" json:"orderId"`
-	RefundReason string `thrift:"refundReason,2" frugal:"2,default,string" json:"refundReason"`
-	RefundToken  string `thrift:"refundToken,3" frugal:"3,default,string" json:"refundToken"`
+type ReviewRefundReq struct {
+	OrderItemId int64 `thrift:"orderItemId,1" frugal:"1,default,i64" json:"orderItemId"`
+	Approve     bool  `thrift:"approve,2" frugal:"2,default,bool" json:"approve"`
 }
 
-func NewRefundReq() *RefundReq {
-	return &RefundReq{}
+func NewReviewRefundReq() *ReviewRefundReq {
+	return &ReviewRefundReq{}
 }
 
-func (p *RefundReq) InitDefault() {
+func (p *ReviewRefundReq) InitDefault() {
 }
 
-func (p *RefundReq) GetOrderId() (v int64) {
-	return p.OrderId
+func (p *ReviewRefundReq) GetOrderItemId() (v int64) {
+	return p.OrderItemId
 }
 
-func (p *RefundReq) GetRefundReason() (v string) {
-	return p.RefundReason
+func (p *ReviewRefundReq) GetApprove() (v bool) {
+	return p.Approve
+}
+func (p *ReviewRefundReq) SetOrderItemId(val int64) {
+	p.OrderItemId = val
+}
+func (p *ReviewRefundReq) SetApprove(val bool) {
+	p.Approve = val
 }
 
-func (p *RefundReq) GetRefundToken() (v string) {
-	return p.RefundToken
-}
-func (p *RefundReq) SetOrderId(val int64) {
-	p.OrderId = val
-}
-func (p *RefundReq) SetRefundReason(val string) {
-	p.RefundReason = val
-}
-func (p *RefundReq) SetRefundToken(val string) {
-	p.RefundToken = val
-}
-
-func (p *RefundReq) String() string {
+func (p *ReviewRefundReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("RefundReq(%+v)", *p)
+	return fmt.Sprintf("ReviewRefundReq(%+v)", *p)
 }
 
-var fieldIDToName_RefundReq = map[int16]string{
-	1: "orderId",
-	2: "refundReason",
-	3: "refundToken",
+var fieldIDToName_ReviewRefundReq = map[int16]string{
+	1: "orderItemId",
+	2: "approve",
 }
 
 type RefundResp struct {
@@ -344,9 +335,9 @@ type PaymentService interface {
 
 	Payment(ctx context.Context, req *PaymentReq) (r *PaymentResp, err error)
 
-	GetRefundToken(ctx context.Context, req *GetRefundTokenReq) (r *GetRefundTokenResp, err error)
+	PaymentRefund(ctx context.Context, req *PaymentRefundReq) (r *PaymentRefundResp, err error)
 
-	Refund(ctx context.Context, req *RefundReq) (r *RefundResp, err error)
+	Refund(ctx context.Context, req *ReviewRefundReq) (r *RefundResp, err error)
 }
 
 type PaymentServiceGetPaymentTokenArgs struct {
@@ -501,84 +492,84 @@ var fieldIDToName_PaymentServicePaymentResult = map[int16]string{
 	0: "success",
 }
 
-type PaymentServiceGetRefundTokenArgs struct {
-	Req *GetRefundTokenReq `thrift:"req,1" frugal:"1,default,GetRefundTokenReq" json:"req"`
+type PaymentServicePaymentRefundArgs struct {
+	Req *PaymentRefundReq `thrift:"req,1" frugal:"1,default,PaymentRefundReq" json:"req"`
 }
 
-func NewPaymentServiceGetRefundTokenArgs() *PaymentServiceGetRefundTokenArgs {
-	return &PaymentServiceGetRefundTokenArgs{}
+func NewPaymentServicePaymentRefundArgs() *PaymentServicePaymentRefundArgs {
+	return &PaymentServicePaymentRefundArgs{}
 }
 
-func (p *PaymentServiceGetRefundTokenArgs) InitDefault() {
+func (p *PaymentServicePaymentRefundArgs) InitDefault() {
 }
 
-var PaymentServiceGetRefundTokenArgs_Req_DEFAULT *GetRefundTokenReq
+var PaymentServicePaymentRefundArgs_Req_DEFAULT *PaymentRefundReq
 
-func (p *PaymentServiceGetRefundTokenArgs) GetReq() (v *GetRefundTokenReq) {
+func (p *PaymentServicePaymentRefundArgs) GetReq() (v *PaymentRefundReq) {
 	if !p.IsSetReq() {
-		return PaymentServiceGetRefundTokenArgs_Req_DEFAULT
+		return PaymentServicePaymentRefundArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *PaymentServiceGetRefundTokenArgs) SetReq(val *GetRefundTokenReq) {
+func (p *PaymentServicePaymentRefundArgs) SetReq(val *PaymentRefundReq) {
 	p.Req = val
 }
 
-func (p *PaymentServiceGetRefundTokenArgs) IsSetReq() bool {
+func (p *PaymentServicePaymentRefundArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *PaymentServiceGetRefundTokenArgs) String() string {
+func (p *PaymentServicePaymentRefundArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("PaymentServiceGetRefundTokenArgs(%+v)", *p)
+	return fmt.Sprintf("PaymentServicePaymentRefundArgs(%+v)", *p)
 }
 
-var fieldIDToName_PaymentServiceGetRefundTokenArgs = map[int16]string{
+var fieldIDToName_PaymentServicePaymentRefundArgs = map[int16]string{
 	1: "req",
 }
 
-type PaymentServiceGetRefundTokenResult struct {
-	Success *GetRefundTokenResp `thrift:"success,0,optional" frugal:"0,optional,GetRefundTokenResp" json:"success,omitempty"`
+type PaymentServicePaymentRefundResult struct {
+	Success *PaymentRefundResp `thrift:"success,0,optional" frugal:"0,optional,PaymentRefundResp" json:"success,omitempty"`
 }
 
-func NewPaymentServiceGetRefundTokenResult() *PaymentServiceGetRefundTokenResult {
-	return &PaymentServiceGetRefundTokenResult{}
+func NewPaymentServicePaymentRefundResult() *PaymentServicePaymentRefundResult {
+	return &PaymentServicePaymentRefundResult{}
 }
 
-func (p *PaymentServiceGetRefundTokenResult) InitDefault() {
+func (p *PaymentServicePaymentRefundResult) InitDefault() {
 }
 
-var PaymentServiceGetRefundTokenResult_Success_DEFAULT *GetRefundTokenResp
+var PaymentServicePaymentRefundResult_Success_DEFAULT *PaymentRefundResp
 
-func (p *PaymentServiceGetRefundTokenResult) GetSuccess() (v *GetRefundTokenResp) {
+func (p *PaymentServicePaymentRefundResult) GetSuccess() (v *PaymentRefundResp) {
 	if !p.IsSetSuccess() {
-		return PaymentServiceGetRefundTokenResult_Success_DEFAULT
+		return PaymentServicePaymentRefundResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *PaymentServiceGetRefundTokenResult) SetSuccess(x interface{}) {
-	p.Success = x.(*GetRefundTokenResp)
+func (p *PaymentServicePaymentRefundResult) SetSuccess(x interface{}) {
+	p.Success = x.(*PaymentRefundResp)
 }
 
-func (p *PaymentServiceGetRefundTokenResult) IsSetSuccess() bool {
+func (p *PaymentServicePaymentRefundResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *PaymentServiceGetRefundTokenResult) String() string {
+func (p *PaymentServicePaymentRefundResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("PaymentServiceGetRefundTokenResult(%+v)", *p)
+	return fmt.Sprintf("PaymentServicePaymentRefundResult(%+v)", *p)
 }
 
-var fieldIDToName_PaymentServiceGetRefundTokenResult = map[int16]string{
+var fieldIDToName_PaymentServicePaymentRefundResult = map[int16]string{
 	0: "success",
 }
 
 type PaymentServiceRefundArgs struct {
-	Req *RefundReq `thrift:"req,1" frugal:"1,default,RefundReq" json:"req"`
+	Req *ReviewRefundReq `thrift:"req,1" frugal:"1,default,ReviewRefundReq" json:"req"`
 }
 
 func NewPaymentServiceRefundArgs() *PaymentServiceRefundArgs {
@@ -588,15 +579,15 @@ func NewPaymentServiceRefundArgs() *PaymentServiceRefundArgs {
 func (p *PaymentServiceRefundArgs) InitDefault() {
 }
 
-var PaymentServiceRefundArgs_Req_DEFAULT *RefundReq
+var PaymentServiceRefundArgs_Req_DEFAULT *ReviewRefundReq
 
-func (p *PaymentServiceRefundArgs) GetReq() (v *RefundReq) {
+func (p *PaymentServiceRefundArgs) GetReq() (v *ReviewRefundReq) {
 	if !p.IsSetReq() {
 		return PaymentServiceRefundArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *PaymentServiceRefundArgs) SetReq(val *RefundReq) {
+func (p *PaymentServiceRefundArgs) SetReq(val *ReviewRefundReq) {
 	p.Req = val
 }
 

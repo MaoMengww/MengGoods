@@ -62,6 +62,27 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"GetOrderInfo": kitex.NewMethodInfo(
+		getOrderInfoHandler,
+		newOrderServiceGetOrderInfoArgs,
+		newOrderServiceGetOrderInfoResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"GetOrderItem": kitex.NewMethodInfo(
+		getOrderItemHandler,
+		newOrderServiceGetOrderItemArgs,
+		newOrderServiceGetOrderItemResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"IsOrderExist": kitex.NewMethodInfo(
+		isOrderExistHandler,
+		newOrderServiceIsOrderExistArgs,
+		newOrderServiceIsOrderExistResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -254,6 +275,60 @@ func newOrderServiceGetPayAmountResult() interface{} {
 	return order.NewOrderServiceGetPayAmountResult()
 }
 
+func getOrderInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*order.OrderServiceGetOrderInfoArgs)
+	realResult := result.(*order.OrderServiceGetOrderInfoResult)
+	success, err := handler.(order.OrderService).GetOrderInfo(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newOrderServiceGetOrderInfoArgs() interface{} {
+	return order.NewOrderServiceGetOrderInfoArgs()
+}
+
+func newOrderServiceGetOrderInfoResult() interface{} {
+	return order.NewOrderServiceGetOrderInfoResult()
+}
+
+func getOrderItemHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*order.OrderServiceGetOrderItemArgs)
+	realResult := result.(*order.OrderServiceGetOrderItemResult)
+	success, err := handler.(order.OrderService).GetOrderItem(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newOrderServiceGetOrderItemArgs() interface{} {
+	return order.NewOrderServiceGetOrderItemArgs()
+}
+
+func newOrderServiceGetOrderItemResult() interface{} {
+	return order.NewOrderServiceGetOrderItemResult()
+}
+
+func isOrderExistHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*order.OrderServiceIsOrderExistArgs)
+	realResult := result.(*order.OrderServiceIsOrderExistResult)
+	success, err := handler.(order.OrderService).IsOrderExist(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newOrderServiceIsOrderExistArgs() interface{} {
+	return order.NewOrderServiceIsOrderExistArgs()
+}
+
+func newOrderServiceIsOrderExistResult() interface{} {
+	return order.NewOrderServiceIsOrderExistResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -329,6 +404,36 @@ func (p *kClient) GetPayAmount(ctx context.Context, req *order.GetPayAmountReq) 
 	_args.Req = req
 	var _result order.OrderServiceGetPayAmountResult
 	if err = p.c.Call(ctx, "GetPayAmount", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetOrderInfo(ctx context.Context, req *order.GetOrderInfoReq) (r *order.GetOrderInfoResp, err error) {
+	var _args order.OrderServiceGetOrderInfoArgs
+	_args.Req = req
+	var _result order.OrderServiceGetOrderInfoResult
+	if err = p.c.Call(ctx, "GetOrderInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetOrderItem(ctx context.Context, req *order.GetOrderItemReq) (r *order.GetOrderItemResp, err error) {
+	var _args order.OrderServiceGetOrderItemArgs
+	_args.Req = req
+	var _result order.OrderServiceGetOrderItemResult
+	if err = p.c.Call(ctx, "GetOrderItem", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) IsOrderExist(ctx context.Context, req *order.IsOrderExistReq) (r *order.IsOrderExistResp, err error) {
+	var _args order.OrderServiceIsOrderExistArgs
+	_args.Req = req
+	var _result order.OrderServiceIsOrderExistResult
+	if err = p.c.Call(ctx, "IsOrderExist", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

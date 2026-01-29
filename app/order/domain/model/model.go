@@ -23,6 +23,7 @@ type Order struct {
 type OrderItem struct {
 	OrderItemId       int64
 	OrderId           int64
+	UserId            int64
 	ProductId         int64
 	ProductName       string
 	ProductImage      string

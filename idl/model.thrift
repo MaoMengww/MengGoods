@@ -138,14 +138,15 @@ struct OrderInfo {
 struct OrderItem {
     1: i64 id;
     2: i64 sellerId; //商家id
-    3: i64 orderId;
-    4: i64 productId;
-    5: string productName;
-    6: i64 productPrice;
-    7: string productImage;
-    8: i64 productNum;
-    9: i64 productTotalPrice;
-    10: string productProperties;
+    3: i64 userId;
+    4: i64 orderId;
+    5: i64 productId;
+    6: string productName;
+    7: i64 productPrice;
+    8: string productImage;
+    9: i64 productNum;
+    10: i64 productTotalPrice;
+    11: string productProperties;
 }
 
 
@@ -158,24 +159,27 @@ struct OrderWithItems {
 struct PaymentOrderInfo {
     1: i64 id;
     2: i64 orderId;
-    3: string paymentNo;
-    4: i64 amount;
-    5: string paymentMethod;
-    6: i32 status;
-    7: i64 createTime;
-    8: i64 updateTime;
+    3: i64 userId
+    4: string paymentNo;
+    5: i64 amount;
+    6: i32 paymentMethod;
+    7: i32 status;
+    8: i64 createTime;
+    9: i64 updateTime;
 }
 
 struct PaymentRefundItem {
     1: i64 id;
-    2: i64 orderId;
+    2: i64 orderItemId;
     3: i64 sellerId;
     4: i64 userId;
-    5: i64 RefundNo;
-    6: i64 refundAmount;
-    7: string refundReason;
-    8: i64 createTime;
-    9: i64 updateTime;
+    5: string paymentNo;
+    6: string RefundNo;
+    7: i64 refundAmount;
+    8: string refundReason;
+    9: i32 status;
+    10: i64 createTime;
+    11: i64 updateTime;
 }
 
 

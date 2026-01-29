@@ -18,6 +18,9 @@ type Client interface {
 	ConfirmReceiptOrder(ctx context.Context, req *order.ConfirmReceiptOrderReq, callOptions ...callopt.Option) (r *order.ConfirmReceiptOrderResp, err error)
 	MarkOrderPaid(ctx context.Context, req *order.MarkOrderPaidReq, callOptions ...callopt.Option) (r *order.MarkOrderPaidResp, err error)
 	GetPayAmount(ctx context.Context, req *order.GetPayAmountReq, callOptions ...callopt.Option) (r *order.GetPayAmountResp, err error)
+	GetOrderInfo(ctx context.Context, req *order.GetOrderInfoReq, callOptions ...callopt.Option) (r *order.GetOrderInfoResp, err error)
+	GetOrderItem(ctx context.Context, req *order.GetOrderItemReq, callOptions ...callopt.Option) (r *order.GetOrderItemResp, err error)
+	IsOrderExist(ctx context.Context, req *order.IsOrderExistReq, callOptions ...callopt.Option) (r *order.IsOrderExistResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -82,4 +85,19 @@ func (p *kOrderServiceClient) MarkOrderPaid(ctx context.Context, req *order.Mark
 func (p *kOrderServiceClient) GetPayAmount(ctx context.Context, req *order.GetPayAmountReq, callOptions ...callopt.Option) (r *order.GetPayAmountResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetPayAmount(ctx, req)
+}
+
+func (p *kOrderServiceClient) GetOrderInfo(ctx context.Context, req *order.GetOrderInfoReq, callOptions ...callopt.Option) (r *order.GetOrderInfoResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetOrderInfo(ctx, req)
+}
+
+func (p *kOrderServiceClient) GetOrderItem(ctx context.Context, req *order.GetOrderItemReq, callOptions ...callopt.Option) (r *order.GetOrderItemResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetOrderItem(ctx, req)
+}
+
+func (p *kOrderServiceClient) IsOrderExist(ctx context.Context, req *order.IsOrderExistReq, callOptions ...callopt.Option) (r *order.IsOrderExistResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.IsOrderExist(ctx, req)
 }

@@ -1,3 +1,5 @@
+CREATE DATABASE orders;
+
 CREATE TABLE `orders` (
     `order_id` BIGINT NOT NULL  PRIMARY KEY COMMENT '使用订单 id, ',
     `user_id` BIGINT NOT NULL COMMENT '用户 id',

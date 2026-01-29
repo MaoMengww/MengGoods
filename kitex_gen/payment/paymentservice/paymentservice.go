@@ -27,10 +27,10 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
-	"GetRefundToken": kitex.NewMethodInfo(
-		getRefundTokenHandler,
-		newPaymentServiceGetRefundTokenArgs,
-		newPaymentServiceGetRefundTokenResult,
+	"PaymentRefund": kitex.NewMethodInfo(
+		paymentRefundHandler,
+		newPaymentServicePaymentRefundArgs,
+		newPaymentServicePaymentRefundResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -143,22 +143,22 @@ func newPaymentServicePaymentResult() interface{} {
 	return payment.NewPaymentServicePaymentResult()
 }
 
-func getRefundTokenHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*payment.PaymentServiceGetRefundTokenArgs)
-	realResult := result.(*payment.PaymentServiceGetRefundTokenResult)
-	success, err := handler.(payment.PaymentService).GetRefundToken(ctx, realArg.Req)
+func paymentRefundHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*payment.PaymentServicePaymentRefundArgs)
+	realResult := result.(*payment.PaymentServicePaymentRefundResult)
+	success, err := handler.(payment.PaymentService).PaymentRefund(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newPaymentServiceGetRefundTokenArgs() interface{} {
-	return payment.NewPaymentServiceGetRefundTokenArgs()
+func newPaymentServicePaymentRefundArgs() interface{} {
+	return payment.NewPaymentServicePaymentRefundArgs()
 }
 
-func newPaymentServiceGetRefundTokenResult() interface{} {
-	return payment.NewPaymentServiceGetRefundTokenResult()
+func newPaymentServicePaymentRefundResult() interface{} {
+	return payment.NewPaymentServicePaymentRefundResult()
 }
 
 func refundHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -209,17 +209,17 @@ func (p *kClient) Payment(ctx context.Context, req *payment.PaymentReq) (r *paym
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetRefundToken(ctx context.Context, req *payment.GetRefundTokenReq) (r *payment.GetRefundTokenResp, err error) {
-	var _args payment.PaymentServiceGetRefundTokenArgs
+func (p *kClient) PaymentRefund(ctx context.Context, req *payment.PaymentRefundReq) (r *payment.PaymentRefundResp, err error) {
+	var _args payment.PaymentServicePaymentRefundArgs
 	_args.Req = req
-	var _result payment.PaymentServiceGetRefundTokenResult
-	if err = p.c.Call(ctx, "GetRefundToken", &_args, &_result); err != nil {
+	var _result payment.PaymentServicePaymentRefundResult
+	if err = p.c.Call(ctx, "PaymentRefund", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) Refund(ctx context.Context, req *payment.RefundReq) (r *payment.RefundResp, err error) {
+func (p *kClient) Refund(ctx context.Context, req *payment.ReviewRefundReq) (r *payment.RefundResp, err error) {
 	var _args payment.PaymentServiceRefundArgs
 	_args.Req = req
 	var _result payment.PaymentServiceRefundResult

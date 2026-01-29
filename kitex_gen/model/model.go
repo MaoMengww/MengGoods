@@ -1113,14 +1113,15 @@ var fieldIDToName_OrderInfo = map[int16]string{
 type OrderItem struct {
 	Id                int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
 	SellerId          int64  `thrift:"sellerId,2" frugal:"2,default,i64" json:"sellerId"`
-	OrderId           int64  `thrift:"orderId,3" frugal:"3,default,i64" json:"orderId"`
-	ProductId         int64  `thrift:"productId,4" frugal:"4,default,i64" json:"productId"`
-	ProductName       string `thrift:"productName,5" frugal:"5,default,string" json:"productName"`
-	ProductPrice      int64  `thrift:"productPrice,6" frugal:"6,default,i64" json:"productPrice"`
-	ProductImage      string `thrift:"productImage,7" frugal:"7,default,string" json:"productImage"`
-	ProductNum        int64  `thrift:"productNum,8" frugal:"8,default,i64" json:"productNum"`
-	ProductTotalPrice int64  `thrift:"productTotalPrice,9" frugal:"9,default,i64" json:"productTotalPrice"`
-	ProductProperties string `thrift:"productProperties,10" frugal:"10,default,string" json:"productProperties"`
+	UserId            int64  `thrift:"userId,3" frugal:"3,default,i64" json:"userId"`
+	OrderId           int64  `thrift:"orderId,4" frugal:"4,default,i64" json:"orderId"`
+	ProductId         int64  `thrift:"productId,5" frugal:"5,default,i64" json:"productId"`
+	ProductName       string `thrift:"productName,6" frugal:"6,default,string" json:"productName"`
+	ProductPrice      int64  `thrift:"productPrice,7" frugal:"7,default,i64" json:"productPrice"`
+	ProductImage      string `thrift:"productImage,8" frugal:"8,default,string" json:"productImage"`
+	ProductNum        int64  `thrift:"productNum,9" frugal:"9,default,i64" json:"productNum"`
+	ProductTotalPrice int64  `thrift:"productTotalPrice,10" frugal:"10,default,i64" json:"productTotalPrice"`
+	ProductProperties string `thrift:"productProperties,11" frugal:"11,default,string" json:"productProperties"`
 }
 
 func NewOrderItem() *OrderItem {
@@ -1136,6 +1137,10 @@ func (p *OrderItem) GetId() (v int64) {
 
 func (p *OrderItem) GetSellerId() (v int64) {
 	return p.SellerId
+}
+
+func (p *OrderItem) GetUserId() (v int64) {
+	return p.UserId
 }
 
 func (p *OrderItem) GetOrderId() (v int64) {
@@ -1175,6 +1180,9 @@ func (p *OrderItem) SetId(val int64) {
 func (p *OrderItem) SetSellerId(val int64) {
 	p.SellerId = val
 }
+func (p *OrderItem) SetUserId(val int64) {
+	p.UserId = val
+}
 func (p *OrderItem) SetOrderId(val int64) {
 	p.OrderId = val
 }
@@ -1210,14 +1218,15 @@ func (p *OrderItem) String() string {
 var fieldIDToName_OrderItem = map[int16]string{
 	1:  "id",
 	2:  "sellerId",
-	3:  "orderId",
-	4:  "productId",
-	5:  "productName",
-	6:  "productPrice",
-	7:  "productImage",
-	8:  "productNum",
-	9:  "productTotalPrice",
-	10: "productProperties",
+	3:  "userId",
+	4:  "orderId",
+	5:  "productId",
+	6:  "productName",
+	7:  "productPrice",
+	8:  "productImage",
+	9:  "productNum",
+	10: "productTotalPrice",
+	11: "productProperties",
 }
 
 type OrderWithItems struct {
@@ -1270,12 +1279,13 @@ var fieldIDToName_OrderWithItems = map[int16]string{
 type PaymentOrderInfo struct {
 	Id            int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
 	OrderId       int64  `thrift:"orderId,2" frugal:"2,default,i64" json:"orderId"`
-	PaymentNo     string `thrift:"paymentNo,3" frugal:"3,default,string" json:"paymentNo"`
-	Amount        int64  `thrift:"amount,4" frugal:"4,default,i64" json:"amount"`
-	PaymentMethod string `thrift:"paymentMethod,5" frugal:"5,default,string" json:"paymentMethod"`
-	Status        int32  `thrift:"status,6" frugal:"6,default,i32" json:"status"`
-	CreateTime    int64  `thrift:"createTime,7" frugal:"7,default,i64" json:"createTime"`
-	UpdateTime    int64  `thrift:"updateTime,8" frugal:"8,default,i64" json:"updateTime"`
+	UserId        int64  `thrift:"userId,3" frugal:"3,default,i64" json:"userId"`
+	PaymentNo     string `thrift:"paymentNo,4" frugal:"4,default,string" json:"paymentNo"`
+	Amount        int64  `thrift:"amount,5" frugal:"5,default,i64" json:"amount"`
+	PaymentMethod int32  `thrift:"paymentMethod,6" frugal:"6,default,i32" json:"paymentMethod"`
+	Status        int32  `thrift:"status,7" frugal:"7,default,i32" json:"status"`
+	CreateTime    int64  `thrift:"createTime,8" frugal:"8,default,i64" json:"createTime"`
+	UpdateTime    int64  `thrift:"updateTime,9" frugal:"9,default,i64" json:"updateTime"`
 }
 
 func NewPaymentOrderInfo() *PaymentOrderInfo {
@@ -1293,6 +1303,10 @@ func (p *PaymentOrderInfo) GetOrderId() (v int64) {
 	return p.OrderId
 }
 
+func (p *PaymentOrderInfo) GetUserId() (v int64) {
+	return p.UserId
+}
+
 func (p *PaymentOrderInfo) GetPaymentNo() (v string) {
 	return p.PaymentNo
 }
@@ -1301,7 +1315,7 @@ func (p *PaymentOrderInfo) GetAmount() (v int64) {
 	return p.Amount
 }
 
-func (p *PaymentOrderInfo) GetPaymentMethod() (v string) {
+func (p *PaymentOrderInfo) GetPaymentMethod() (v int32) {
 	return p.PaymentMethod
 }
 
@@ -1322,13 +1336,16 @@ func (p *PaymentOrderInfo) SetId(val int64) {
 func (p *PaymentOrderInfo) SetOrderId(val int64) {
 	p.OrderId = val
 }
+func (p *PaymentOrderInfo) SetUserId(val int64) {
+	p.UserId = val
+}
 func (p *PaymentOrderInfo) SetPaymentNo(val string) {
 	p.PaymentNo = val
 }
 func (p *PaymentOrderInfo) SetAmount(val int64) {
 	p.Amount = val
 }
-func (p *PaymentOrderInfo) SetPaymentMethod(val string) {
+func (p *PaymentOrderInfo) SetPaymentMethod(val int32) {
 	p.PaymentMethod = val
 }
 func (p *PaymentOrderInfo) SetStatus(val int32) {
@@ -1351,24 +1368,27 @@ func (p *PaymentOrderInfo) String() string {
 var fieldIDToName_PaymentOrderInfo = map[int16]string{
 	1: "id",
 	2: "orderId",
-	3: "paymentNo",
-	4: "amount",
-	5: "paymentMethod",
-	6: "status",
-	7: "createTime",
-	8: "updateTime",
+	3: "userId",
+	4: "paymentNo",
+	5: "amount",
+	6: "paymentMethod",
+	7: "status",
+	8: "createTime",
+	9: "updateTime",
 }
 
 type PaymentRefundItem struct {
 	Id           int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
-	OrderId      int64  `thrift:"orderId,2" frugal:"2,default,i64" json:"orderId"`
+	OrderItemId  int64  `thrift:"orderItemId,2" frugal:"2,default,i64" json:"orderItemId"`
 	SellerId     int64  `thrift:"sellerId,3" frugal:"3,default,i64" json:"sellerId"`
 	UserId       int64  `thrift:"userId,4" frugal:"4,default,i64" json:"userId"`
-	RefundNo     int64  `thrift:"RefundNo,5" frugal:"5,default,i64" json:"RefundNo"`
-	RefundAmount int64  `thrift:"refundAmount,6" frugal:"6,default,i64" json:"refundAmount"`
-	RefundReason string `thrift:"refundReason,7" frugal:"7,default,string" json:"refundReason"`
-	CreateTime   int64  `thrift:"createTime,8" frugal:"8,default,i64" json:"createTime"`
-	UpdateTime   int64  `thrift:"updateTime,9" frugal:"9,default,i64" json:"updateTime"`
+	PaymentNo    string `thrift:"paymentNo,5" frugal:"5,default,string" json:"paymentNo"`
+	RefundNo     string `thrift:"RefundNo,6" frugal:"6,default,string" json:"RefundNo"`
+	RefundAmount int64  `thrift:"refundAmount,7" frugal:"7,default,i64" json:"refundAmount"`
+	RefundReason string `thrift:"refundReason,8" frugal:"8,default,string" json:"refundReason"`
+	Status       int32  `thrift:"status,9" frugal:"9,default,i32" json:"status"`
+	CreateTime   int64  `thrift:"createTime,10" frugal:"10,default,i64" json:"createTime"`
+	UpdateTime   int64  `thrift:"updateTime,11" frugal:"11,default,i64" json:"updateTime"`
 }
 
 func NewPaymentRefundItem() *PaymentRefundItem {
@@ -1382,8 +1402,8 @@ func (p *PaymentRefundItem) GetId() (v int64) {
 	return p.Id
 }
 
-func (p *PaymentRefundItem) GetOrderId() (v int64) {
-	return p.OrderId
+func (p *PaymentRefundItem) GetOrderItemId() (v int64) {
+	return p.OrderItemId
 }
 
 func (p *PaymentRefundItem) GetSellerId() (v int64) {
@@ -1394,7 +1414,11 @@ func (p *PaymentRefundItem) GetUserId() (v int64) {
 	return p.UserId
 }
 
-func (p *PaymentRefundItem) GetRefundNo() (v int64) {
+func (p *PaymentRefundItem) GetPaymentNo() (v string) {
+	return p.PaymentNo
+}
+
+func (p *PaymentRefundItem) GetRefundNo() (v string) {
 	return p.RefundNo
 }
 
@@ -1404,6 +1428,10 @@ func (p *PaymentRefundItem) GetRefundAmount() (v int64) {
 
 func (p *PaymentRefundItem) GetRefundReason() (v string) {
 	return p.RefundReason
+}
+
+func (p *PaymentRefundItem) GetStatus() (v int32) {
+	return p.Status
 }
 
 func (p *PaymentRefundItem) GetCreateTime() (v int64) {
@@ -1416,8 +1444,8 @@ func (p *PaymentRefundItem) GetUpdateTime() (v int64) {
 func (p *PaymentRefundItem) SetId(val int64) {
 	p.Id = val
 }
-func (p *PaymentRefundItem) SetOrderId(val int64) {
-	p.OrderId = val
+func (p *PaymentRefundItem) SetOrderItemId(val int64) {
+	p.OrderItemId = val
 }
 func (p *PaymentRefundItem) SetSellerId(val int64) {
 	p.SellerId = val
@@ -1425,7 +1453,10 @@ func (p *PaymentRefundItem) SetSellerId(val int64) {
 func (p *PaymentRefundItem) SetUserId(val int64) {
 	p.UserId = val
 }
-func (p *PaymentRefundItem) SetRefundNo(val int64) {
+func (p *PaymentRefundItem) SetPaymentNo(val string) {
+	p.PaymentNo = val
+}
+func (p *PaymentRefundItem) SetRefundNo(val string) {
 	p.RefundNo = val
 }
 func (p *PaymentRefundItem) SetRefundAmount(val int64) {
@@ -1433,6 +1464,9 @@ func (p *PaymentRefundItem) SetRefundAmount(val int64) {
 }
 func (p *PaymentRefundItem) SetRefundReason(val string) {
 	p.RefundReason = val
+}
+func (p *PaymentRefundItem) SetStatus(val int32) {
+	p.Status = val
 }
 func (p *PaymentRefundItem) SetCreateTime(val int64) {
 	p.CreateTime = val
@@ -1449,13 +1483,15 @@ func (p *PaymentRefundItem) String() string {
 }
 
 var fieldIDToName_PaymentRefundItem = map[int16]string{
-	1: "id",
-	2: "orderId",
-	3: "sellerId",
-	4: "userId",
-	5: "RefundNo",
-	6: "refundAmount",
-	7: "refundReason",
-	8: "createTime",
-	9: "updateTime",
+	1:  "id",
+	2:  "orderItemId",
+	3:  "sellerId",
+	4:  "userId",
+	5:  "paymentNo",
+	6:  "RefundNo",
+	7:  "refundAmount",
+	8:  "refundReason",
+	9:  "status",
+	10: "createTime",
+	11: "updateTime",
 }

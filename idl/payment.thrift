@@ -4,12 +4,13 @@ include "model.thrift"
 
 struct GetPaymentTokenReq {
     1: i64 orderId;
-    2: string paymentMethod;
+    2: i32 paymentMethod;
 }
 
 struct GetPaymentTokenResp {
     1: model.BaseResp base;
     2: string paymentToken;
+    3: i64 expiredAt;
 }
 
 struct PaymentReq {
@@ -21,20 +22,18 @@ struct PaymentResp {
     1: model.BaseResp base;
 }
 
-struct GetRefundTokenReq {
-    1: i64 orderId;
-    2: string paymentMethod;
-}
-
-struct GetRefundTokenResp {
-    1: model.BaseResp base;
-    2: string refundToken;
-}
-
-struct RefundReq {
-    1: i64 orderId;
+struct PaymentRefundReq {
+    1: i64 orderItemId;
     2: string refundReason;
-    3: string refundToken;
+}
+
+struct PaymentRefundResp {
+    1: model.BaseResp base;
+}
+
+struct ReviewRefundReq {
+    1: i64 orderItemId;
+    2: bool approve;
 }
 
 struct RefundResp {
@@ -44,6 +43,6 @@ struct RefundResp {
 service PaymentService {
     GetPaymentTokenResp GetPaymentToken(1: GetPaymentTokenReq req);
     PaymentResp Payment(1: PaymentReq req);
-    GetRefundTokenResp GetRefundToken(1: GetRefundTokenReq req);
-    RefundResp Refund(1: RefundReq req);
+    PaymentRefundResp PaymentRefund(1: PaymentRefundReq req);
+    RefundResp Refund(1: ReviewRefundReq req);
 }

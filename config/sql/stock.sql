@@ -1,3 +1,5 @@
+CREATE DATABASE stock;
+
 CREATE TABLE `stock` (
     `sku_id` BIGINT NOT NULL  PRIMARY KEY COMMENT 'sku id',
     `stock` BIGINT NOT NULL DEFAULT 0 COMMENT '库存数量, 总数',

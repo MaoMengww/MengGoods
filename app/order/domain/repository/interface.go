@@ -16,6 +16,8 @@ type OrderDB interface {
 	GetPendingMsgs(ctx context.Context) ([]*domain.MqMsg, error)
 	MarkMsg(ctx context.Context, orderId int64) error
 	GetPayAmount(ctx context.Context, orderId int64) (int64, error)
+	GetOrderItem(ctx context.Context, orderItemId int64) (*domain.OrderItem, error)
+	GetOrderInfo(ctx context.Context, orderId int64) (*domain.Order, error)
 }
 
 type OrderMq interface {

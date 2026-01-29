@@ -20,6 +20,7 @@ type Config struct {
 	Server        ServerConfig   `mapstructure:"server"`
 	OTEL          OtelConfig     `mapstructure:"otel"`
 	RabbitMQ      RabbitMQConfig `mapstructure:"rabbitmq"`
+	Secret        SecretConfig   `mapstructure:"secret"`
 }
 
 // MySQLConfig MySQL配置结构体
@@ -82,6 +83,10 @@ type OtelConfig struct {
 	Address string `mapstructure:"address"`
 }
 
+type SecretConfig struct {
+	TopSecret     string `mapstructure:"topSecret"`
+	PaymentSecret string `mapstructure:"paymentSecret"`
+}
 // Init 初始化配置
 func Init() {
 	// 获取当前工作目录

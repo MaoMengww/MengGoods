@@ -576,6 +576,261 @@ var fieldIDToName_GetPayAmountResp = map[int16]string{
 	2: "amount",
 }
 
+type IsOrderExistReq struct {
+	OrderId int64 `thrift:"orderId,1" frugal:"1,default,i64" json:"orderId"`
+}
+
+func NewIsOrderExistReq() *IsOrderExistReq {
+	return &IsOrderExistReq{}
+}
+
+func (p *IsOrderExistReq) InitDefault() {
+}
+
+func (p *IsOrderExistReq) GetOrderId() (v int64) {
+	return p.OrderId
+}
+func (p *IsOrderExistReq) SetOrderId(val int64) {
+	p.OrderId = val
+}
+
+func (p *IsOrderExistReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("IsOrderExistReq(%+v)", *p)
+}
+
+var fieldIDToName_IsOrderExistReq = map[int16]string{
+	1: "orderId",
+}
+
+type IsOrderExistResp struct {
+	Base      *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	Exist     bool            `thrift:"exist,2" frugal:"2,default,bool" json:"exist"`
+	ExpiredAt int64           `thrift:"expiredAt,3" frugal:"3,default,i64" json:"expiredAt"`
+}
+
+func NewIsOrderExistResp() *IsOrderExistResp {
+	return &IsOrderExistResp{}
+}
+
+func (p *IsOrderExistResp) InitDefault() {
+}
+
+var IsOrderExistResp_Base_DEFAULT *model.BaseResp
+
+func (p *IsOrderExistResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return IsOrderExistResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+func (p *IsOrderExistResp) GetExist() (v bool) {
+	return p.Exist
+}
+
+func (p *IsOrderExistResp) GetExpiredAt() (v int64) {
+	return p.ExpiredAt
+}
+func (p *IsOrderExistResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *IsOrderExistResp) SetExist(val bool) {
+	p.Exist = val
+}
+func (p *IsOrderExistResp) SetExpiredAt(val int64) {
+	p.ExpiredAt = val
+}
+
+func (p *IsOrderExistResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *IsOrderExistResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("IsOrderExistResp(%+v)", *p)
+}
+
+var fieldIDToName_IsOrderExistResp = map[int16]string{
+	1: "base",
+	2: "exist",
+	3: "expiredAt",
+}
+
+type GetOrderItemReq struct {
+	OrderItemId int64 `thrift:"orderItemId,1" frugal:"1,default,i64" json:"orderItemId"`
+}
+
+func NewGetOrderItemReq() *GetOrderItemReq {
+	return &GetOrderItemReq{}
+}
+
+func (p *GetOrderItemReq) InitDefault() {
+}
+
+func (p *GetOrderItemReq) GetOrderItemId() (v int64) {
+	return p.OrderItemId
+}
+func (p *GetOrderItemReq) SetOrderItemId(val int64) {
+	p.OrderItemId = val
+}
+
+func (p *GetOrderItemReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetOrderItemReq(%+v)", *p)
+}
+
+var fieldIDToName_GetOrderItemReq = map[int16]string{
+	1: "orderItemId",
+}
+
+type GetOrderItemResp struct {
+	Base      *model.BaseResp  `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	OrderItem *model.OrderItem `thrift:"orderItem,2" frugal:"2,default,model.OrderItem" json:"orderItem"`
+}
+
+func NewGetOrderItemResp() *GetOrderItemResp {
+	return &GetOrderItemResp{}
+}
+
+func (p *GetOrderItemResp) InitDefault() {
+}
+
+var GetOrderItemResp_Base_DEFAULT *model.BaseResp
+
+func (p *GetOrderItemResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return GetOrderItemResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+var GetOrderItemResp_OrderItem_DEFAULT *model.OrderItem
+
+func (p *GetOrderItemResp) GetOrderItem() (v *model.OrderItem) {
+	if !p.IsSetOrderItem() {
+		return GetOrderItemResp_OrderItem_DEFAULT
+	}
+	return p.OrderItem
+}
+func (p *GetOrderItemResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *GetOrderItemResp) SetOrderItem(val *model.OrderItem) {
+	p.OrderItem = val
+}
+
+func (p *GetOrderItemResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *GetOrderItemResp) IsSetOrderItem() bool {
+	return p.OrderItem != nil
+}
+
+func (p *GetOrderItemResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetOrderItemResp(%+v)", *p)
+}
+
+var fieldIDToName_GetOrderItemResp = map[int16]string{
+	1: "base",
+	2: "orderItem",
+}
+
+type GetOrderInfoReq struct {
+	OrderId int64 `thrift:"orderId,1" frugal:"1,default,i64" json:"orderId"`
+}
+
+func NewGetOrderInfoReq() *GetOrderInfoReq {
+	return &GetOrderInfoReq{}
+}
+
+func (p *GetOrderInfoReq) InitDefault() {
+}
+
+func (p *GetOrderInfoReq) GetOrderId() (v int64) {
+	return p.OrderId
+}
+func (p *GetOrderInfoReq) SetOrderId(val int64) {
+	p.OrderId = val
+}
+
+func (p *GetOrderInfoReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetOrderInfoReq(%+v)", *p)
+}
+
+var fieldIDToName_GetOrderInfoReq = map[int16]string{
+	1: "orderId",
+}
+
+type GetOrderInfoResp struct {
+	Base      *model.BaseResp  `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	OrderInfo *model.OrderInfo `thrift:"orderInfo,2" frugal:"2,default,model.OrderInfo" json:"orderInfo"`
+}
+
+func NewGetOrderInfoResp() *GetOrderInfoResp {
+	return &GetOrderInfoResp{}
+}
+
+func (p *GetOrderInfoResp) InitDefault() {
+}
+
+var GetOrderInfoResp_Base_DEFAULT *model.BaseResp
+
+func (p *GetOrderInfoResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return GetOrderInfoResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+var GetOrderInfoResp_OrderInfo_DEFAULT *model.OrderInfo
+
+func (p *GetOrderInfoResp) GetOrderInfo() (v *model.OrderInfo) {
+	if !p.IsSetOrderInfo() {
+		return GetOrderInfoResp_OrderInfo_DEFAULT
+	}
+	return p.OrderInfo
+}
+func (p *GetOrderInfoResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *GetOrderInfoResp) SetOrderInfo(val *model.OrderInfo) {
+	p.OrderInfo = val
+}
+
+func (p *GetOrderInfoResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *GetOrderInfoResp) IsSetOrderInfo() bool {
+	return p.OrderInfo != nil
+}
+
+func (p *GetOrderInfoResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetOrderInfoResp(%+v)", *p)
+}
+
+var fieldIDToName_GetOrderInfoResp = map[int16]string{
+	1: "base",
+	2: "orderInfo",
+}
+
 type OrderService interface {
 	CreateOrder(ctx context.Context, req *CreateOrderReq) (r *CreateOrderResp, err error)
 
@@ -590,6 +845,12 @@ type OrderService interface {
 	MarkOrderPaid(ctx context.Context, req *MarkOrderPaidReq) (r *MarkOrderPaidResp, err error)
 
 	GetPayAmount(ctx context.Context, req *GetPayAmountReq) (r *GetPayAmountResp, err error)
+
+	GetOrderInfo(ctx context.Context, req *GetOrderInfoReq) (r *GetOrderInfoResp, err error)
+
+	GetOrderItem(ctx context.Context, req *GetOrderItemReq) (r *GetOrderItemResp, err error)
+
+	IsOrderExist(ctx context.Context, req *IsOrderExistReq) (r *IsOrderExistResp, err error)
 }
 
 type OrderServiceCreateOrderArgs struct {
@@ -1121,5 +1382,233 @@ func (p *OrderServiceGetPayAmountResult) String() string {
 }
 
 var fieldIDToName_OrderServiceGetPayAmountResult = map[int16]string{
+	0: "success",
+}
+
+type OrderServiceGetOrderInfoArgs struct {
+	Req *GetOrderInfoReq `thrift:"req,1" frugal:"1,default,GetOrderInfoReq" json:"req"`
+}
+
+func NewOrderServiceGetOrderInfoArgs() *OrderServiceGetOrderInfoArgs {
+	return &OrderServiceGetOrderInfoArgs{}
+}
+
+func (p *OrderServiceGetOrderInfoArgs) InitDefault() {
+}
+
+var OrderServiceGetOrderInfoArgs_Req_DEFAULT *GetOrderInfoReq
+
+func (p *OrderServiceGetOrderInfoArgs) GetReq() (v *GetOrderInfoReq) {
+	if !p.IsSetReq() {
+		return OrderServiceGetOrderInfoArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *OrderServiceGetOrderInfoArgs) SetReq(val *GetOrderInfoReq) {
+	p.Req = val
+}
+
+func (p *OrderServiceGetOrderInfoArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *OrderServiceGetOrderInfoArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderServiceGetOrderInfoArgs(%+v)", *p)
+}
+
+var fieldIDToName_OrderServiceGetOrderInfoArgs = map[int16]string{
+	1: "req",
+}
+
+type OrderServiceGetOrderInfoResult struct {
+	Success *GetOrderInfoResp `thrift:"success,0,optional" frugal:"0,optional,GetOrderInfoResp" json:"success,omitempty"`
+}
+
+func NewOrderServiceGetOrderInfoResult() *OrderServiceGetOrderInfoResult {
+	return &OrderServiceGetOrderInfoResult{}
+}
+
+func (p *OrderServiceGetOrderInfoResult) InitDefault() {
+}
+
+var OrderServiceGetOrderInfoResult_Success_DEFAULT *GetOrderInfoResp
+
+func (p *OrderServiceGetOrderInfoResult) GetSuccess() (v *GetOrderInfoResp) {
+	if !p.IsSetSuccess() {
+		return OrderServiceGetOrderInfoResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *OrderServiceGetOrderInfoResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetOrderInfoResp)
+}
+
+func (p *OrderServiceGetOrderInfoResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *OrderServiceGetOrderInfoResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderServiceGetOrderInfoResult(%+v)", *p)
+}
+
+var fieldIDToName_OrderServiceGetOrderInfoResult = map[int16]string{
+	0: "success",
+}
+
+type OrderServiceGetOrderItemArgs struct {
+	Req *GetOrderItemReq `thrift:"req,1" frugal:"1,default,GetOrderItemReq" json:"req"`
+}
+
+func NewOrderServiceGetOrderItemArgs() *OrderServiceGetOrderItemArgs {
+	return &OrderServiceGetOrderItemArgs{}
+}
+
+func (p *OrderServiceGetOrderItemArgs) InitDefault() {
+}
+
+var OrderServiceGetOrderItemArgs_Req_DEFAULT *GetOrderItemReq
+
+func (p *OrderServiceGetOrderItemArgs) GetReq() (v *GetOrderItemReq) {
+	if !p.IsSetReq() {
+		return OrderServiceGetOrderItemArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *OrderServiceGetOrderItemArgs) SetReq(val *GetOrderItemReq) {
+	p.Req = val
+}
+
+func (p *OrderServiceGetOrderItemArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *OrderServiceGetOrderItemArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderServiceGetOrderItemArgs(%+v)", *p)
+}
+
+var fieldIDToName_OrderServiceGetOrderItemArgs = map[int16]string{
+	1: "req",
+}
+
+type OrderServiceGetOrderItemResult struct {
+	Success *GetOrderItemResp `thrift:"success,0,optional" frugal:"0,optional,GetOrderItemResp" json:"success,omitempty"`
+}
+
+func NewOrderServiceGetOrderItemResult() *OrderServiceGetOrderItemResult {
+	return &OrderServiceGetOrderItemResult{}
+}
+
+func (p *OrderServiceGetOrderItemResult) InitDefault() {
+}
+
+var OrderServiceGetOrderItemResult_Success_DEFAULT *GetOrderItemResp
+
+func (p *OrderServiceGetOrderItemResult) GetSuccess() (v *GetOrderItemResp) {
+	if !p.IsSetSuccess() {
+		return OrderServiceGetOrderItemResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *OrderServiceGetOrderItemResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetOrderItemResp)
+}
+
+func (p *OrderServiceGetOrderItemResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *OrderServiceGetOrderItemResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderServiceGetOrderItemResult(%+v)", *p)
+}
+
+var fieldIDToName_OrderServiceGetOrderItemResult = map[int16]string{
+	0: "success",
+}
+
+type OrderServiceIsOrderExistArgs struct {
+	Req *IsOrderExistReq `thrift:"req,1" frugal:"1,default,IsOrderExistReq" json:"req"`
+}
+
+func NewOrderServiceIsOrderExistArgs() *OrderServiceIsOrderExistArgs {
+	return &OrderServiceIsOrderExistArgs{}
+}
+
+func (p *OrderServiceIsOrderExistArgs) InitDefault() {
+}
+
+var OrderServiceIsOrderExistArgs_Req_DEFAULT *IsOrderExistReq
+
+func (p *OrderServiceIsOrderExistArgs) GetReq() (v *IsOrderExistReq) {
+	if !p.IsSetReq() {
+		return OrderServiceIsOrderExistArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *OrderServiceIsOrderExistArgs) SetReq(val *IsOrderExistReq) {
+	p.Req = val
+}
+
+func (p *OrderServiceIsOrderExistArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *OrderServiceIsOrderExistArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderServiceIsOrderExistArgs(%+v)", *p)
+}
+
+var fieldIDToName_OrderServiceIsOrderExistArgs = map[int16]string{
+	1: "req",
+}
+
+type OrderServiceIsOrderExistResult struct {
+	Success *IsOrderExistResp `thrift:"success,0,optional" frugal:"0,optional,IsOrderExistResp" json:"success,omitempty"`
+}
+
+func NewOrderServiceIsOrderExistResult() *OrderServiceIsOrderExistResult {
+	return &OrderServiceIsOrderExistResult{}
+}
+
+func (p *OrderServiceIsOrderExistResult) InitDefault() {
+}
+
+var OrderServiceIsOrderExistResult_Success_DEFAULT *IsOrderExistResp
+
+func (p *OrderServiceIsOrderExistResult) GetSuccess() (v *IsOrderExistResp) {
+	if !p.IsSetSuccess() {
+		return OrderServiceIsOrderExistResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *OrderServiceIsOrderExistResult) SetSuccess(x interface{}) {
+	p.Success = x.(*IsOrderExistResp)
+}
+
+func (p *OrderServiceIsOrderExistResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *OrderServiceIsOrderExistResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OrderServiceIsOrderExistResult(%+v)", *p)
+}
+
+var fieldIDToName_OrderServiceIsOrderExistResult = map[int16]string{
 	0: "success",
 }

@@ -104,3 +104,37 @@ func (s *OrderServiceImpl) GetPayAmount(ctx context.Context, req *order.GetPayAm
 	resp.Amount = amount
 	return resp, nil
 }
+
+func (s *OrderServiceImpl) GetOrderItem(ctx context.Context, req *order.GetOrderItemReq) (resp *order.GetOrderItemResp, err error) {
+	resp = new(order.GetOrderItemResp)
+	orderItem, err := s.usecase.GetOrderItem(ctx, req.OrderItemId)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.OrderItem = pack.ToRpcOrderItem(orderItem)
+	return resp, nil
+}
+
+func (s *OrderServiceImpl) GetOrderInfo(ctx context.Context, req *order.GetOrderInfoReq) (resp *order.GetOrderInfoResp, err error) {
+	resp = new(order.GetOrderInfoResp)
+	orderInfo, err := s.usecase.GetOrderInfo(ctx, req.OrderId)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.OrderInfo = pack.ToRpcOrder(orderInfo)
+	return resp, nil
+}
+
+func (s *OrderServiceImpl) IsOrderExist(ctx context.Context, req *order.IsOrderExistReq) (resp *order.IsOrderExistResp, err error) {
+	resp = new(order.IsOrderExistResp)
+	exist, expiredAt, err := s.usecase.IsOrderExist(ctx, req.OrderId)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.Exist = exist
+	resp.ExpiredAt = expiredAt
+	return resp, nil
+}

@@ -1,3 +1,5 @@
+CREATE DATABASE coupon;
+
 CREATE TABLE `coupon_batch`(
     `batch_id` BIGINT NOT NULL  PRIMARY KEY AUTO_INCREMENT COMMENT '优惠券批次 id',
     `batch_name` VARCHAR(255) NOT NULL COMMENT '优惠券批次名称',

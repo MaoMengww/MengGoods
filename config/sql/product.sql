@@ -1,3 +1,5 @@
+CREATE DATABASE product;
+
 CREATE TABLE `spu` (
     `spu_id` BIGINT NOT NULL  PRIMARY KEY COMMENT '主键, 使用雪花算法',
     `name` VARCHAR(255) NOT NULL COMMENT '商品名称',

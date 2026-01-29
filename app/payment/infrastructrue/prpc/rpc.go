@@ -1,13 +1,8 @@
 package prpc
 
 import (
-	"MengGoods/kitex_gen/user"
-	"MengGoods/kitex_gen/user/userservice"
-	"MengGoods/pkg/base/mcontext"
-	"MengGoods/pkg/constants"
+	"MengGoods/kitex_gen/order/orderservice"
 	"MengGoods/pkg/logger"
-	"MengGoods/pkg/merror"
-	"context"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -20,28 +15,30 @@ import (
 	"github.com/spf13/viper"
 )
 
-type ProductRpc struct {
-	userRpc userservice.Client
+
+
+type PaymentRpc struct {
+	orderClient orderservice.Client
 }
 
-func NewProductRpc(userRpc userservice.Client) *ProductRpc {
-	return &ProductRpc{
-		userRpc: userRpc,
+func NewPaymentRpc(orderClient orderservice.Client) *PaymentRpc {
+	return &PaymentRpc{
+		orderClient: orderClient,
 	}
 }
 
-func NewProductClient() userservice.Client {
+func NewOrderClient() orderservice.Client {
 	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
 	if err != nil {
-		logger.Fatalf("calc rpc Init Falied: err: %v", err)
+		logger.Fatalf("order rpc Init Falied: err: %v", err)
 	}
 
 	cbSuite := circuitbreak.NewCBSuite(func(ri rpcinfo.RPCInfo) string {
 		return ri.To().ServiceName() + ":" + ri.To().Method()
 	})
 
-	c, err := userservice.NewClient(
-		"user",
+	c, err := orderservice.NewClient(
+		"order",
 		client.WithResolver(r),
 		client.WithRPCTimeout(3*time.Second),
 		client.WithFailureRetry(retry.NewFailurePolicy()),
@@ -57,19 +54,3 @@ func NewProductClient() userservice.Client {
 	return c
 }
 
-func (p *ProductRpc) IsAdmin(ctx context.Context) (bool, error) {
-	uid, err := mcontext.GetUserIDFromContext(ctx)
-	if err != nil {
-		return false, err
-	}
-	var req user.GetUserInfoReq
-	req.UserId = uid
-	resp, err := p.userRpc.GetUserInfo(ctx, &req)
-	if err != nil {
-		return false, err
-	}
-	if resp.Base.Code != merror.SuccessCode{
-		return false, merror.NewMerror(resp.Base.Code, resp.Base.Message)
-	}
-	return resp.UserInfo.Role == constants.Admin, nil
-}

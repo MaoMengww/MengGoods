@@ -165,3 +165,43 @@ func (d *OrderDB) GetPayAmount(ctx context.Context, orderId int64) (int64, error
 	}
 	return orderDB.PayPrice, nil
 }
+
+func (d *OrderDB) GetOrderItem(ctx context.Context, orderItemId int64) (*model.OrderItem, error) {
+	var itemDB OrderItem
+	if err := d.db.WithContext(ctx).Where("order_item_id = ?", orderItemId).First(&itemDB).Error; err != nil {
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, "Get order item failed, err:"+err.Error())
+	}
+	return &model.OrderItem{
+		OrderItemId:       itemDB.OrderItemId,
+		OrderId:           itemDB.OrderId,
+		ProductId:         itemDB.ProductId,
+		ProductName:       itemDB.ProductName,
+		ProductImage:      itemDB.ProductImage,
+		ProductPrice:      itemDB.ProductPrice,
+		ProductNum:        itemDB.ProductNum,
+		ProductTotalPrice: itemDB.ProductTotalPrice,
+		ProductProperties: itemDB.ProductProperties,
+	}, nil
+}
+
+func (d *OrderDB) GetOrderInfo(ctx context.Context, orderId int64) (*model.Order, error) {
+	var orderDB Orders
+	if err := d.db.WithContext(ctx).Where("order_id = ?", orderId).First(&orderDB).Error; err != nil {
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, "Get order info failed, err:"+err.Error())
+	}
+	return &model.Order{
+		OrderId:          orderDB.OrderId,
+		UserId:           orderDB.UserId,
+		TotalPrice:       orderDB.TotalPrice,
+		PayPrice:         orderDB.PayPrice,
+		ReceiverName:     orderDB.ReceiverName,
+		ReceiverEmail:    orderDB.ReceiverEmail,
+		ReceiverProvince: orderDB.ReceiverProvince,
+		ReceiverCity:     orderDB.ReceiverCity,
+		ReceiverDetail:   orderDB.ReceiverDetail,
+		OrderStatus:      orderDB.OrderStatus,
+		CreateTime:       orderDB.CreateTime,
+		UpdateTime:       orderDB.UpdateTime,
+		ExpireTime:       orderDB.ExpireTime,
+	}, nil
+}

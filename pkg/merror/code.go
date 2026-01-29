@@ -50,6 +50,15 @@ const (
 	CouponExpired                                          //优惠券已过期
 	CouponTypeNotExist                                     //优惠券类型不存在
 	CouponTotalPriceLessThanCouponThreshold                //未达优惠卷使用门槛
+	PaymentRefundLimitExceededErrorCode                    //退款尝试次数超过最大限制
+	PaymentOrderNotBelongToUserErrorCode                   //支付订单不属于该用户
+	PaymentOrderNotBelongToSellerErrorCode                 //支付订单不属于该卖家
+	PaymentOrderNotPaidErrorCode                           //支付订单未支付
+	PaymentTokenNotExistOrExpired                          //支付token不存在或已过期
+	OrderNotExistErrorCode                                 //订单不存在
+	OrderExpiredErrorCode                                  //支付订单已过期
+	RefundOrderNotExistErrorCode                           //退款订单不存在
+	RefundOrderProcessingErrorCode                         //退款正在处理中
 
 )
 

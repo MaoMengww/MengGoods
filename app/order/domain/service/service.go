@@ -36,6 +36,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, addressId int64, couponI
 			orderItems = append(orderItems, &model.OrderItem{
 				ProductId:         cartItem.SkuId,
 				OrderId:           orderId,
+				UserId:            userId,
 				ProductName:       skuInfo.Name,
 				ProductImage:      skuInfo.SkuImageURL,
 				ProductPrice:      skuInfo.Price,
@@ -147,4 +148,15 @@ func (s *OrderService) SendMsg(ctx context.Context) {
 			}
 		}
 	}
+}
+
+func (s *OrderService) IsOrderExist(ctx context.Context, orderId int64) (bool, int64, error) {
+	order, err := s.OrderDB.ViewOrderById(ctx, orderId)
+	if err != nil {
+		return false, 0, err
+	}
+	if order == nil {
+		return false, 0, nil
+	}
+	return true, order.Order.ExpireTime.Unix(), nil
 }

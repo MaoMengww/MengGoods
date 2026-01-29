@@ -35,6 +35,7 @@ const (
 	DeductType
 )
 
+//订单状态
 const (
 	OrderWaitPay = 0 //待支付
 	OrderPaid = 1 //已支付
@@ -43,7 +44,36 @@ const (
 	OrderCanceled = 4 //已取消
 )
 
+//订单消息状态
 const (
 	MsgWaited = 0
 	MsgSended = 1
+)
+
+//支付方式
+const (
+	PayMethodAliPay = 0 //支付宝
+	PayMethodWeChatPay = 1 //微信支付
+)
+
+//支付状态
+const (
+	PaymentOrderStatusWaiting = 0 //未支付
+	PaymentOrderStatusProcessing = 1 //处理中
+	PaymentOrderStatusPaid = 2 //已支付
+	PaymentOrderStatusRefunded = 3 //支付失败
+)
+
+//退款状态
+const (
+	RefundStatusWaiting = 0 //待处理
+	RefundStatusProcessing = 1 //处理中
+	RefundStatusSuccess = 2 //成功
+	RefundStatusFailed = 3 //失败
+)
+
+//流水类型
+const (
+	PaymentTransactionTypePay = 0 //支付
+	PaymentTransactionTypeRefund = 1 //退款
 )

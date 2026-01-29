@@ -33,3 +33,15 @@ func (u *Usecase) MarkOrderPaid(ctx context.Context, orderId int64) error {
 func (u *Usecase) GetPayAmount(ctx context.Context, orderId int64) (int64, error) {
 	return u.OrderDB.GetPayAmount(ctx, orderId)
 }
+
+func (u *Usecase) IsOrderExist(ctx context.Context, orderId int64) (bool, int64, error) {
+	return u.service.IsOrderExist(ctx, orderId)
+}
+
+func (u *Usecase) GetOrderItem(ctx context.Context, orderItemId int64) (*model.OrderItem, error) {
+	return u.OrderDB.GetOrderItem(ctx, orderItemId)
+}
+
+func (u *Usecase) GetOrderInfo(ctx context.Context, orderId int64) (*model.Order, error) {
+	return u.OrderDB.GetOrderInfo(ctx, orderId)
+}

@@ -1,3 +1,5 @@
+CREATE DATABASE user;
+
 -- 用户表
 CREATE TABLE `user` (
                         `user_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '使用自增主键',
