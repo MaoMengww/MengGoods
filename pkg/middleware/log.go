@@ -55,7 +55,9 @@ func ErrorLog() endpoint.Middleware {
 
 					case code >= merror.InternalDatabaseErrorCode:
 						logger.CtxErrorf(ctx, "InternalServerError: [%d] %s", code, msg)
-
+						//转化为系统错误，返回给客户端，避免暴露真实错误
+						baseResp.Code = merror.InternalServerErrorCode
+						baseResp.Message = "InternalServerError"
 					case code >= merror.UserAlreadyExist:
 						logger.CtxWarnf(ctx, "LogicError: [%d] %s", code, msg)
 

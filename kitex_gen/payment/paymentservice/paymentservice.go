@@ -34,10 +34,10 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
-	"Refund": kitex.NewMethodInfo(
-		refundHandler,
-		newPaymentServiceRefundArgs,
-		newPaymentServiceRefundResult,
+	"ReviewRefund": kitex.NewMethodInfo(
+		reviewRefundHandler,
+		newPaymentServiceReviewRefundArgs,
+		newPaymentServiceReviewRefundResult,
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
@@ -161,22 +161,22 @@ func newPaymentServicePaymentRefundResult() interface{} {
 	return payment.NewPaymentServicePaymentRefundResult()
 }
 
-func refundHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*payment.PaymentServiceRefundArgs)
-	realResult := result.(*payment.PaymentServiceRefundResult)
-	success, err := handler.(payment.PaymentService).Refund(ctx, realArg.Req)
+func reviewRefundHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*payment.PaymentServiceReviewRefundArgs)
+	realResult := result.(*payment.PaymentServiceReviewRefundResult)
+	success, err := handler.(payment.PaymentService).ReviewRefund(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newPaymentServiceRefundArgs() interface{} {
-	return payment.NewPaymentServiceRefundArgs()
+func newPaymentServiceReviewRefundArgs() interface{} {
+	return payment.NewPaymentServiceReviewRefundArgs()
 }
 
-func newPaymentServiceRefundResult() interface{} {
-	return payment.NewPaymentServiceRefundResult()
+func newPaymentServiceReviewRefundResult() interface{} {
+	return payment.NewPaymentServiceReviewRefundResult()
 }
 
 type kClient struct {
@@ -219,11 +219,11 @@ func (p *kClient) PaymentRefund(ctx context.Context, req *payment.PaymentRefundR
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) Refund(ctx context.Context, req *payment.ReviewRefundReq) (r *payment.RefundResp, err error) {
-	var _args payment.PaymentServiceRefundArgs
+func (p *kClient) ReviewRefund(ctx context.Context, req *payment.ReviewRefundReq) (r *payment.ReviewRefundResp, err error) {
+	var _args payment.PaymentServiceReviewRefundArgs
 	_args.Req = req
-	var _result payment.PaymentServiceRefundResult
-	if err = p.c.Call(ctx, "Refund", &_args, &_result); err != nil {
+	var _result payment.PaymentServiceReviewRefundResult
+	if err = p.c.Call(ctx, "ReviewRefund", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

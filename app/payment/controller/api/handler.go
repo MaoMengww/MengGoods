@@ -58,9 +58,9 @@ func (s *PaymentServiceImpl) PaymentRefund(ctx context.Context, req *payment.Pay
 }
 
 // Refund implements the PaymentServiceImpl interface.
-func (s *PaymentServiceImpl) Refund(ctx context.Context, req *payment.ReviewRefundReq) (resp *payment.RefundResp, err error) {
+func (s *PaymentServiceImpl) ReviewRefund(ctx context.Context, req *payment.ReviewRefundReq) (resp *payment.ReviewRefundResp, err error) {
 	// TODO: Your code here...
-	resp = payment.NewRefundResp()
+	resp = payment.NewReviewRefundResp()
 	err = s.usecase.ReviewRefund(ctx, req.OrderItemId, req.Approve)
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)

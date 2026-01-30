@@ -15,7 +15,7 @@ type AddAddressResp struct {
 }
 
 type GetAddressResp struct {
-	AddressList []*model.AddressInfo `json:"addresslist"`
+	AddressList []*model.AddressInfo `json:"addressList"`
 }
 
 type BanUserResp struct {

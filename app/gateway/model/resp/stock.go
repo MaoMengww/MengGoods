@@ -7,3 +7,9 @@ type GetStockResp struct {
 type GetStocksResp struct {
 	Stocks []*GetStockResp `json:"stocks"`
 }
+
+type CreateStockResp struct {
+}
+
+type AddStockResp struct {
+}

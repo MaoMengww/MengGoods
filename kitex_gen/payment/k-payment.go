@@ -977,7 +977,7 @@ func (p *ReviewRefundReq) field2Length() int {
 	return l
 }
 
-func (p *RefundResp) FastRead(buf []byte) (int, error) {
+func (p *ReviewRefundResp) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -1021,12 +1021,12 @@ func (p *RefundResp) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_RefundResp[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ReviewRefundResp[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *RefundResp) FastReadField1(buf []byte) (int, error) {
+func (p *ReviewRefundResp) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 	_field := model.NewBaseResp()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1038,11 +1038,11 @@ func (p *RefundResp) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *RefundResp) FastWrite(buf []byte) int {
+func (p *ReviewRefundResp) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *RefundResp) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *ReviewRefundResp) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], w)
@@ -1051,7 +1051,7 @@ func (p *RefundResp) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	return offset
 }
 
-func (p *RefundResp) BLength() int {
+func (p *ReviewRefundResp) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field1Length()
@@ -1060,14 +1060,14 @@ func (p *RefundResp) BLength() int {
 	return l
 }
 
-func (p *RefundResp) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
+func (p *ReviewRefundResp) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 1)
 	offset += p.Base.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
-func (p *RefundResp) field1Length() int {
+func (p *ReviewRefundResp) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
 	l += p.Base.BLength()
@@ -1668,7 +1668,7 @@ func (p *PaymentServicePaymentRefundResult) field0Length() int {
 	return l
 }
 
-func (p *PaymentServiceRefundArgs) FastRead(buf []byte) (int, error) {
+func (p *PaymentServiceReviewRefundArgs) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -1712,12 +1712,12 @@ func (p *PaymentServiceRefundArgs) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceRefundArgs[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceReviewRefundArgs[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *PaymentServiceRefundArgs) FastReadField1(buf []byte) (int, error) {
+func (p *PaymentServiceReviewRefundArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 	_field := NewReviewRefundReq()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
@@ -1729,11 +1729,11 @@ func (p *PaymentServiceRefundArgs) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *PaymentServiceRefundArgs) FastWrite(buf []byte) int {
+func (p *PaymentServiceReviewRefundArgs) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *PaymentServiceRefundArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *PaymentServiceReviewRefundArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], w)
@@ -1742,7 +1742,7 @@ func (p *PaymentServiceRefundArgs) FastWriteNocopy(buf []byte, w thrift.NocopyWr
 	return offset
 }
 
-func (p *PaymentServiceRefundArgs) BLength() int {
+func (p *PaymentServiceReviewRefundArgs) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field1Length()
@@ -1751,21 +1751,21 @@ func (p *PaymentServiceRefundArgs) BLength() int {
 	return l
 }
 
-func (p *PaymentServiceRefundArgs) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
+func (p *PaymentServiceReviewRefundArgs) fastWriteField1(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 1)
 	offset += p.Req.FastWriteNocopy(buf[offset:], w)
 	return offset
 }
 
-func (p *PaymentServiceRefundArgs) field1Length() int {
+func (p *PaymentServiceReviewRefundArgs) field1Length() int {
 	l := 0
 	l += thrift.Binary.FieldBeginLength()
 	l += p.Req.BLength()
 	return l
 }
 
-func (p *PaymentServiceRefundResult) FastRead(buf []byte) (int, error) {
+func (p *PaymentServiceReviewRefundResult) FastRead(buf []byte) (int, error) {
 
 	var err error
 	var offset int
@@ -1809,14 +1809,14 @@ func (p *PaymentServiceRefundResult) FastRead(buf []byte) (int, error) {
 ReadFieldBeginError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceRefundResult[fieldId]), err)
+	return offset, thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_PaymentServiceReviewRefundResult[fieldId]), err)
 SkipFieldError:
 	return offset, thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 }
 
-func (p *PaymentServiceRefundResult) FastReadField0(buf []byte) (int, error) {
+func (p *PaymentServiceReviewRefundResult) FastReadField0(buf []byte) (int, error) {
 	offset := 0
-	_field := NewRefundResp()
+	_field := NewReviewRefundResp()
 	if l, err := _field.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
@@ -1826,11 +1826,11 @@ func (p *PaymentServiceRefundResult) FastReadField0(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *PaymentServiceRefundResult) FastWrite(buf []byte) int {
+func (p *PaymentServiceReviewRefundResult) FastWrite(buf []byte) int {
 	return p.FastWriteNocopy(buf, nil)
 }
 
-func (p *PaymentServiceRefundResult) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
+func (p *PaymentServiceReviewRefundResult) FastWriteNocopy(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p != nil {
 		offset += p.fastWriteField0(buf[offset:], w)
@@ -1839,7 +1839,7 @@ func (p *PaymentServiceRefundResult) FastWriteNocopy(buf []byte, w thrift.Nocopy
 	return offset
 }
 
-func (p *PaymentServiceRefundResult) BLength() int {
+func (p *PaymentServiceReviewRefundResult) BLength() int {
 	l := 0
 	if p != nil {
 		l += p.field0Length()
@@ -1848,7 +1848,7 @@ func (p *PaymentServiceRefundResult) BLength() int {
 	return l
 }
 
-func (p *PaymentServiceRefundResult) fastWriteField0(buf []byte, w thrift.NocopyWriter) int {
+func (p *PaymentServiceReviewRefundResult) fastWriteField0(buf []byte, w thrift.NocopyWriter) int {
 	offset := 0
 	if p.IsSetSuccess() {
 		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRUCT, 0)
@@ -1857,7 +1857,7 @@ func (p *PaymentServiceRefundResult) fastWriteField0(buf []byte, w thrift.Nocopy
 	return offset
 }
 
-func (p *PaymentServiceRefundResult) field0Length() int {
+func (p *PaymentServiceReviewRefundResult) field0Length() int {
 	l := 0
 	if p.IsSetSuccess() {
 		l += thrift.Binary.FieldBeginLength()
@@ -1890,10 +1890,10 @@ func (p *PaymentServicePaymentRefundResult) GetResult() interface{} {
 	return p.Success
 }
 
-func (p *PaymentServiceRefundArgs) GetFirstArgument() interface{} {
+func (p *PaymentServiceReviewRefundArgs) GetFirstArgument() interface{} {
 	return p.Req
 }
 
-func (p *PaymentServiceRefundResult) GetResult() interface{} {
+func (p *PaymentServiceReviewRefundResult) GetResult() interface{} {
 	return p.Success
 }

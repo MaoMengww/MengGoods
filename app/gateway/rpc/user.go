@@ -28,7 +28,7 @@ var UserClient userservice.Client
 func UserInit() {
 	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
 	if err != nil {
-		logger.Fatalf("calc rpc Init Falied: err: %v", err)
+		logger.Fatalf("user rpc Init Falied: err: %v", err)
 	}
 
 	cbSuite := circuitbreak.NewCBSuite(func(ri rpcinfo.RPCInfo) string {

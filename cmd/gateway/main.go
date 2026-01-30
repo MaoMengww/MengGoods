@@ -19,8 +19,18 @@ func main() {
 	defer p(context.Background()) */
 	rpc.UserInit()
 	rpc.ProductInit()
+	rpc.CouponInit()
+	rpc.CartInit()
+	rpc.PaymentInit()
+	rpc.OrderInit()
+	rpc.StockInit()
 	h := server.Default(server.WithHostPorts(":10000"))
 	router.InitUserRouter(h)
 	router.InitProductRouter(h)
+	router.InitCouponRouter(h)
+	router.InitCartRouter(h)
+	router.InitPaymentRouter(h)
+	router.InitOrderRouter(h)
+	router.InitStockRouter(h)
 	h.Spin()
 }

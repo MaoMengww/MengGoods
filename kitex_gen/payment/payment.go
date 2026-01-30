@@ -292,41 +292,41 @@ var fieldIDToName_ReviewRefundReq = map[int16]string{
 	2: "approve",
 }
 
-type RefundResp struct {
+type ReviewRefundResp struct {
 	Base *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
 }
 
-func NewRefundResp() *RefundResp {
-	return &RefundResp{}
+func NewReviewRefundResp() *ReviewRefundResp {
+	return &ReviewRefundResp{}
 }
 
-func (p *RefundResp) InitDefault() {
+func (p *ReviewRefundResp) InitDefault() {
 }
 
-var RefundResp_Base_DEFAULT *model.BaseResp
+var ReviewRefundResp_Base_DEFAULT *model.BaseResp
 
-func (p *RefundResp) GetBase() (v *model.BaseResp) {
+func (p *ReviewRefundResp) GetBase() (v *model.BaseResp) {
 	if !p.IsSetBase() {
-		return RefundResp_Base_DEFAULT
+		return ReviewRefundResp_Base_DEFAULT
 	}
 	return p.Base
 }
-func (p *RefundResp) SetBase(val *model.BaseResp) {
+func (p *ReviewRefundResp) SetBase(val *model.BaseResp) {
 	p.Base = val
 }
 
-func (p *RefundResp) IsSetBase() bool {
+func (p *ReviewRefundResp) IsSetBase() bool {
 	return p.Base != nil
 }
 
-func (p *RefundResp) String() string {
+func (p *ReviewRefundResp) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("RefundResp(%+v)", *p)
+	return fmt.Sprintf("ReviewRefundResp(%+v)", *p)
 }
 
-var fieldIDToName_RefundResp = map[int16]string{
+var fieldIDToName_ReviewRefundResp = map[int16]string{
 	1: "base",
 }
 
@@ -337,7 +337,7 @@ type PaymentService interface {
 
 	PaymentRefund(ctx context.Context, req *PaymentRefundReq) (r *PaymentRefundResp, err error)
 
-	Refund(ctx context.Context, req *ReviewRefundReq) (r *RefundResp, err error)
+	ReviewRefund(ctx context.Context, req *ReviewRefundReq) (r *ReviewRefundResp, err error)
 }
 
 type PaymentServiceGetPaymentTokenArgs struct {
@@ -568,78 +568,78 @@ var fieldIDToName_PaymentServicePaymentRefundResult = map[int16]string{
 	0: "success",
 }
 
-type PaymentServiceRefundArgs struct {
+type PaymentServiceReviewRefundArgs struct {
 	Req *ReviewRefundReq `thrift:"req,1" frugal:"1,default,ReviewRefundReq" json:"req"`
 }
 
-func NewPaymentServiceRefundArgs() *PaymentServiceRefundArgs {
-	return &PaymentServiceRefundArgs{}
+func NewPaymentServiceReviewRefundArgs() *PaymentServiceReviewRefundArgs {
+	return &PaymentServiceReviewRefundArgs{}
 }
 
-func (p *PaymentServiceRefundArgs) InitDefault() {
+func (p *PaymentServiceReviewRefundArgs) InitDefault() {
 }
 
-var PaymentServiceRefundArgs_Req_DEFAULT *ReviewRefundReq
+var PaymentServiceReviewRefundArgs_Req_DEFAULT *ReviewRefundReq
 
-func (p *PaymentServiceRefundArgs) GetReq() (v *ReviewRefundReq) {
+func (p *PaymentServiceReviewRefundArgs) GetReq() (v *ReviewRefundReq) {
 	if !p.IsSetReq() {
-		return PaymentServiceRefundArgs_Req_DEFAULT
+		return PaymentServiceReviewRefundArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *PaymentServiceRefundArgs) SetReq(val *ReviewRefundReq) {
+func (p *PaymentServiceReviewRefundArgs) SetReq(val *ReviewRefundReq) {
 	p.Req = val
 }
 
-func (p *PaymentServiceRefundArgs) IsSetReq() bool {
+func (p *PaymentServiceReviewRefundArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *PaymentServiceRefundArgs) String() string {
+func (p *PaymentServiceReviewRefundArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("PaymentServiceRefundArgs(%+v)", *p)
+	return fmt.Sprintf("PaymentServiceReviewRefundArgs(%+v)", *p)
 }
 
-var fieldIDToName_PaymentServiceRefundArgs = map[int16]string{
+var fieldIDToName_PaymentServiceReviewRefundArgs = map[int16]string{
 	1: "req",
 }
 
-type PaymentServiceRefundResult struct {
-	Success *RefundResp `thrift:"success,0,optional" frugal:"0,optional,RefundResp" json:"success,omitempty"`
+type PaymentServiceReviewRefundResult struct {
+	Success *ReviewRefundResp `thrift:"success,0,optional" frugal:"0,optional,ReviewRefundResp" json:"success,omitempty"`
 }
 
-func NewPaymentServiceRefundResult() *PaymentServiceRefundResult {
-	return &PaymentServiceRefundResult{}
+func NewPaymentServiceReviewRefundResult() *PaymentServiceReviewRefundResult {
+	return &PaymentServiceReviewRefundResult{}
 }
 
-func (p *PaymentServiceRefundResult) InitDefault() {
+func (p *PaymentServiceReviewRefundResult) InitDefault() {
 }
 
-var PaymentServiceRefundResult_Success_DEFAULT *RefundResp
+var PaymentServiceReviewRefundResult_Success_DEFAULT *ReviewRefundResp
 
-func (p *PaymentServiceRefundResult) GetSuccess() (v *RefundResp) {
+func (p *PaymentServiceReviewRefundResult) GetSuccess() (v *ReviewRefundResp) {
 	if !p.IsSetSuccess() {
-		return PaymentServiceRefundResult_Success_DEFAULT
+		return PaymentServiceReviewRefundResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *PaymentServiceRefundResult) SetSuccess(x interface{}) {
-	p.Success = x.(*RefundResp)
+func (p *PaymentServiceReviewRefundResult) SetSuccess(x interface{}) {
+	p.Success = x.(*ReviewRefundResp)
 }
 
-func (p *PaymentServiceRefundResult) IsSetSuccess() bool {
+func (p *PaymentServiceReviewRefundResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *PaymentServiceRefundResult) String() string {
+func (p *PaymentServiceReviewRefundResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("PaymentServiceRefundResult(%+v)", *p)
+	return fmt.Sprintf("PaymentServiceReviewRefundResult(%+v)", *p)
 }
 
-var fieldIDToName_PaymentServiceRefundResult = map[int16]string{
+var fieldIDToName_PaymentServiceReviewRefundResult = map[int16]string{
 	0: "success",
 }

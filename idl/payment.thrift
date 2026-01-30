@@ -36,7 +36,7 @@ struct ReviewRefundReq {
     2: bool approve;
 }
 
-struct RefundResp {
+struct ReviewRefundResp {
     1: model.BaseResp base;
 }
 
@@ -44,5 +44,5 @@ service PaymentService {
     GetPaymentTokenResp GetPaymentToken(1: GetPaymentTokenReq req);
     PaymentResp Payment(1: PaymentReq req);
     PaymentRefundResp PaymentRefund(1: PaymentRefundReq req);
-    RefundResp Refund(1: ReviewRefundReq req);
+    ReviewRefundResp ReviewRefund(1: ReviewRefundReq req);
 }
