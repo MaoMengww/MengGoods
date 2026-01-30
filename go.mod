@@ -9,7 +9,6 @@ require (
 	github.com/cloudwego/gopkg v0.1.7
 	github.com/cloudwego/hertz v0.10.3
 	github.com/cloudwego/kitex v0.15.2
-	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/hertz-contrib/opensergo v0.0.1
 	github.com/kitex-contrib/obs-opentelemetry v0.3.0
@@ -86,8 +85,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nyaruka/phonenumbers v1.0.55 // indirect
-	github.com/onsi/ginkgo v1.16.5 // indirect
-	github.com/onsi/gomega v1.38.3 // indirect
 	github.com/paulmach/orb v0.11.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect

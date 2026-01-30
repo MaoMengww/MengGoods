@@ -8,25 +8,6 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// lua脚本, 防止超卖
-const LuaReduceStock = `
-	local failed_status = -1
-	for i = 1, #KEYS do
-		local stock = tonumber(redis.call('get', KEYS[i]))
-		local count = tonumber(ARGV[i])
-		if stock < count then
-			failed_status = i
-			break
-		end
-	end
-	if failed_status ~= -1 then
-		return -1
-	end
-	for i = 1, #KEYS do
-		redis.call('decrby', KEYS[i], ARGV[i])
-	end
-	return 1
-`
 
 type StockCache struct {
 	*redis.Client
@@ -75,7 +56,7 @@ func (p *StockCache) RedStock(ctx context.Context, stockItems map[string]int32) 
 		args = append(args, count)
 	}
 	//执行lua脚本
-	result, err := p.Client.EvalSha(ctx, LuaReduceStock, keys, args...).Int()
+	result, err := p.Client.EvalSha(ctx, scripts[ReduceKey].Hash, keys, args...).Int()
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("reduce stock cache error: %v", err))
 	}

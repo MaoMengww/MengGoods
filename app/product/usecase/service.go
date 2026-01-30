@@ -8,7 +8,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/go-redis/redis"
+	"github.com/redis/go-redis/v9"
 )
 
 func (u *ProductUsecase) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
