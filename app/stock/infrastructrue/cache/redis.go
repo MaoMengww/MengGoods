@@ -19,7 +19,7 @@ const LuaReduceStock = `
 			break
 		end
 	end
-	if failed_statu ~= -1 then
+	if failed_status ~= -1 then
 		return -1
 	end
 	for i = 1, #KEYS do
