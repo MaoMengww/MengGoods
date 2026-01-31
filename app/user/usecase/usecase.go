@@ -18,6 +18,8 @@ type UserUsecase interface {
 	BanUser(ctx context.Context, uid int64) error
 	UnBanUser(ctx context.Context, uid int64) error
 	SetAdmin(ctx context.Context, password string, uid int64) error
+	SendCode(ctx context.Context, email string) error
+	UpdatePassword(ctx context.Context, code string, password string) error
 }
 
 type userUsecase struct {

@@ -24,17 +24,14 @@ func (s *UserService) CreateUser(ctx context.Context, user *model.User) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	user.Uid = uid
+	user.UserId = uid
 	return uid, nil
 }
 
 func (s *UserService) GetUserInfo(ctx context.Context, uid int64) (*model.User, error) {
 	user, err := s.db.GetUserByID(ctx, uid)
 	if err != nil {
-		return nil, merror.NewMerror(
-			merror.InternalDatabaseErrorCode,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return nil, err
 	}
 	return user, nil
 }
@@ -76,10 +73,7 @@ func (s *UserService) IsBanned(ctx context.Context, uid int64) (bool, error) {
 	sKey := s.cache.GetBanKey(ctx, uid)
 	isBan, err := s.cache.IsBanned(ctx, sKey)
 	if err != nil {
-		return false, merror.NewMerror(
-			merror.InternalCacheErrorCode,
-			fmt.Sprintf("failed to check if user is banned, err:%v", err),
-		)
+		return false, err
 	}
 	return isBan, nil
 }
@@ -128,10 +122,7 @@ func (s *UserService) UserLogin(ctx context.Context, uid int64) error {
 		}
 	}
 	if err := s.cache.SetLogin(ctx, key, token); err != nil {
-		return merror.NewMerror(
-			merror.InternalCacheErrorCode,
-			fmt.Sprintf("failed to set login, err4:%v", err),
-		)
+		return err
 	}
 	return nil
 }
@@ -139,17 +130,11 @@ func (s *UserService) UserLogin(ctx context.Context, uid int64) error {
 func (s *UserService) BanUser(ctx context.Context, uid int64) error {
 	me, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
-		return merror.NewMerror(
-			merror.ParamFromContextFailed,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return err
 	}
 	myInfo, err := s.db.GetUserByID(ctx, me)
 	if err != nil {
-		return merror.NewMerror(
-			merror.InternalDatabaseErrorCode,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return err
 	}
 	//检查是否为管理员
 	if myInfo.Role != constants.Admin {
@@ -168,10 +153,7 @@ func (s *UserService) BanUser(ctx context.Context, uid int64) error {
 	//检查用户是否存在
 	user, err := s.db.GetUserByID(ctx, uid)
 	if err != nil {
-		return merror.NewMerror(
-			merror.InternalDatabaseErrorCode,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return err
 	}
 	//检查用户是否被封禁
 	isBan, err := s.IsBanned(ctx, uid)
@@ -208,17 +190,11 @@ func (s *UserService) BanUser(ctx context.Context, uid int64) error {
 func (s *UserService) UnBanUser(ctx context.Context, uid int64) error {
 	me, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
-		return merror.NewMerror(
-			merror.ParamFromContextFailed,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return err
 	}
 	myInfo, err := s.db.GetUserByID(ctx, me)
 	if err != nil {
-		return merror.NewMerror(
-			merror.InternalDatabaseErrorCode,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return err
 	}
 	//检查是否为管理员
 	if myInfo.Role != constants.Admin {
@@ -230,10 +206,7 @@ func (s *UserService) UnBanUser(ctx context.Context, uid int64) error {
 	//检查用户是否存在
 	user, err := s.db.GetUserByID(ctx, uid)
 	if err != nil {
-		return merror.NewMerror(
-			merror.InternalDatabaseErrorCode,
-			fmt.Sprintf("failed to get user info, err:%v", err),
-		)
+		return err
 	}
 	if user.Role == constants.Admin {
 		return merror.NewMerror(
@@ -273,6 +246,40 @@ func (s *UserService) UserLogOut(ctx context.Context, uid int64) error {
 			merror.InternalCacheErrorCode,
 			fmt.Sprintf("failed to delete login, err:%v", err),
 		)
+	}
+	return nil
+}
+
+func (u *UserService) SendCode(ctx context.Context, email string) error {
+	uid, err := mcontext.GetUserIDFromContext(ctx)
+	if err != nil {
+		return err
+	}
+	//模拟产生6位密码，密码请自行前往redis查看
+	code, err := utils.GenerateNumber(6)
+	if err != nil {
+		return err
+	}
+	if err := u.cache.SetCode(ctx, u.cache.GetCodeKey(ctx, uid), code); err != nil {
+		return err
+	}
+	return nil
+}
+
+func(u *UserService) UpdatePassword(ctx context.Context, password string, code string) error {
+	uid, err := mcontext.GetUserIDFromContext(ctx)
+	if err != nil {
+		return err
+	}
+	getedCode, err := u.cache.GetCode(ctx, u.cache.GetCodeKey(ctx, uid))
+	if err != nil{
+		return  err
+	}
+	if getedCode != code{
+		return merror.NewMerror(merror.CodeIsNotMatch, "code is not match")
+	}
+	if err := u.db.UpdatePassword(ctx, password, uid); err != nil {
+		return err
 	}
 	return nil
 }

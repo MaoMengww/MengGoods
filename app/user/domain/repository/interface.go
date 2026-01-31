@@ -14,6 +14,7 @@ type UserDB interface {
 	AddAddress(ctx context.Context, addr *model.Address) (int64, error)
 	GetAddressByID(ctx context.Context, addressId int64) (*model.Address, error)
 	SetUserAdmin(ctx context.Context, uid int64) error
+	UpdatePassword(ctx context.Context, password string, uid int64) error
 }
 
 // 缓存
@@ -21,10 +22,13 @@ type UserCache interface {
 	IsBanned(ctx context.Context, key string) (bool, error)
 	SetUserBan(ctx context.Context, key string) error             //设置用户被ban
 	DeleteUserBan(ctx context.Context, key string) error          //删除用户被ban
+	SetCode(ctx context.Context, key string, code string) error   //设置验证码
+	GetCode(ctx context.Context, key string) (string, error)      //获取验证码
 	SetLogin(ctx context.Context, key string, token string) error //设置用户登录
 	DeleteLogIn(ctx context.Context, key string) error            //删除用户登录
 	GetBanKey(ctx context.Context, uid int64) string              //获取用户被ban的key
 	GetInKey(ctx context.Context, uid int64) string               //获取用户会话存在的key
+	GetCodeKey(ctx context.Context, uid int64) string             //获取验证码key
 	GetToken(ctx context.Context, key string) (string, error)     //获取key对应的token
 	IsExist(ctx context.Context, key string) (bool, error)        //判断key是否存在
 }

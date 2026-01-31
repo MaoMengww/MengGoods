@@ -3,7 +3,7 @@ package resp
 import "MengGoods/kitex_gen/model"
 
 type RegisterResp struct {
-	UserId int64 `json:"uid"`
+	UserId int64 `json:"userId"`
 }
 
 type LoginResp struct {
@@ -11,7 +11,7 @@ type LoginResp struct {
 }
 
 type AddAddressResp struct {
-	AddressId int64 `json:"addressid"`
+	AddressId int64 `json:"addressId"`
 }
 
 type GetAddressResp struct {

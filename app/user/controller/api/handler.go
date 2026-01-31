@@ -166,12 +166,25 @@ func (s *UserServiceImpl) Logout(ctx context.Context, req *user.LogoutReq) (resp
 
 // SendCode implements the UserServiceImpl interface.
 func (s *UserServiceImpl) SendCode(ctx context.Context, req *user.SendCodeReq) (resp *user.SendCodeResp, err error) {
-	// TODO: Your code here...
-	return
+	r := new(user.SendCodeResp)
+	if err = s.usecase.SendCode(ctx, req.Email); err != nil {
+		r.Base = base.BuildBaseResp(err)
+		return r, nil
+	}
+	r.Base = base.BuildBaseResp(nil)
+	resp = r
+	return r, nil
 }
 
 // ResetPwd implements the UserServiceImpl interface.
 func (s *UserServiceImpl) ResetPwd(ctx context.Context, req *user.ResetPwdReq) (resp *user.ResetPwdResp, err error) {
 	// TODO: Your code here...
-	return
+	r := new(user.ResetPwdResp)
+	if err = s.usecase.UpdatePassword(ctx, req.Code, req.Password); err != nil {
+		r.Base = base.BuildBaseResp(err)
+		return r, nil
+	}
+	r.Base = base.BuildBaseResp(nil)
+	resp = r
+	return r, nil
 }

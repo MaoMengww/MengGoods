@@ -7,8 +7,9 @@ import (
 
 func BuildUserInfo(user *domainModel.User) *model.UserInfo {
 	return &model.UserInfo{
-		Id:       user.Uid,
+		Id:       user.UserId,
 		Username: user.Username,
+		Email:    user.Email,
 		Role:     user.Role,
 	}
 }

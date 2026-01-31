@@ -21,18 +21,7 @@ func (u *userUsecase) Register(ctx context.Context, user *model.User) (int64, er
 	if err := utils.Verify(utils.VerifyEmail(user.Email), utils.VerifyPassword(user.Password), utils.VerifyUsername(user.Username)); err != nil {
 		return 0, err
 	}
-	exist, err := u.db.IsUserExist(ctx, user.Username)
-	//db错误
-	if err != nil {
-		return 0, merror.NewMerror(
-			merror.InternalDatabaseErrorCode,
-			fmt.Sprintf("check user exist failed: %v", err),
-		)
-	}
-	//用户已存在
-	if exist {
-		return 0, merror.NewMerror(merror.UserAlreadyExist, "user already exists")
-	}
+	var err error
 	//加密密码
 	user.Password, err = utils.EncryptPassword(user.Password)
 	if err != nil {
@@ -64,7 +53,7 @@ func (u *userUsecase) Login(ctx context.Context, user *model.User) (*model.User,
 			"user not exists",
 		)
 	}
-	exist, err := u.service.IsBanned(ctx, dbUser.Uid)
+	exist, err := u.service.IsBanned(ctx, dbUser.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +70,7 @@ func (u *userUsecase) Login(ctx context.Context, user *model.User) (*model.User,
 			"password not match",
 		)
 	}
-	err = u.service.UserLogin(ctx, dbUser.Uid)
+	err = u.service.UserLogin(ctx, dbUser.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -191,4 +180,12 @@ func (u *userUsecase) LogOut(ctx context.Context) error {
 		return err
 	}
 	return nil
+}
+
+func (u *userUsecase) SendCode(ctx context.Context, email string) error {
+	return u.service.SendCode(ctx, email)
+}
+
+func (u *userUsecase) UpdatePassword(ctx context.Context, code string, password string) error {
+	return u.service.UpdatePassword(ctx, password, code)
 }

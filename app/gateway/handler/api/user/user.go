@@ -113,12 +113,12 @@ func BanUser(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.BanUser(ctx, &req)
+	_, err = rpc.BanUser(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func UnBanUser(ctx context.Context, c *app.RequestContext) {
@@ -128,12 +128,12 @@ func UnBanUser(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.UnBanUser(ctx, &req)
+	_, err = rpc.UnBanUser(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func SetAdmin(ctx context.Context, c *app.RequestContext) {
@@ -143,12 +143,12 @@ func SetAdmin(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.SetAdmin(ctx, &req)
+	_, err = rpc.SetAdmin(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func Logout(ctx context.Context, c *app.RequestContext) {
@@ -158,12 +158,12 @@ func Logout(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.Logout(ctx, &req)
+	_, err = rpc.Logout(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func SendCode(ctx context.Context, c *app.RequestContext) {
@@ -173,12 +173,12 @@ func SendCode(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.SendCode(ctx, &req)
+	_, err = rpc.SendCode(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func ResetPassword(ctx context.Context, c *app.RequestContext) {
@@ -188,10 +188,10 @@ func ResetPassword(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.ResetPwd(ctx, &req)
+	_, err = rpc.ResetPwd(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }

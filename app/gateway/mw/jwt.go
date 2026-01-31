@@ -17,6 +17,7 @@ func AuthMiddleware() app.HandlerFunc {
 		claims, err := utils.CheckToken(token)
 		if err != nil {
 			logger.CtxError(ctx, err)
+			base.ResErr(c, err)
 			c.Abort()
 			return
 		}

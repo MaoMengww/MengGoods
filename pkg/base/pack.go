@@ -14,6 +14,11 @@ type DataResp struct {
 	Data    any    `json:"data"`
 }
 
+type SuccessResp struct {
+	Code    int64  `json:"code"`
+	Message string `json:"message"`
+}
+
 type ErrorResp struct {
 	Code    int64  `json:"code"`
 	Message string `json:"message"`
@@ -54,5 +59,12 @@ func ResList(c *app.RequestContext, data []any) {
 		Code:    merror.SuccessCode,
 		Message: "Success",
 		Data:    data,
+	})
+}
+
+func ResSuccess(c *app.RequestContext) {
+	c.JSON(http.StatusOK, SuccessResp{
+		Code:    merror.SuccessCode,
+		Message: "Success",
 	})
 }
