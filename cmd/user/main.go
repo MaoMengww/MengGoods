@@ -32,14 +32,14 @@ func main() {
 	if err != nil {
 		logger.Fatalf("Error creating etcd registry: %s", err)
 	}
-	adder, err := net.ResolveTCPAddr("tcp", config.Conf.Server.User)
+	addr, err := net.ResolveTCPAddr("tcp", config.Conf.Server.User)
 	if err != nil {
 		logger.Fatalf("Error resolving TCP address: %s", err)
 	}
 	svr := userservice.NewServer(
 		user.InjectUserServiceImpl(),
 		server.WithRegistry(register),
-		server.WithServiceAddr(adder),
+		server.WithServiceAddr(addr),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: "user",
 		}),

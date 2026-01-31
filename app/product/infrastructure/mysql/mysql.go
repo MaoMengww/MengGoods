@@ -39,7 +39,7 @@ func (p *PrductDB) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error)
 	}
 	err := p.db.WithContext(ctx).Create(spuDB).Error
 	if err != nil {
-		return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, "创建spu失败")
+		return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, "create spu failed")
 	}
 
 	for _, sku := range spu.Skus {
@@ -57,7 +57,7 @@ func (p *PrductDB) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error)
 		}
 		err := p.db.WithContext(ctx).Create(skuDB).Error
 		if err != nil {
-			return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("创建sku失败: %v", err))
+			return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("create sku failed: %v", err))
 		}
 	}
 	return spuDB.ID, nil
@@ -81,12 +81,12 @@ func (p *PrductDB) DeleteSpu(ctx context.Context, spuId int64) error {
 	// 删除spu - 使用正确的字段名
 	err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).Delete(&Spu{}).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("删除spu失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("delete spu failed: %v", err))
 	}
 	// 删除sku
 	err = p.db.WithContext(ctx).Where("spu_id = ?", spuId).Delete(&Sku{}).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("删除sku失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("delete sku failed: %v", err))
 	}
 	return nil
 }
@@ -95,7 +95,7 @@ func (p *PrductDB) DeleteSku(ctx context.Context, skuId int64) error {
 	// 删除sku
 	err := p.db.WithContext(ctx).Delete(&Sku{}, skuId).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("删除sku失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("delete sku failed: %v", err))
 	}
 	return nil
 }
@@ -104,7 +104,7 @@ func (p *PrductDB) DeleteCategory(ctx context.Context, categoryId int64) error {
 	// 删除category
 	err := p.db.WithContext(ctx).Delete(&Category{}, categoryId).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("删除category失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("delete category failed: %v", err))
 	}
 	return nil
 }
@@ -122,7 +122,7 @@ func (p *PrductDB) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 		"updated_at":        time.Now(),
 	}).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("更新spu失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update spu failed: %v", err))
 	}
 	return nil
 }
@@ -138,7 +138,7 @@ func (p *PrductDB) UpdateSku(ctx context.Context, sku *model.Sku) error {
 		"update_at":   time.Now().Unix(),
 	}).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("更新sku失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update sku failed: %v", err))
 	}
 	return nil
 }
@@ -149,7 +149,7 @@ func (p *PrductDB) UpdateCategory(ctx context.Context, category *model.Category)
 		"update_at": time.Now().Unix(),
 	}).Error
 	if err != nil {
-		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("更新category失败: %v", err))
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update category failed: %v", err))
 	}
 	return nil
 }
@@ -158,7 +158,7 @@ func (p *PrductDB) GetSpuById(ctx context.Context, spuId int64) (*model.Spu, err
 	var spu Spu
 	err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).First(&spu).Error
 	if err != nil {
-		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("查询spu失败: %v", err))
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
 	}
 	return &model.Spu{
 		Id:              spu.ID,
@@ -180,7 +180,7 @@ func (p *PrductDB) GetSkuById(ctx context.Context, skuId int64) (*model.Sku, err
 	var sku model.Sku
 	err := p.db.WithContext(ctx).Where("id = ?", skuId).First(&sku).Error
 	if err != nil {
-		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("查询sku失败: %v", err))
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
 	return &sku, nil
 }
@@ -190,7 +190,7 @@ func (p *PrductDB) GetSpusByIds(ctx context.Context, spuIds []int64) ([]*model.S
 	var spus []*model.Spu
 	err := p.db.WithContext(ctx).Where("spu_id in ?", spuIds).Find(&spus).Error
 	if err != nil {
-		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("批量查询spu失败: %v", err))
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
 	}
 	return spus, nil
 }
@@ -200,7 +200,7 @@ func (p *PrductDB) GetSkusByIds(ctx context.Context, skuIds []int64) ([]*model.S
 	var skus []*model.Sku
 	err := p.db.WithContext(ctx).Where("id in ?", skuIds).Find(&skus).Error
 	if err != nil {
-		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("批量查询sku失败: %v", err))
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
 	return skus, nil
 }
@@ -210,7 +210,7 @@ func (p *PrductDB) GetSkusBySpuId(ctx context.Context, spuId int64) ([]*model.Sk
 	var skus []*model.Sku
 	err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).Find(&skus).Error
 	if err != nil {
-		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("查询sku失败: %v", err))
+		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
 	return skus, nil
 }
@@ -219,7 +219,7 @@ func (p *PrductDB) IsSpuExist(ctx context.Context, spuId int64) (bool, error) {
 	var count int64
 	err := p.db.WithContext(ctx).Model(&Spu{}).Where("spu_id = ?", spuId).Count(&count).Error
 	if err != nil {
-		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("判断spu是否存在失败: %v", err))
+		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
 	}
 	return count > 0, nil
 }
@@ -230,7 +230,7 @@ func (p *PrductDB) IsSpuOwer(ctx context.Context, spuId int64) (bool, error) {
 	var spu Spu
 	err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).First(&spu).Error
 	if err != nil {
-		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("查询spu失败: %v", err))
+		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
 	}
 	uid, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
@@ -251,7 +251,7 @@ func (p *PrductDB) IsSkuOwer(ctx context.Context, skuId int64) (bool, error) {
 		Scan(&creatorId).                                   // 5. 结果赋值给变量 (不要用 First(&sku))
 		Error
 	if err != nil {
-		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("查询sku失败: %v", err))
+		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
 	uid, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
@@ -265,7 +265,7 @@ func (p *PrductDB) IsSkuExist(ctx context.Context, skuId int64) (bool, error) {
 	var count int64
 	err := p.db.WithContext(ctx).Model(&Sku{}).Where("id = ?", skuId).Count(&count).Error
 	if err != nil {
-		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("判断sku是否存在失败: %v", err))
+		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
 	return count > 0, nil
 }
@@ -275,7 +275,7 @@ func (p *PrductDB) IsCategoryExist(ctx context.Context, categoryId int64) (bool,
 	var count int64
 	err := p.db.WithContext(ctx).Model(&Category{}).Where("id = ?", categoryId).Count(&count).Error
 	if err != nil {
-		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("判断category是否存在失败: %v", err))
+		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get category failed: %v", err))
 	}
 	return count > 0, nil
 }

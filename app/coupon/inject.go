@@ -3,9 +3,9 @@ package coupon
 import (
 	"MengGoods/app/coupon/controller/api"
 	"MengGoods/app/coupon/domain/service"
-	"MengGoods/app/coupon/infrastructrue/cache"
-	"MengGoods/app/coupon/infrastructrue/mq"
-	"MengGoods/app/coupon/infrastructrue/mysql"
+	"MengGoods/app/coupon/infrastructure/cache"
+	"MengGoods/app/coupon/infrastructure/mq"
+	"MengGoods/app/coupon/infrastructure/mysql"
 	"MengGoods/app/coupon/usecase"
 	"MengGoods/config"
 	"MengGoods/pkg/base/client"

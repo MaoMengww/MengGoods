@@ -3,9 +3,9 @@ package order
 import (
 	"MengGoods/app/order/controller/api"
 	"MengGoods/app/order/domain/service"
-	"MengGoods/app/order/infrastructrue/mq"
-	"MengGoods/app/order/infrastructrue/mysql"
-	"MengGoods/app/order/infrastructrue/prpc"
+	"MengGoods/app/order/infrastructure/mq"
+	"MengGoods/app/order/infrastructure/mysql"
+	"MengGoods/app/order/infrastructure/prpc"
 	"MengGoods/app/order/usecase"
 	"MengGoods/config"
 	"MengGoods/pkg/base/client"

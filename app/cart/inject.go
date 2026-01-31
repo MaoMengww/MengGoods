@@ -2,7 +2,7 @@ package cart
 
 import (
 	"MengGoods/app/cart/controller/api"
-	"MengGoods/app/cart/infrastructrue/cache"
+	"MengGoods/app/cart/infrastructure/cache"
 	"MengGoods/app/cart/usecase"
 	"MengGoods/pkg/base/client"
 )

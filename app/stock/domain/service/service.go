@@ -8,7 +8,7 @@ import (
 
 func (s *StockService) CreateStock(ctx context.Context, Item *model.StockItem) error {
 	if Item.Count <= 0 {
-		return merror.NewMerror(merror.ParamCountInvalid, "商品数量必须大于0")
+		return merror.NewMerror(merror.ParamCountInvalid, "Stock count must be greater than 0")
 	}
 	if err := s.StockDB.CreateStock(ctx, Item); err != nil {
 		return err
@@ -18,7 +18,7 @@ func (s *StockService) CreateStock(ctx context.Context, Item *model.StockItem) e
 
 func (s *StockService) AddStock(ctx context.Context, Item *model.StockItem) error {
 	if Item.Count <= 0 {
-		return merror.NewMerror(merror.ParamCountInvalid, "商品数量必须大于0")
+		return merror.NewMerror(merror.ParamCountInvalid, "Stock count must be greater than 0")
 	}
 	if err := s.StockDB.AddStock(ctx, Item); err != nil {
 		return err
@@ -63,7 +63,7 @@ func (s *StockService) LockStock(ctx context.Context, orderId int64, stockItems 
 	stockMap := make(map[string]int32)
 	for _, item := range stockItems {
 		if item.Count <= 0 {
-			return merror.NewMerror(merror.ParamCountInvalid, "商品数量必须大于0")
+			return merror.NewMerror(merror.ParamCountInvalid, "Stock count must be greater than 0")
 		}
 		key := s.StockCache.GetStockKey(ctx, item.SkuId)
 		stockMap[key] = item.Count
@@ -78,7 +78,7 @@ func (s *StockService) LockStock(ctx context.Context, orderId int64, stockItems 
 func (s *StockService) UnlockStock(ctx context.Context, orderId int64, stockItems []*model.StockItem) error {
 	for _, item := range stockItems {
 		if item.Count <= 0 {
-			return merror.NewMerror(merror.ParamCountInvalid, "商品数量必须大于0")
+			return merror.NewMerror(merror.ParamCountInvalid, "Stock count must be greater than 0")
 		}
 		key := s.StockCache.GetStockKey(ctx, item.SkuId)
 		s.StockCache.AddStock(ctx, key, item.Count)

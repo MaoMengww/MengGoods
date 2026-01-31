@@ -31,7 +31,7 @@ func (u *userUsecase) Register(ctx context.Context, user *model.User) (int64, er
 	}
 	//用户已存在
 	if exist {
-		return 0, merror.NewMerror(merror.UserAlreadyExist, "用户已存在")
+		return 0, merror.NewMerror(merror.UserAlreadyExist, "user already exists")
 	}
 	//加密密码
 	user.Password, err = utils.EncryptPassword(user.Password)
@@ -57,35 +57,35 @@ func (u *userUsecase) Login(ctx context.Context, user *model.User) (*model.User,
 	if err := utils.Verify(utils.VerifyUsername(user.Username), utils.VerifyPassword(user.Password)); err != nil {
 		return nil, err
 	}
-	Dbuser, err := u.db.GetUserByName(ctx, user.Username)
+	dbUser, err := u.db.GetUserByName(ctx, user.Username)
 	if err != nil {
 		return nil, merror.NewMerror(
 			merror.UserNotExist,
-			"用户不存在",
+			"user not exists",
 		)
 	}
-	exist, err := u.service.IsBanned(ctx, Dbuser.Uid)
+	exist, err := u.service.IsBanned(ctx, dbUser.Uid)
 	if err != nil {
 		return nil, err
 	}
 	if exist {
 		return nil, merror.NewMerror(
 			merror.UserIsBanned,
-			"用户已被封禁",
+			"user is banned",
 		)
 	}
-	err = u.service.ComparePassword(Dbuser.Password, user.Password)
+	err = u.service.ComparePassword(dbUser.Password, user.Password)
 	if err != nil {
 		return nil, merror.NewMerror(
 			merror.PasswordNotMatch,
-			"密码错误",
+			"password not match",
 		)
 	}
-	err = u.service.UserLogin(ctx, Dbuser.Uid)
+	err = u.service.UserLogin(ctx, dbUser.Uid)
 	if err != nil {
 		return nil, err
 	}
-	return Dbuser, nil
+	return dbUser, nil
 }
 
 // 封禁用户
@@ -152,14 +152,14 @@ func (u *userUsecase) SetAdmin(ctx context.Context, password string, uid int64) 
 	if MyInfo.Role != constants.Admin {
 		return merror.NewMerror(
 			merror.PermissionDenied,
-			"权限不足",
+			"only admin can set user admin",
 		)
 	}
 
 	if password != config.Conf.Secret.TopSecret {
 		return merror.NewMerror(
 			merror.PasswordNotMatch,
-			"密码错误",
+			"top secret password not match",
 		)
 	}
 	if err := u.db.SetUserAdmin(ctx, uid); err != nil {

@@ -29,7 +29,7 @@ func (r *RabbitMQ) SendOrderMessage(ctx context.Context, orderId int64, couponId
 	}
 	orderMsg, err := json.Marshal(msg)
 	if err != nil {
-		return merror.NewMerror(merror.InternalRabbitMqErrorCode, "json解析错误: "+err.Error())
+		return merror.NewMerror(merror.InternalRabbitMqErrorCode, "json : "+err.Error())
 	}
 	return r.Publish(orderMsg)
 }

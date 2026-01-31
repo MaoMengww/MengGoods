@@ -3,8 +3,8 @@ package user
 import (
 	"MengGoods/app/user/controller/api"
 	"MengGoods/app/user/domain/service"
-	"MengGoods/app/user/infrastructrue/cache"
-	"MengGoods/app/user/infrastructrue/mysql"
+	"MengGoods/app/user/infrastructure/cache"
+	"MengGoods/app/user/infrastructure/mysql"
 	"MengGoods/app/user/usecase"
 	"MengGoods/config"
 	"MengGoods/pkg/base/client"

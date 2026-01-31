@@ -35,7 +35,7 @@ func (u *ProductUsecase) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
 	if !isOwner {
-		return merror.NewMerror(merror.PermissionDenied, "不是spu拥有者")
+		return merror.NewMerror(merror.PermissionDenied, "Permission denied: not the SPU owner")
 	}
 	//更新商品
 	return u.service.UpdateSpu(ctx, spu)
@@ -52,7 +52,7 @@ func (u *ProductUsecase) UpdateSku(ctx context.Context, sku *model.Sku) error {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
 	if !isOwner {
-		return merror.NewMerror(merror.PermissionDenied, "不是sku拥有者")
+		return merror.NewMerror(merror.PermissionDenied, "Permission denied: not the SKU owner")
 	}
 	//更新商品sku
 	return u.service.UpdateSku(ctx, sku)
@@ -69,7 +69,7 @@ func (u *ProductUsecase) UpdateCategory(ctx context.Context, category *model.Cat
 		return merror.NewMerror(merror.InternalRpcErrorCode, err.Error())
 	}
 	if !isAdmin {
-		return merror.NewMerror(merror.PermissionDenied, "不是管理员")
+		return merror.NewMerror(merror.PermissionDenied, "Permission denied: not an admin")
 	}
 	//更新商品分类
 	return u.db.UpdateCategory(ctx, category)
@@ -82,7 +82,7 @@ func (u *ProductUsecase) DeleteSpu(ctx context.Context, spuId int64) error {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
 	if !isOwner {
-		return merror.NewMerror(merror.PermissionDenied, "不是spu拥有者")
+		return merror.NewMerror(merror.PermissionDenied, "Permission denied: not the SPU owner")
 	}
 	//删除商品
 	return u.service.DeleteSpu(ctx, spuId)
@@ -95,7 +95,7 @@ func (u *ProductUsecase) DeleteSku(ctx context.Context, skuId int64) error {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
 	if !isOwner {
-		return merror.NewMerror(merror.PermissionDenied, "不是sku拥有者")
+		return merror.NewMerror(merror.PermissionDenied, "Permission denied: not the SKU owner")
 	}
 	//删除商品
 	return u.db.DeleteSku(ctx, skuId)
@@ -108,7 +108,7 @@ func (u *ProductUsecase) DeleteCategory(ctx context.Context, categoryId int64) e
 		return merror.NewMerror(merror.InternalRpcErrorCode, err.Error())
 	}
 	if !isAdmin {
-		return merror.NewMerror(merror.PermissionDenied, "不是管理员")
+		return merror.NewMerror(merror.PermissionDenied, "Permission denied: not an admin")
 	}
 	//删除商品
 	return u.db.DeleteCategory(ctx, categoryId)

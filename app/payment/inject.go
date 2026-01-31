@@ -3,9 +3,9 @@ package payment
 import (
 	"MengGoods/app/payment/controller/api"
 	"MengGoods/app/payment/domain/service"
-	"MengGoods/app/payment/infrastructrue/cache"
-	"MengGoods/app/payment/infrastructrue/mysql"
-	"MengGoods/app/payment/infrastructrue/prpc"
+	"MengGoods/app/payment/infrastructure/cache"
+	"MengGoods/app/payment/infrastructure/mysql"
+	"MengGoods/app/payment/infrastructure/prpc"
 	"MengGoods/app/payment/usecase"
 	"MengGoods/config"
 	"MengGoods/pkg/base/client"

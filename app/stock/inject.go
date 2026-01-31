@@ -3,9 +3,9 @@ package stock
 import (
 	"MengGoods/app/stock/controller/api"
 	"MengGoods/app/stock/domain/service"
-	"MengGoods/app/stock/infrastructrue/cache"
-	"MengGoods/app/stock/infrastructrue/mq"
-	"MengGoods/app/stock/infrastructrue/mysql"
+	"MengGoods/app/stock/infrastructure/cache"
+	"MengGoods/app/stock/infrastructure/mq"
+	"MengGoods/app/stock/infrastructure/mysql"
 	"MengGoods/app/stock/usecase"
 	"MengGoods/config"
 	"MengGoods/kitex_gen/stock"
