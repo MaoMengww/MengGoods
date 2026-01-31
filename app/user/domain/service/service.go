@@ -144,7 +144,7 @@ func (s *UserService) BanUser(ctx context.Context, uid int64) error {
 			fmt.Sprintf("failed to get user info, err:%v", err),
 		)
 	}
-	MyInfo, err := s.db.GetUserByID(ctx, me)
+	myInfo, err := s.db.GetUserByID(ctx, me)
 	if err != nil {
 		return merror.NewMerror(
 			merror.InternalDatabaseErrorCode,
@@ -152,7 +152,7 @@ func (s *UserService) BanUser(ctx context.Context, uid int64) error {
 		)
 	}
 	//检查是否为管理员
-	if MyInfo.Role != constants.Admin {
+	if myInfo.Role != constants.Admin {
 		return merror.NewMerror(
 			merror.AuthNoOperatePermissionCode,
 			"only admin can ban user",
@@ -213,7 +213,7 @@ func (s *UserService) UnBanUser(ctx context.Context, uid int64) error {
 			fmt.Sprintf("failed to get user info, err:%v", err),
 		)
 	}
-	MyInfo, err := s.db.GetUserByID(ctx, me)
+	myInfo, err := s.db.GetUserByID(ctx, me)
 	if err != nil {
 		return merror.NewMerror(
 			merror.InternalDatabaseErrorCode,
@@ -221,7 +221,7 @@ func (s *UserService) UnBanUser(ctx context.Context, uid int64) error {
 		)
 	}
 	//检查是否为管理员
-	if MyInfo.Role != constants.Admin {
+	if myInfo.Role != constants.Admin {
 		return merror.NewMerror(
 			merror.AuthNoOperatePermissionCode,
 			"only admin can unban user",

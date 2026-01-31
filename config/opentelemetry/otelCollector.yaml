@@ -64,6 +64,6 @@ service:
 
     # 指标监控流水线
     metrics:
-      receivers: [otlp, prometheus/internal] 
+      receivers: [otlp, prometheus/internal, mysql, redis] 
       processors: [batch]
       exporters: [prometheus]

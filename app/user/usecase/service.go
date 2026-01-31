@@ -142,14 +142,14 @@ func (u *userUsecase) SetAdmin(ctx context.Context, password string, uid int64) 
 	if err != nil {
 		return err
 	}
-	MyInfo, err := u.db.GetUserByID(ctx, me)
+	myInfo, err := u.db.GetUserByID(ctx, me)
 	if err != nil {
 		return merror.NewMerror(
 			merror.InternalDatabaseErrorCode,
 			fmt.Sprintf("get user info failed: %v", err),
 		)
 	}
-	if MyInfo.Role != constants.Admin {
+	if myInfo.Role != constants.Admin {
 		return merror.NewMerror(
 			merror.PermissionDenied,
 			"only admin can set user admin",
@@ -172,14 +172,14 @@ func (u *userUsecase) SetAdmin(ctx context.Context, password string, uid int64) 
 }
 
 func (u *userUsecase) GetUserInfo(ctx context.Context, uid int64) (*model.User, error) {
-	UserInfo, err := u.db.GetUserByID(ctx, uid)
+	userInfo, err := u.db.GetUserByID(ctx, uid)
 	if err != nil {
 		return nil, merror.NewMerror(
 			merror.InternalDatabaseErrorCode,
 			fmt.Sprintf("get user info failed: %v", err),
 		)
 	}
-	return UserInfo, nil
+	return userInfo, nil
 }
 
 func (u *userUsecase) LogOut(ctx context.Context) error {
