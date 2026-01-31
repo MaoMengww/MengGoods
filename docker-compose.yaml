@@ -120,35 +120,6 @@ services:
       - otelCollector
     networks:
       - MengGoods
-  
-  mysql-exporter:
-    image: prom/mysqld-exporter:latest
-    container_name: mysql-exporter
-    restart: always
-    ports:
-      - "9104:9104"
-    command:
-      - "--mysqld.address=mysql:3306"
-      - "--mysqld.username=root:123456" 
-    networks:
-      - MengGoods
-    depends_on:
-      - mysql
-
-  # Redis Exporter: 监控 Redis 的内存、Keys 数量、客户端连接等
-  redis-exporter:
-    image: oliver006/redis_exporter:latest
-    container_name: redis-exporter
-    restart: always
-    ports:
-      - "9121:9121"
-    command:
-      - "--redis.addr=redis://redis:6379"
-      - "--redis.password=123456"
-    networks:
-      - MengGoods
-    depends_on:
-      - redis
 
   otelCollector:
       image: otel/opentelemetry-collector-contrib:latest
