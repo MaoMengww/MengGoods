@@ -13,7 +13,7 @@ CREATE TABLE `coupon_batch`(
     `start_time` DATETIME NOT NULL COMMENT '优惠券开始时间',
     `end_time` DATETIME NOT NULL COMMENT '优惠券结束时间',
     `duration` INT NOT NULL DEFAULT 0 COMMENT '优惠券持续时间(天)',
-    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='优惠券批次表';
 
 CREATE TABLE `coupon`(

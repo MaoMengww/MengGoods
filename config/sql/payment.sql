@@ -26,7 +26,7 @@ CREATE TABLE `payment_refund` (
     `refund_status` INT NOT NULL DEFAULT 0 COMMENT '退款状态, 0: 未退款, 1: 处理中, 2: 退款成功, 3: 退款失败',
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    INDEX `idx_payment_id` (`payment_id`),
+    INDEX `idx_payment_id` (`payment_no`),
     INDEX `idx_user_id` (`user_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='退款订单表';
 
@@ -40,5 +40,5 @@ CREATE TABLE `payment_transaction` (
     `transaction_type` INT NOT NULL DEFAULT 0 COMMENT '支付交易类型, 0: 支付, 1: 退款',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     INDEX `idx_order_id` (`order_id`),
-    INDEX `idx_user_id` (`user_id`),
+    INDEX `idx_user_id` (`user_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付流水表';
