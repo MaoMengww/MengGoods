@@ -1,21 +1,21 @@
 package client
 
 import (
+	"MengGoods/config"
 	"MengGoods/pkg/merror"
 	"context"
 	"fmt"
 
 	"github.com/redis/go-redis/extra/redisotel/v9"
 	"github.com/redis/go-redis/v9"
-	"github.com/spf13/viper"
 )
 
 // 初始化Redis客户端
 func NewRedisClient() (*redis.Client, error) {
 	client := redis.NewClient(&redis.Options{
-		Addr:     viper.GetString("redis.host") + ":" + viper.GetString("redis.port"),
-		Password: viper.GetString("redis.password"),
-		DB:       viper.GetInt("redis.db"),
+		Addr:     config.Conf.Redis.Addr,
+		Password: config.Conf.Redis.Password,
+		DB:       config.Conf.Redis.DB,
 	})
 	if err := redisotel.InstrumentTracing(client); err != nil {
 		return nil, fmt.Errorf("failed to instrument redis tracing: %w", err)

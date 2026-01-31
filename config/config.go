@@ -18,15 +18,15 @@ type Config struct {
 	Kafka         KafkaConfig    `mapstructure:"kafka"`
 	Elasticsearch elasticsearch  `mapstructure:"elasticsearch"`
 	Server        ServerConfig   `mapstructure:"server"`
-	OTEL          OtelConfig     `mapstructure:"otel"`
+	Otel          OtelConfig     `mapstructure:"otel"`
 	RabbitMQ      RabbitMQConfig `mapstructure:"rabbitmq"`
 	Secret        SecretConfig   `mapstructure:"secret"`
+	JWT           JWTConfig      `mapstructure:"jwt"`
 }
 
 // MySQLConfig MySQL配置结构体
 type MySQLConfig struct {
-	Host      string `mapstructure:"host"`
-	Port      int    `mapstructure:"port"`
+	Addr      string `mapstructure:"addr"`
 	User      string `mapstructure:"user"`
 	UserDB    string `mapstructure:"userdb"`
 	ProductDB string `mapstructure:"productdb"`
@@ -34,13 +34,13 @@ type MySQLConfig struct {
 	CartDB    string `mapstructure:"cartdb"`
 	StockDB   string `mapstructure:"stockdb"`
 	OrderDB   string `mapstructure:"orderdb"`
+	PaymentDB string `mapstructure:"paymentdb"`
 	Password  string `mapstructure:"password"`
 	Charset   string `mapstructure:"charset"`
 }
 
 type RedisConfig struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
+	Addr     string `mapstructure:"addr"`
 	Password string `mapstructure:"password"`
 	DB       int    `mapstructure:"db"`
 }
@@ -50,7 +50,7 @@ type EtcdConfig struct {
 }
 
 type KafkaConfig struct {
-	Address  string `mapstructure:"address"`
+	Addr     string `mapstructure:"addr"`
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 }
@@ -77,16 +77,27 @@ type ServerConfig struct {
 	Stock   string `mapstructure:"stock"`
 	Cart    string `mapstructure:"cart"`
 	Coupon  string `mapstructure:"coupon"`
+	Order   string `mapstructure:"order"`
+	Payment string `mapstructure:"payment"`
 }
 
 type OtelConfig struct {
 	Address string `mapstructure:"address"`
 }
 
+type JWTConfig struct {
+	AccessExpire  string `mapstructure:"accessExpire"`
+	RefreshExpire string `mapstructure:"refreshExpire"`
+	PrivateKey    string `mapstructure:"privateKey"`
+	PublicKey     string `mapstructure:"publicKey"`
+	Issuer        string `mapstructure:"issuer"`
+}
+
 type SecretConfig struct {
 	TopSecret     string `mapstructure:"topSecret"`
 	PaymentSecret string `mapstructure:"paymentSecret"`
 }
+
 // Init 初始化配置
 func Init() {
 	// 获取当前工作目录

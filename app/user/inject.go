@@ -6,13 +6,12 @@ import (
 	"MengGoods/app/user/infrastructrue/cache"
 	"MengGoods/app/user/infrastructrue/mysql"
 	"MengGoods/app/user/usecase"
+	"MengGoods/config"
 	"MengGoods/pkg/base/client"
-
-	"github.com/spf13/viper"
 )
 
 func InjectUserServiceImpl() *api.UserServiceImpl {
-	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.userdb"))
+	gormDB, err := client.NewMySQLClient(config.Conf.MySQL.UserDB)
 	if err != nil {
 		panic(err)
 	}

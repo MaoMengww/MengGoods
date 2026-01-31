@@ -2,6 +2,7 @@ package es
 
 import (
 	"MengGoods/app/product/domain/model"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/product"
 	"MengGoods/pkg/merror"
 	"context"
@@ -9,7 +10,6 @@ import (
 	"fmt"
 
 	"github.com/olivere/elastic/v7"
-	"github.com/spf13/viper"
 )
 
 type ProductEs struct {
@@ -22,7 +22,7 @@ func NewProductEs(es *elastic.Client) *ProductEs {
 
 func (p *ProductEs) AddSpuItem(ctx context.Context, spu *model.SpuEs) error {
 	_, err := p.es.Index().
-		Index(viper.GetString("elasticsearch.productIndex")).
+		Index(config.Conf.Elasticsearch.ProductIndex).
 		Id(fmt.Sprintf("%v", spu.Id)).
 		BodyJson(spu).
 		Do(ctx)
@@ -34,7 +34,7 @@ func (p *ProductEs) AddSpuItem(ctx context.Context, spu *model.SpuEs) error {
 
 func (p *ProductEs) UptateSpuItem(ctx context.Context, spu *model.SpuEs) error {
 	_, err := p.es.Update().
-		Index(viper.GetString("elasticsearch.productIndex")).
+		Index(config.Conf.Elasticsearch.ProductIndex).
 		Id(fmt.Sprintf("%v", spu.Id)).
 		Doc(spu).
 		Do(ctx)
@@ -46,7 +46,7 @@ func (p *ProductEs) UptateSpuItem(ctx context.Context, spu *model.SpuEs) error {
 
 func (p *ProductEs) DeleteSpuItem(ctx context.Context, spuId int64) error {
 	_, err := p.es.Delete().
-		Index(viper.GetString("elasticsearch.productIndex")).
+		Index(config.Conf.Elasticsearch.ProductIndex).
 		Id(fmt.Sprintf("%v", spuId)).
 		Do(ctx)
 	if err != nil {
@@ -73,7 +73,7 @@ func (p *ProductEs) SearchSpu(ctx context.Context, req *product.GetSpuReq) ([]*m
 		boolQuery.Must(elastic.NewRangeQuery("price").Lte(req.MaxPrice))
 	}
 	searchResult, err := p.es.Search().
-		Index(viper.GetString("elasticsearch.productIndex")).
+		Index(config.Conf.Elasticsearch.ProductIndex).
 		Query(boolQuery).                            // 放入查询条件
 		Sort("price", true).                         // 按价格升序 (true=asc, false=desc)
 		From(int((req.PageNum - 1) * req.PageSize)). // 分页：跳过多少条

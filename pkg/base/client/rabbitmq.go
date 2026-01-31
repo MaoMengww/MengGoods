@@ -1,12 +1,12 @@
 package client
 
 import (
+	"MengGoods/config"
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
 	"fmt"
 
-	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
 )
 
@@ -20,7 +20,7 @@ type RabbitMq struct {
 }
 
 func NewRabbitMq(exchangeName string, delayQueueName string, processQueueName string, routingKey string) *RabbitMq {
-	conn, err := amqp.Dial(fmt.Sprintf("amqp://%v:%v@%v/", viper.GetString("rabbitmq.user"), viper.GetString("rabbitmq.password"), viper.GetString("rabbitmq.address")))
+	conn, err := amqp.Dial(fmt.Sprintf("amqp://%v:%v@%v/", config.Conf.RabbitMQ.User, config.Conf.RabbitMQ.Password, config.Conf.RabbitMQ.Address))
 	if err != nil {
 		logger.Fatalf("创建rabbitmq连接失败%v", err)
 		return nil

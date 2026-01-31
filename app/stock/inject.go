@@ -7,14 +7,13 @@ import (
 	"MengGoods/app/stock/infrastructrue/mq"
 	"MengGoods/app/stock/infrastructrue/mysql"
 	"MengGoods/app/stock/usecase"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/stock"
 	"MengGoods/pkg/base/client"
-
-	"github.com/spf13/viper"
 )
 
 func InjectStockUsecaseImpl() stock.StockService {
-	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.stockdb"))
+	gormDB, err := client.NewMySQLClient(config.Conf.MySQL.StockDB)
 	if err != nil {
 		panic(err)
 	}

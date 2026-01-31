@@ -7,22 +7,21 @@ import (
 	"MengGoods/app/order/infrastructrue/mysql"
 	"MengGoods/app/order/infrastructrue/prpc"
 	"MengGoods/app/order/usecase"
+	"MengGoods/config"
 	"MengGoods/pkg/base/client"
-
-	"github.com/spf13/viper"
 )
 
 func InjectOrderServiceImpl() *api.OrderServiceImpl {
-	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.orderdb"))
+	gormDB, err := client.NewMySQLClient(config.Conf.MySQL.OrderDB)
 	if err != nil {
 		panic(err)
 	}
 	orderDB := mysql.NewOrderDB(gormDB)
 	rabbitMq := client.NewRabbitMq(
-		viper.GetString("rabbitmq.exchange"),
-		viper.GetString("rabbitmq.delayqueue"),
-		viper.GetString("rabbitmq.processqueue"),
-		viper.GetString("rabbitmq.routingkey"),
+		config.Conf.RabbitMQ.Exchange,
+		config.Conf.RabbitMQ.DelayQueue,
+		config.Conf.RabbitMQ.ProcessQueue,
+		config.Conf.RabbitMQ.RoutingKey,
 	)
 	orderMq := mq.NewRabbitMQ(rabbitMq)
 	userClient := prpc.NewUserClient()

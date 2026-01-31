@@ -1,6 +1,7 @@
 package prpc
 
 import (
+	"MengGoods/config"
 	"MengGoods/kitex_gen/cart/cartservice"
 	"MengGoods/kitex_gen/coupon/couponservice"
 	"MengGoods/kitex_gen/product/productservice"
@@ -15,7 +16,6 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 type OrderRpc struct {
@@ -35,7 +35,7 @@ func NewOrderRpc(cartClient cartservice.Client, CouponClient couponservice.Clien
 }
 
 func NewCartClient() cartservice.Client {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("cart rpc Init Falied: err: %v", err)
 	}
@@ -62,7 +62,7 @@ func NewCartClient() cartservice.Client {
 }
 
 func NewCouponClient() couponservice.Client {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("coupon rpc Init Falied: err: %v", err)
 	}
@@ -89,7 +89,7 @@ func NewCouponClient() couponservice.Client {
 }
 
 func NewProductClient() productservice.Client {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("product rpc Init Falied: err: %v", err)
 	}
@@ -116,7 +116,7 @@ func NewProductClient() productservice.Client {
 }
 
 func NewUserClient() userservice.Client {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("user rpc Init Falied: err: %v", err)
 	}

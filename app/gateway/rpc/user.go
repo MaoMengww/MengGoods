@@ -2,6 +2,7 @@ package rpc
 
 import (
 	mresp "MengGoods/app/gateway/model/resp"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/user"
 	"MengGoods/kitex_gen/user/userservice"
 	"MengGoods/pkg/base/mcontext"
@@ -20,13 +21,12 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 var UserClient userservice.Client
 
 func UserInit() {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("user rpc Init Falied: err: %v", err)
 	}

@@ -3,8 +3,9 @@ package rpc
 import (
 	//	mresp "MengGoods/app/gateway/model/resp"
 	mresp "MengGoods/app/gateway/model/resp"
-	"MengGoods/kitex_gen/stock/stockservice"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/stock"
+	"MengGoods/kitex_gen/stock/stockservice"
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
 	"context"
@@ -18,13 +19,12 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 var StockClient stockservice.Client
 
 func StockInit() {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("stock rpc Init Falied: err: %v", err)
 	}

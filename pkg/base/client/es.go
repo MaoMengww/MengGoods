@@ -1,16 +1,16 @@
 package client
 
 import (
+	"MengGoods/config"
 	"MengGoods/pkg/merror"
 	"fmt"
 	"time"
 
 	"github.com/olivere/elastic/v7"
-	"github.com/spf13/viper"
 )
 
 func NewEsClient() (*elastic.Client, error) {
-	esConn := fmt.Sprintf("http://%s", viper.GetString("elasticsearch.address"))
+	esConn := fmt.Sprintf("http://%s", config.Conf.Elasticsearch.Address)
 	client, err := elastic.NewClient(
 		elastic.SetURL(esConn),
 		elastic.SetSniff(false),                              // 禁用节点嗅探，适用于单节点或Docker环境

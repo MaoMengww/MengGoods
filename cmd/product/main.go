@@ -17,7 +17,6 @@ import (
 	"github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 func Init() {
@@ -30,16 +29,16 @@ func main() {
 	Init()
 	shutdown := base.InitTracing("product")
 	defer shutdown(context.Background())
-	register, err := etcd.NewEtcdRegistry(viper.GetStringSlice("etcd.endpoints"))
+	register, err := etcd.NewEtcdRegistry(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("Error creating etcd registry: %s", err)
 	}
-	adder, err := net.ResolveTCPAddr("tcp", viper.GetString("server.Product"))
+	adder, err := net.ResolveTCPAddr("tcp", config.Conf.Server.Product)
 	if err != nil {
 		logger.Fatalf("Error resolving TCP address: %s", err)
 	}
 	svr := productservice.NewServer(
-		product.InjectProductUsecaseImpl(),
+		product.InjectProductServiceImpl(),
 		server.WithRegistry(register),
 		server.WithServiceAddr(adder),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{

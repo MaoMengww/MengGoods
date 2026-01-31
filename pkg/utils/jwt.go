@@ -1,13 +1,13 @@
 package utils
 
 import (
+	"MengGoods/config"
 	"MengGoods/pkg/constants"
 	"errors"
 	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/spf13/viper"
 )
 
 type Claims struct {
@@ -34,11 +34,11 @@ func CreateToken(tokenType int64, uid int64) (string, error) {
 	var expiredDurationStr string
 	switch tokenType {
 	case constants.TypeAccess:
-		expiredDurationStr = viper.GetString("jwt.accessExpire")
+		expiredDurationStr = config.Conf.JWT.AccessExpire
 	case constants.TypeRefresh:
-		expiredDurationStr = viper.GetString("jwt.refreshExpire")
+		expiredDurationStr = config.Conf.JWT.RefreshExpire
 	case constants.TypeLogin:
-		expiredDurationStr = viper.GetString("jwt.accessExpire")
+		expiredDurationStr = config.Conf.JWT.AccessExpire
 	}
 	expiredDuration, err := time.ParseDuration(expiredDurationStr)
 	if err != nil {
@@ -49,11 +49,11 @@ func CreateToken(tokenType int64, uid int64) (string, error) {
 		Uid:  uid,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(expiredDuration).Unix(),
-			Issuer:    viper.GetString("jwt.issuer"),
+			Issuer:    config.Conf.JWT.Issuer,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodEdDSA, claims)
-	privateKey, err := parsePrivateKey(viper.GetString("jwt.privateKey"))
+	privateKey, err := parsePrivateKey(config.Conf.JWT.PrivateKey)
 	if err != nil {
 		return "", err
 	}
@@ -102,7 +102,7 @@ func verifyToken(token string, key interface{}) (*Claims, error) {
 
 // 验证token
 func CheckToken(token string) (*Claims, error) {
-	publicKey, err := parsePublicKey(viper.GetString("jwt.publicKey"))
+	publicKey, err := parsePublicKey(config.Conf.JWT.PublicKey)
 	if err != nil {
 		return nil, err
 	}

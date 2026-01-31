@@ -3,6 +3,7 @@ package rpc
 import (
 	//	mresp "MengGoods/app/gateway/model/resp"
 	mresp "MengGoods/app/gateway/model/resp"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/coupon"
 	"MengGoods/kitex_gen/coupon/couponservice"
 	"MengGoods/pkg/logger"
@@ -18,13 +19,12 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 var CouponClient couponservice.Client
 
 func CouponInit() {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("coupon rpc Init Falied: err: %v", err)
 	}

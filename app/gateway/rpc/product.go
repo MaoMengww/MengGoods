@@ -3,6 +3,7 @@ package rpc
 import (
 	mresp "MengGoods/app/gateway/model/resp"
 	mModel "MengGoods/app/product/domain/model"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/model"
 	"MengGoods/kitex_gen/product"
 	"MengGoods/kitex_gen/product/productservice"
@@ -20,13 +21,12 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 var ProductClient productservice.Client
 
 func ProductInit() {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("product rpc Init Falied: err: %v", err)
 	}

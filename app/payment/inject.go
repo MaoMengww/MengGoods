@@ -7,13 +7,12 @@ import (
 	"MengGoods/app/payment/infrastructrue/mysql"
 	"MengGoods/app/payment/infrastructrue/prpc"
 	"MengGoods/app/payment/usecase"
+	"MengGoods/config"
 	"MengGoods/pkg/base/client"
-
-	"github.com/spf13/viper"
 )
 
 func InjectPaymentServiceImpl() *api.PaymentServiceImpl {
-    gormDB, err := client.NewMySQLClient(viper.GetString("mysql.paymentdb"))
+	gormDB, err := client.NewMySQLClient(config.Conf.MySQL.PaymentDB)
 	if err != nil {
 		panic(err)
 	}

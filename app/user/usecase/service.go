@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"MengGoods/app/user/domain/model"
+	"MengGoods/config"
 	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
@@ -9,7 +10,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/spf13/viper"
 	"go.opentelemetry.io/otel"
 )
 
@@ -156,7 +156,7 @@ func (u *userUsecase) SetAdmin(ctx context.Context, password string, uid int64) 
 		)
 	}
 
-	if password != viper.GetString("TopSecret") {
+	if password != config.Conf.Secret.TopSecret {
 		return merror.NewMerror(
 			merror.PasswordNotMatch,
 			"密码错误",

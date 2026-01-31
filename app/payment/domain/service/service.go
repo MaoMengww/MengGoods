@@ -2,6 +2,7 @@ package service
 
 import (
 	"MengGoods/app/payment/domain/model"
+	"MengGoods/config"
 	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
@@ -12,8 +13,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"time"
-
-	"github.com/spf13/viper"
 )
 
 func (s *PaymentService) CheckAndSetRefundLimit(ctx context.Context, orderItemId int64) error {
@@ -113,7 +112,7 @@ func (s *PaymentService) CreateRefundOrder(ctx context.Context, orderItemId int6
 // HMAC生成支付token
 func (s *PaymentService) CreateToken(ctx context.Context, orderId int64) (token string, expiredTime int64, err error) {
 	expiredTime = time.Now().Unix() + constants.PaymentExpireTime
-	secret := []byte(viper.GetString("secret.paymentSecret"))
+	secret := []byte(config.Conf.Secret.PaymentSecret)
 	//计算 HMAC-SHA256 哈希
 	h := hmac.New(sha256.New, secret)
 	_, err = h.Write([]byte(fmt.Sprintf("%d%d", orderId, expiredTime)))

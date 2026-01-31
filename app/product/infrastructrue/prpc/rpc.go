@@ -1,6 +1,7 @@
 package prpc
 
 import (
+	"MengGoods/config"
 	"MengGoods/kitex_gen/user"
 	"MengGoods/kitex_gen/user/userservice"
 	"MengGoods/pkg/base/mcontext"
@@ -17,7 +18,6 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
 
 type ProductRpc struct {
@@ -31,7 +31,7 @@ func NewProductRpc(userRpc userservice.Client) *ProductRpc {
 }
 
 func NewProductClient() userservice.Client {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("calc rpc Init Falied: err: %v", err)
 	}
@@ -68,7 +68,7 @@ func (p *ProductRpc) IsAdmin(ctx context.Context) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if resp.Base.Code != merror.SuccessCode{
+	if resp.Base.Code != merror.SuccessCode {
 		return false, merror.NewMerror(resp.Base.Code, resp.Base.Message)
 	}
 	return resp.UserInfo.Role == constants.Admin, nil

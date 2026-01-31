@@ -1,11 +1,11 @@
 package client
 
 import (
+	"MengGoods/config"
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
 	"fmt"
 
-	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -14,13 +14,12 @@ import (
 
 func NewMySQLClient(dbName string) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local",
-		viper.GetString("mysql.user"),
-		viper.GetString("mysql.password"),
-		viper.GetString("mysql.host"),
-		viper.GetInt("mysql.port"),
+		"%s:%s@tcp(%s)/%s?charset=%v&parseTime=True&loc=Local",
+		config.Conf.MySQL.User,
+		config.Conf.MySQL.Password,
+		config.Conf.MySQL.Addr,
 		dbName,
-		viper.GetString("mysql.charset"),
+		config.Conf.MySQL.Charset,
 	)
 	// 连接数据库
 	db, err := gorm.Open(mysql.Open(dsn),

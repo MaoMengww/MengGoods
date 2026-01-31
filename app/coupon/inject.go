@@ -7,13 +7,12 @@ import (
 	"MengGoods/app/coupon/infrastructrue/mq"
 	"MengGoods/app/coupon/infrastructrue/mysql"
 	"MengGoods/app/coupon/usecase"
+	"MengGoods/config"
 	"MengGoods/pkg/base/client"
-
-	"github.com/spf13/viper"
 )
 
 func InjectCouponServiceImpl() *api.CouponServiceImpl {
-	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.coupondb"))
+	gormDB, err := client.NewMySQLClient(config.Conf.MySQL.CouponDB)
 	if err != nil {
 		panic(err)
 	}

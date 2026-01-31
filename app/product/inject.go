@@ -9,14 +9,13 @@ import (
 	"MengGoods/app/product/infrastructrue/mysql"
 	"MengGoods/app/product/infrastructrue/prpc"
 	"MengGoods/app/product/usecase"
+	"MengGoods/config"
 	"MengGoods/kitex_gen/product"
 	"MengGoods/pkg/base/client"
-
-	"github.com/spf13/viper"
 )
 
-func InjectProductUsecaseImpl() product.ProductService {
-	gormDB, err := client.NewMySQLClient(viper.GetString("mysql.productdb"))
+func InjectProductServiceImpl() product.ProductService {
+	gormDB, err := client.NewMySQLClient(config.Conf.MySQL.ProductDB)
 	if err != nil {
 		panic(err)
 	}

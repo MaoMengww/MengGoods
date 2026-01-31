@@ -1,6 +1,7 @@
 package prpc
 
 import (
+	"MengGoods/config"
 	"MengGoods/kitex_gen/order/orderservice"
 	"MengGoods/pkg/logger"
 	"time"
@@ -12,10 +13,7 @@ import (
 	"github.com/cloudwego/kitex/transport"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-	"github.com/spf13/viper"
 )
-
-
 
 type PaymentRpc struct {
 	orderClient orderservice.Client
@@ -28,7 +26,7 @@ func NewPaymentRpc(orderClient orderservice.Client) *PaymentRpc {
 }
 
 func NewOrderClient() orderservice.Client {
-	r, err := etcd.NewEtcdResolver(viper.GetStringSlice("etcd.endpoints"))
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("order rpc Init Falied: err: %v", err)
 	}
@@ -53,4 +51,3 @@ func NewOrderClient() orderservice.Client {
 
 	return c
 }
-
