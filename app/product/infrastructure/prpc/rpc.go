@@ -2,13 +2,9 @@ package prpc
 
 import (
 	"MengGoods/config"
-	"MengGoods/kitex_gen/user"
+	"MengGoods/kitex_gen/stock/stockservice"
 	"MengGoods/kitex_gen/user/userservice"
-	"MengGoods/pkg/base/mcontext"
-	"MengGoods/pkg/constants"
 	"MengGoods/pkg/logger"
-	"MengGoods/pkg/merror"
-	"context"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -21,16 +17,18 @@ import (
 )
 
 type ProductRpc struct {
-	userRpc userservice.Client
+	userClient  userservice.Client
+	stockClient stockservice.Client
 }
 
-func NewProductRpc(userRpc userservice.Client) *ProductRpc {
+func NewProductRpc(userClient userservice.Client, stockClient stockservice.Client) *ProductRpc {
 	return &ProductRpc{
-		userRpc: userRpc,
+		userClient:  userClient,
+		stockClient: stockClient,
 	}
 }
 
-func NewProductClient() userservice.Client {
+func NewUserClient() userservice.Client {
 	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
 		logger.Fatalf("calc rpc Init Falied: err: %v", err)
@@ -57,19 +55,29 @@ func NewProductClient() userservice.Client {
 	return c
 }
 
-func (p *ProductRpc) IsAdmin(ctx context.Context) (bool, error) {
-	uid, err := mcontext.GetUserIDFromContext(ctx)
+func NewStockClient() stockservice.Client {
+	r, err := etcd.NewEtcdResolver(config.Conf.Etcd.Endpoints)
 	if err != nil {
-		return false, err
+		logger.Fatalf("calc rpc Init Falied: err: %v", err)
 	}
-	var req user.GetUserInfoReq
-	req.UserId = uid
-	resp, err := p.userRpc.GetUserInfo(ctx, &req)
+
+	cbSuite := circuitbreak.NewCBSuite(func(ri rpcinfo.RPCInfo) string {
+		return ri.To().ServiceName() + ":" + ri.To().Method()
+	})
+
+	c, err := stockservice.NewClient(
+		"stock",
+		client.WithResolver(r),
+		client.WithRPCTimeout(3*time.Second),
+		client.WithFailureRetry(retry.NewFailurePolicy()),
+		client.WithTransportProtocol(transport.TTHeader),
+		client.WithCircuitBreaker(cbSuite),
+		client.WithSuite(tracing.NewClientSuite()),
+	)
+
 	if err != nil {
-		return false, err
+		logger.Fatalf("init client failed: err:%v", err)
 	}
-	if resp.Base.Code != merror.SuccessCode {
-		return false, merror.NewMerror(resp.Base.Code, resp.Base.Message)
-	}
-	return resp.UserInfo.Role == constants.Admin, nil
+
+	return c
 }

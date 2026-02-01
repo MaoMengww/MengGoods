@@ -30,7 +30,7 @@ type GetSkuResp struct {
 }
 
 type CreateCategoryResp struct {
-	CategoryId int64 `json:"category_id"`
+	CategoryId int64 `json:"categoryId"`
 }
 
 type UpdateCategoryResp struct {
@@ -42,4 +42,12 @@ type DeleteCategoryResp struct {
 type GetSpuResp struct {
 	Spus  []*mModel.SpuEs `json:"spus"`
 	Total int64           `json:"total"`
+}
+
+type UploadSpuImageResp struct {
+	ImageUrl string `json:"imageUrl"`
+}
+
+type UploadSkuImageResp struct {
+	ImageUrl string `json:"imageUrl"`
 }

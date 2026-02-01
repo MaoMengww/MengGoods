@@ -6,9 +6,7 @@ struct CreateSpuReq {
     1: string name;
     2: string description;
     3: i64 categoryId;
-    4: string mainSpuImageURL;
-    5: string sliderSpuImageURLs;
-    6: list<model.CreateSkuItem> sku;
+    4: list<model.CreateSkuItem> sku;
 }
 
 struct CreateSpuResp {
@@ -22,8 +20,6 @@ struct UpdateSpuReq {
     2: optional string name;
     3: optional string description;
     4: optional i64 categoryId;
-    5: optional string mainSpuImageURL;
-    6: optional string sliderSpuImageURLs;
 }
 
 struct UpdateSpuResp {
@@ -35,8 +31,7 @@ struct UpdateSkuReq {
     2: optional string name;
     3: optional string description;
     4: optional i64 price;
-    5: optional string skuImageURL;
-    6: optional string properties;
+    5: optional string properties;
 }
 
 struct UpdateSkuResp {
@@ -123,6 +118,28 @@ struct GetSpuResp {
     3: required i64 total;
 }
 
+struct UploadSpuImageReq {
+    1: i64 spuId;
+    2: binary imageData;
+    3: string imageName;
+}
+
+struct UploadSpuImageResp {
+    1: model.BaseResp base;
+    2: string imageURL;
+}
+
+struct UploadSkuImageReq {
+    1: i64 skuId;
+    2: binary imageData;
+    3: string imageName;
+}
+
+struct UploadSkuImageResp {
+    1: model.BaseResp base;
+    2: string imageURL;
+}
+
 
 
 service ProductService {
@@ -137,5 +154,7 @@ service ProductService {
     UpdateCategoryResp UpdateCategory(1: UpdateCategoryReq req);
     DeleteCategoryResp DeleteCategory(1: DeleteCategoryReq req);
     GetSpuResp GetSpuList(1: GetSpuReq req);
+    UploadSpuImageResp UploadSpuImage(1: UploadSpuImageReq req);
+    UploadSkuImageResp UploadSkuImage(1: UploadSkuImageReq req);
 }
 

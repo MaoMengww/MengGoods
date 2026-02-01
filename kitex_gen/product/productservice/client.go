@@ -22,6 +22,8 @@ type Client interface {
 	UpdateCategory(ctx context.Context, req *product.UpdateCategoryReq, callOptions ...callopt.Option) (r *product.UpdateCategoryResp, err error)
 	DeleteCategory(ctx context.Context, req *product.DeleteCategoryReq, callOptions ...callopt.Option) (r *product.DeleteCategoryResp, err error)
 	GetSpuList(ctx context.Context, req *product.GetSpuReq, callOptions ...callopt.Option) (r *product.GetSpuResp, err error)
+	UploadSpuImage(ctx context.Context, req *product.UploadSpuImageReq, callOptions ...callopt.Option) (r *product.UploadSpuImageResp, err error)
+	UploadSkuImage(ctx context.Context, req *product.UploadSkuImageReq, callOptions ...callopt.Option) (r *product.UploadSkuImageResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -106,4 +108,14 @@ func (p *kProductServiceClient) DeleteCategory(ctx context.Context, req *product
 func (p *kProductServiceClient) GetSpuList(ctx context.Context, req *product.GetSpuReq, callOptions ...callopt.Option) (r *product.GetSpuResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetSpuList(ctx, req)
+}
+
+func (p *kProductServiceClient) UploadSpuImage(ctx context.Context, req *product.UploadSpuImageReq, callOptions ...callopt.Option) (r *product.UploadSpuImageResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UploadSpuImage(ctx, req)
+}
+
+func (p *kProductServiceClient) UploadSkuImage(ctx context.Context, req *product.UploadSkuImageReq, callOptions ...callopt.Option) (r *product.UploadSkuImageResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UploadSkuImage(ctx, req)
 }

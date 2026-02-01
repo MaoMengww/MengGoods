@@ -8,7 +8,7 @@ type Stock struct {
 	LockedStock int32     `gorm:"column:locked_stock"`
 	CreatedAt   time.Time `gorm:"column:created_at"`
 	UpdatedAt   time.Time `gorm:"column:updated_at"`
-	DeletedAt   time.Time `gorm:"column:deleted_at"`
+	DeletedAt   *time.Time `gorm:"column:deleted_at"`
 }
 
 type StockJournal struct {

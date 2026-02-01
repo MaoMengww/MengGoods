@@ -12,7 +12,6 @@ func BuildSkus(skus []*model.CreateSkuItem) []*mModel.Sku {
 			Name:        sku.Name,
 			Description: sku.Description,
 			Properties:  sku.Properties,
-			ImageURL:    sku.SkuImageURL,
 			Price:       sku.Price,
 		})
 	}
@@ -28,8 +27,12 @@ func BuildSpuInfoList(spus []*mModel.SpuEs) []*model.SpuInfo {
 }
 
 func BuildSpuInfo(spu *mModel.Spu) *model.SpuInfo {
+	deleteTime := int64(0)
+	if spu.DeleteTime != nil {
+		deleteTime = spu.DeleteTime.Unix()
+	}
 	return &model.SpuInfo{
-		Id:              spu.Id,
+		Id:              spu.SpuId,
 		CreatorId:       spu.UserId,
 		Name:            spu.Name,
 		Description:     spu.Description,
@@ -40,7 +43,7 @@ func BuildSpuInfo(spu *mModel.Spu) *model.SpuInfo {
 		Status:          model.SpuStatus(spu.Status),
 		CreateTime:      spu.CreateTime.Unix(),
 		UpdateTime:      spu.UpdateTime.Unix(),
-		DeleteTime:      spu.DeleteTime.Unix(),
+		DeleteTime:      deleteTime,
 	}
 }
 
@@ -58,7 +61,7 @@ func BuildSpuEsInfo(spu *mModel.SpuEs) *model.SpuInfo {
 
 func BuildSkuInfo(sku *mModel.Sku) *model.SkuInfo {
 	return &model.SkuInfo{
-		Id:          sku.Id,
+		Id:          sku.SkuId,
 		Name:        sku.Name,
 		Description: sku.Description,
 		Properties:  sku.Properties,

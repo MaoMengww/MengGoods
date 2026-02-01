@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -36,7 +37,7 @@ func (p *ProductCache) SetSpu(ctx context.Context, spu *model.SpuEs) error {
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("marshal spu error: %v", err))
 	}
-	err = p.redisClient.Set(ctx, key, value, 2).Err()
+	err = p.redisClient.Set(ctx, key, value, 2*time.Minute).Err()
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("set spu cache error: %v", err))
 	}
@@ -49,7 +50,7 @@ func (p *ProductCache) SetSku(ctx context.Context, sku *model.SkuEs) error {
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("marshal sku error: %v", err))
 	}
-	err = p.redisClient.Set(ctx, key, value, 2).Err()
+	err = p.redisClient.Set(ctx, key, value, 2*time.Minute).Err()
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("set sku cache error: %v", err))
 	}

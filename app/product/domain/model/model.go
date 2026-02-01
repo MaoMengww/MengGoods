@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Spu struct {
-	Id              int64
+	SpuId           int64
 	UserId          int64
 	Name            string
 	Description     string
@@ -20,23 +20,22 @@ type Spu struct {
 
 type SpuEs struct {
 	Id           int64  `json:"id"`
-	UserId       int64  `json:"user_id"`
+	UserId       int64  `json:"userId"`
 	Name         string `json:"name"`
 	Description  string `json:"description"`
-	CategoryId   int64  `json:"category_id"`
+	CategoryId   int64  `json:"categoryId"`
 	Price        int64  `json:"price"`
-	MainImageURL string `json:"main_image_url"`
+	MainImageURL string `json:"mainImageURL"`
 }
 
 type Sku struct {
-	Id          int64
+	SkuId       int64
 	SpuId       int64
 	Name        string
 	Description string
 	Properties  string
 	ImageURL    string
 	Price       int64
-	Sale        int64
 	CreateTime  int64
 	UpdateTime  int64
 	DeleteTime  int64
@@ -44,13 +43,12 @@ type Sku struct {
 
 type SkuEs struct {
 	Id          int64  `json:"id"`
-	SpuId       int64  `json:"spu_id"`
+	SpuId       int64  `json:"spuId"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Properties  string `json:"properties"`
-	ImageURL    string `json:"image_url"`
+	ImageURL    string `json:"imageURL"`
 	Price       int64  `json:"price"`
-	Sale        int64  `json:"sale"`
 }
 
 type Category struct {

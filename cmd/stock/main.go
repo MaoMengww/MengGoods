@@ -42,7 +42,7 @@ func main() {
 		server.WithRegistry(register),
 		server.WithServiceAddr(adder),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
-			ServiceName: "Stock",
+			ServiceName: "stock",
 		}),
 		server.WithLimit(&limit.Option{
 			MaxConnections: constants.MaxConnection,

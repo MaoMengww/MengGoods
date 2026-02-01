@@ -155,7 +155,9 @@ func CreateCategory(ctx context.Context, req *product.CreateCategoryReq) (resp *
 	if r.Base.Code != merror.SuccessCode {
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
 	}
-	return
+	return &mresp.CreateCategoryResp{
+		CategoryId: r.CategoryId,
+	}, nil
 }
 
 func UpdateCategory(ctx context.Context, req *product.UpdateCategoryReq) (resp *mresp.UpdateCategoryResp, err error) {
@@ -212,4 +214,30 @@ func SpuList(spus []*model.SpuInfo) []*mModel.SpuEs {
 
 	}
 	return list
+}
+
+func UploadSpuImage(ctx context.Context, req *product.UploadSpuImageReq) (resp *mresp.UploadSpuImageResp, err error) {
+	r, err := ProductClient.UploadSpuImage(ctx, req)
+	if err != nil {
+		logger.CtxErrorf(ctx, err.Error())
+		return nil, merror.NewMerror(merror.InternalServerErrorCode, err.Error())
+	}
+	if r.Base.Code != merror.SuccessCode {
+		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
+	}
+	return
+}
+
+func UploadSkuImage(ctx context.Context, req *product.UploadSkuImageReq) (resp *mresp.UploadSkuImageResp, err error) {
+	r, err := ProductClient.UploadSkuImage(ctx, req)
+	if err != nil {
+		logger.CtxErrorf(ctx, err.Error())
+		return nil, merror.NewMerror(merror.InternalServerErrorCode, err.Error())
+	}
+	if r.Base.Code != merror.SuccessCode {
+		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
+	}
+	return &mresp.UploadSkuImageResp{
+		ImageUrl: r.ImageURL,
+	}, nil
 }

@@ -90,6 +90,20 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"UploadSpuImage": kitex.NewMethodInfo(
+		uploadSpuImageHandler,
+		newProductServiceUploadSpuImageArgs,
+		newProductServiceUploadSpuImageResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"UploadSkuImage": kitex.NewMethodInfo(
+		uploadSkuImageHandler,
+		newProductServiceUploadSkuImageArgs,
+		newProductServiceUploadSkuImageResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -354,6 +368,42 @@ func newProductServiceGetSpuListResult() interface{} {
 	return product.NewProductServiceGetSpuListResult()
 }
 
+func uploadSpuImageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.ProductServiceUploadSpuImageArgs)
+	realResult := result.(*product.ProductServiceUploadSpuImageResult)
+	success, err := handler.(product.ProductService).UploadSpuImage(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newProductServiceUploadSpuImageArgs() interface{} {
+	return product.NewProductServiceUploadSpuImageArgs()
+}
+
+func newProductServiceUploadSpuImageResult() interface{} {
+	return product.NewProductServiceUploadSpuImageResult()
+}
+
+func uploadSkuImageHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*product.ProductServiceUploadSkuImageArgs)
+	realResult := result.(*product.ProductServiceUploadSkuImageResult)
+	success, err := handler.(product.ProductService).UploadSkuImage(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newProductServiceUploadSkuImageArgs() interface{} {
+	return product.NewProductServiceUploadSkuImageArgs()
+}
+
+func newProductServiceUploadSkuImageResult() interface{} {
+	return product.NewProductServiceUploadSkuImageResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -469,6 +519,26 @@ func (p *kClient) GetSpuList(ctx context.Context, req *product.GetSpuReq) (r *pr
 	_args.Req = req
 	var _result product.ProductServiceGetSpuListResult
 	if err = p.c.Call(ctx, "GetSpuList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UploadSpuImage(ctx context.Context, req *product.UploadSpuImageReq) (r *product.UploadSpuImageResp, err error) {
+	var _args product.ProductServiceUploadSpuImageArgs
+	_args.Req = req
+	var _result product.ProductServiceUploadSpuImageResult
+	if err = p.c.Call(ctx, "UploadSpuImage", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UploadSkuImage(ctx context.Context, req *product.UploadSkuImageReq) (r *product.UploadSkuImageResp, err error) {
+	var _args product.ProductServiceUploadSkuImageArgs
+	_args.Req = req
+	var _result product.ProductServiceUploadSkuImageResult
+	if err = p.c.Call(ctx, "UploadSkuImage", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

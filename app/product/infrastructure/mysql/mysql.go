@@ -24,57 +24,65 @@ func NewProductDB(db *gorm.DB) *PrductDB {
 
 func (p *PrductDB) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
 	spu_id := utils.GenerateID()
+	creatorId, err := mcontext.GetUserIDFromContext(ctx)
+	if err != nil {
+		return 0, merror.NewMerror(merror.InternalServerErrorCode, fmt.Sprintf("get user id failed: %v", err))
+	}
 	spuDB := &Spu{
-		ID:              spu_id,
+		SpuId:           spu_id,
 		Name:            spu.Name,
 		Price:           spu.Price,
 		Description:     spu.Description,
 		MainImageURL:    spu.MainImageURL,
 		SliderImageURLs: spu.SliderImageURLs,
-		Creator:         spu.UserId,
+		Creator:         creatorId,
 		Category:        int(spu.CategoryId),
 		Status:          int32(spu.Status),
 		CreateAt:        time.Now(),
 		UpdateAt:        time.Now(),
 	}
-	err := p.db.WithContext(ctx).Create(spuDB).Error
+	tx := p.db.WithContext(ctx).Begin()
+	err = tx.WithContext(ctx).Create(spuDB).Error
 	if err != nil {
-		return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, "create spu failed")
+		tx.Rollback()
+		return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("create spu failed: %v", err))
 	}
-
 	for _, sku := range spu.Skus {
+		skuId := utils.GenerateID()
 		skuDB := &Sku{
-			ID:          utils.GenerateID(),
+			SkuId:       skuId,
 			Name:        sku.Name,
 			Price:       sku.Price,
 			Description: sku.Description,
 			ImageURL:    sku.ImageURL,
 			Properties:  sku.Properties,
-			Sale:        sku.Sale,
 			SpuID:       spu_id,
-			UpdateAt:    time.Now(),
 			CreateAt:    time.Now(),
+			UpdateAt:    time.Now(),
 		}
-		err := p.db.WithContext(ctx).Create(skuDB).Error
+		err := tx.WithContext(ctx).Create(skuDB).Error
 		if err != nil {
+			tx.Rollback()
 			return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("create sku failed: %v", err))
 		}
 	}
-	return spuDB.ID, nil
+	tx.Commit()
+	return spuDB.SpuId, nil
 }
 
 func (p *PrductDB) CreateCategory(ctx context.Context, category *model.Category) (int64, error) {
+	categoryId := utils.GenerateID()
 	categoryDB := &Category{
-		ID:       category.Id,
-		Name:     category.Name,
-		CreateAt: time.Now(),
-		UpdateAt: time.Now(),
+		CategoryId: categoryId,
+		Name:       category.Name,
+		CreateAt:   time.Now(),
+		UpdateAt:   time.Now(),
 	}
 	err := p.db.WithContext(ctx).Create(categoryDB).Error
 	if err != nil {
 		return 0, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("db create category error: %v", err))
 	}
-	return categoryDB.ID, nil
+	return categoryId, nil
 }
 
 func (p *PrductDB) DeleteSpu(ctx context.Context, spuId int64) error {
@@ -111,7 +119,7 @@ func (p *PrductDB) DeleteCategory(ctx context.Context, categoryId int64) error {
 
 func (p *PrductDB) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 	// 更新spu - 使用正确的字段名
-	err := p.db.WithContext(ctx).Model(&Spu{}).Where("spu_id = ?", spu.Id).Updates(map[string]interface{}{
+	err := p.db.WithContext(ctx).Model(&Spu{}).Where("spu_id = ?", spu.SpuId).Updates(map[string]interface{}{
 		"name":              spu.Name,
 		"price":             spu.Price,
 		"description":       spu.Description,
@@ -129,13 +137,13 @@ func (p *PrductDB) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 
 func (p *PrductDB) UpdateSku(ctx context.Context, sku *model.Sku) error {
 	// 更新sku
-	err := p.db.WithContext(ctx).Model(&Sku{}).Where("id = ?", sku.Id).Updates(map[string]interface{}{
+	err := p.db.WithContext(ctx).Model(&Sku{}).Where("sku_id = ?", sku.SkuId).Updates(map[string]interface{}{
 		"name":        sku.Name,
 		"price":       sku.Price,
 		"description": sku.Description,
 		"image_url":   sku.ImageURL,
 		"properties":  sku.Properties,
-		"update_at":   time.Now().Unix(),
+		"updated_at":   time.Now(),
 	}).Error
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update sku failed: %v", err))
@@ -143,10 +151,10 @@ func (p *PrductDB) UpdateSku(ctx context.Context, sku *model.Sku) error {
 	return nil
 }
 func (p *PrductDB) UpdateCategory(ctx context.Context, category *model.Category) error {
-	// 删除category
-	err := p.db.WithContext(ctx).Model(&Category{}).Where("id = ?", category.Id).Updates(map[string]interface{}{
+	// 更新category
+	err := p.db.WithContext(ctx).Model(&Category{}).Where("category_id = ?", category.Id).Updates(map[string]interface{}{
 		"name":      category.Name,
-		"update_at": time.Now().Unix(),
+		"updated_at": time.Now(),
 	}).Error
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update category failed: %v", err))
@@ -161,7 +169,7 @@ func (p *PrductDB) GetSpuById(ctx context.Context, spuId int64) (*model.Spu, err
 		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
 	}
 	return &model.Spu{
-		Id:              spu.ID,
+		SpuId:           spu.SpuId,
 		UserId:          spu.Creator,
 		Name:            spu.Name,
 		Description:     spu.Description,
@@ -177,12 +185,22 @@ func (p *PrductDB) GetSpuById(ctx context.Context, spuId int64) (*model.Spu, err
 
 func (p *PrductDB) GetSkuById(ctx context.Context, skuId int64) (*model.Sku, error) {
 	// 获取sku
-	var sku model.Sku
-	err := p.db.WithContext(ctx).Where("id = ?", skuId).First(&sku).Error
+	var sku Sku
+	err := p.db.WithContext(ctx).Where("sku_id = ?", skuId).First(&sku).Error
 	if err != nil {
 		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
-	return &sku, nil
+	return &model.Sku{
+		SkuId:       sku.SkuId,
+		SpuId:       sku.SpuID,
+		Name:        sku.Name,
+		Description: sku.Description,
+		Properties:  sku.Properties,
+		ImageURL:    sku.ImageURL,
+		Price:       sku.Price,
+		CreateTime:  sku.CreateAt.Unix(),
+		UpdateTime:  sku.UpdateAt.Unix(),
+	}, nil
 }
 
 func (p *PrductDB) GetSpusByIds(ctx context.Context, spuIds []int64) ([]*model.Spu, error) {
@@ -197,22 +215,55 @@ func (p *PrductDB) GetSpusByIds(ctx context.Context, spuIds []int64) ([]*model.S
 
 func (p *PrductDB) GetSkusByIds(ctx context.Context, skuIds []int64) ([]*model.Sku, error) {
 	// 批量查询sku
-	var skus []*model.Sku
-	err := p.db.WithContext(ctx).Where("id in ?", skuIds).Find(&skus).Error
+	var skuModels []*Sku
+	err := p.db.WithContext(ctx).Where("sku_id in ?", skuIds).Find(&skuModels).Error
 	if err != nil {
 		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
+	}
+
+	// 转换数据库模型到域模型
+	var skus []*model.Sku
+	for _, skuModel := range skuModels {
+		sku := &model.Sku{
+			SkuId:       skuModel.SkuId,
+			SpuId:       skuModel.SpuID,
+			Name:        skuModel.Name,
+			Description: skuModel.Description,
+			Properties:  skuModel.Properties,
+			ImageURL:    skuModel.ImageURL,
+			Price:       skuModel.Price,
+			CreateTime:  skuModel.CreateAt.Unix(),
+			UpdateTime:  skuModel.UpdateAt.Unix(),
+		}
+		skus = append(skus, sku)
 	}
 	return skus, nil
 }
 
 func (p *PrductDB) GetSkusBySpuId(ctx context.Context, spuId int64) ([]*model.Sku, error) {
 	// 查询sku
-	var skus []*model.Sku
+	var skus []*Sku
 	err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).Find(&skus).Error
 	if err != nil {
 		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
-	return skus, nil
+	// 转换数据库模型到域模型
+	var skusResp []*model.Sku
+	for _, skuModel := range skus {
+		sku := &model.Sku{
+			SkuId:       skuModel.SkuId,
+			SpuId:       skuModel.SpuID,
+			Name:        skuModel.Name,
+			Description: skuModel.Description,
+			Properties:  skuModel.Properties,
+			ImageURL:    skuModel.ImageURL,
+			Price:       skuModel.Price,
+			CreateTime:  skuModel.CreateAt.Unix(),
+			UpdateTime:  skuModel.UpdateAt.Unix(),
+		}
+		skusResp = append(skusResp, sku)
+	}
+	return skusResp, nil
 }
 func (p *PrductDB) IsSpuExist(ctx context.Context, spuId int64) (bool, error) {
 	// 判断spu是否存在
@@ -247,8 +298,8 @@ func (p *PrductDB) IsSkuOwer(ctx context.Context, skuId int64) (bool, error) {
 		Table("sku").                                       // 1. 指定主表
 		Select("spu.creator").                              // 2. 指定只想查这一个字段 (对应 SQL SELECT p.creator)
 		Joins("INNER JOIN spu ON sku.spu_id = spu.spu_id"). // 3. 写连表逻辑 (对应 INNER JOIN)
-		Where("sku.id = ?", skuId).                         // 4. 条件 (WHERE s.id = ?)
-		Scan(&creatorId).                                   // 5. 结果赋值给变量 (不要用 First(&sku))
+		Where("sku.sku_id = ?", skuId).                     // 4. 条件 (WHERE s_id = ?)
+		Scan(&creatorId).                                   // 5. 结果赋值给变量
 		Error
 	if err != nil {
 		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
@@ -263,7 +314,7 @@ func (p *PrductDB) IsSkuOwer(ctx context.Context, skuId int64) (bool, error) {
 func (p *PrductDB) IsSkuExist(ctx context.Context, skuId int64) (bool, error) {
 	// 判断sku是否存在
 	var count int64
-	err := p.db.WithContext(ctx).Model(&Sku{}).Where("id = ?", skuId).Count(&count).Error
+	err := p.db.WithContext(ctx).Model(&Sku{}).Where("sku_id = ?", skuId).Count(&count).Error
 	if err != nil {
 		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get sku failed: %v", err))
 	}
@@ -273,9 +324,27 @@ func (p *PrductDB) IsSkuExist(ctx context.Context, skuId int64) (bool, error) {
 func (p *PrductDB) IsCategoryExist(ctx context.Context, categoryId int64) (bool, error) {
 	// 删除category
 	var count int64
-	err := p.db.WithContext(ctx).Model(&Category{}).Where("id = ?", categoryId).Count(&count).Error
+	err := p.db.WithContext(ctx).Model(&Category{}).Where("category_id = ?", categoryId).Count(&count).Error
 	if err != nil {
 		return false, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get category failed: %v", err))
 	}
 	return count > 0, nil
+}
+
+func (p *PrductDB) UploadSpuImage(ctx context.Context, spuId int64, imageUrl string) error {
+	// 删除spu
+	err := p.db.WithContext(ctx).Model(&Spu{}).Where("spu_id = ?", spuId).Update("main_image_url", imageUrl).Error
+	if err != nil {
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update spu failed: %v", err))
+	}
+	return nil
+}
+
+func (p *PrductDB) UploadSkuImage(ctx context.Context, skuId int64, imageUrl string) error {
+	// 删除spu
+	err := p.db.WithContext(ctx).Model(&Sku{}).Where("sku_id = ?", skuId).Update("image_url", imageUrl).Error
+	if err != nil {
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("update sku failed: %v", err))
+	}
+	return nil
 }

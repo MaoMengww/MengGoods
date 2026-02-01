@@ -7,6 +7,7 @@ import (
 	product "MengGoods/kitex_gen/product"
 	"MengGoods/pkg/base"
 	"context"
+	"fmt"
 )
 
 // ProductServiceImpl implements the last service interface defined in the IDL.
@@ -23,13 +24,12 @@ func NewProductServiceImpl(usecase *usecase.ProductUsecase) *ProductServiceImpl 
 // CreateSpu implements the ProductServiceImpl interface.
 func (s *ProductServiceImpl) CreateSpu(ctx context.Context, req *product.CreateSpuReq) (resp *product.CreateSpuResp, err error) {
 	resp = new(product.CreateSpuResp)
+	fmt.Printf("2222222req: %v\n", req)
 	resp.SpuId, err = s.usecase.CreateSpu(ctx, &model.Spu{
-		Name:            req.Name,
-		Description:     req.Description,
-		CategoryId:      req.CategoryId,
-		MainImageURL:    req.MainSpuImageURL,
-		SliderImageURLs: req.SliderSpuImageURLs,
-		Skus:            pack.BuildSkus(req.Sku),
+		Name:        req.Name,
+		Description: req.Description,
+		CategoryId:  req.CategoryId,
+		Skus:        pack.BuildSkus(req.Sku),
 	})
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
@@ -43,12 +43,10 @@ func (s *ProductServiceImpl) CreateSpu(ctx context.Context, req *product.CreateS
 func (s *ProductServiceImpl) UpdateSpu(ctx context.Context, req *product.UpdateSpuReq) (resp *product.UpdateSpuResp, err error) {
 	resp = new(product.UpdateSpuResp)
 	err = s.usecase.UpdateSpu(ctx, &model.Spu{
-		Id:              req.SpuId,
-		Name:            *req.Name,
-		Description:     *req.Description,
-		CategoryId:      *req.CategoryId,
-		MainImageURL:    *req.MainSpuImageURL,
-		SliderImageURLs: *req.SliderSpuImageURLs,
+		SpuId:          req.SpuId,
+		Name:        *req.Name,
+		Description: *req.Description,
+		CategoryId:  *req.CategoryId,
 	})
 	if err != nil {
 		resp.Base = base.BuildBaseResp(err)
@@ -62,11 +60,10 @@ func (s *ProductServiceImpl) UpdateSpu(ctx context.Context, req *product.UpdateS
 func (s *ProductServiceImpl) UpdateSku(ctx context.Context, req *product.UpdateSkuReq) (resp *product.UpdateSkuResp, err error) {
 	resp = new(product.UpdateSkuResp)
 	err = s.usecase.UpdateSku(ctx, &model.Sku{
-		Id:          req.SkuId,
+		SkuId:       req.SkuId,
 		Name:        *req.Name,
 		Description: *req.Description,
 		Properties:  *req.Properties,
-		ImageURL:    *req.SkuImageURL,
 		Price:       *req.Price,
 	})
 	if err != nil {
@@ -180,5 +177,32 @@ func (s *ProductServiceImpl) GetSpuList(ctx context.Context, req *product.GetSpu
 	resp.Base = base.BuildBaseResp(nil)
 	resp.SpuList = pack.BuildSpuInfoList(spus)
 	resp.Total = total
+	return resp, nil
+}
+
+// UploadSpuImage implements the ProductServiceImpl interface.
+func (s *ProductServiceImpl) UploadSpuImage(ctx context.Context, req *product.UploadSpuImageReq) (resp *product.UploadSpuImageResp, err error) {
+	resp = new(product.UploadSpuImageResp)
+	imageURL, err := s.usecase.UploadSpuImage(ctx, req.SpuId, req.ImageData, req.ImageName)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.Base = base.BuildBaseResp(nil)
+	resp.ImageURL = imageURL
+	return resp, nil
+}
+
+// UploadSkuImage implements the ProductServiceImpl interface.
+func (s *ProductServiceImpl) UploadSkuImage(ctx context.Context, req *product.UploadSkuImageReq) (resp *product.UploadSkuImageResp, err error) {
+	// TODO: Your code here...
+	resp = new(product.UploadSkuImageResp)
+	imageURL, err := s.usecase.UploadSkuImage(ctx, req.SkuId, req.ImageData, req.ImageName)
+	if err != nil {
+		resp.Base = base.BuildBaseResp(err)
+		return resp, nil
+	}
+	resp.Base = base.BuildBaseResp(nil)
+	resp.ImageURL = imageURL
 	return resp, nil
 }

@@ -4,6 +4,7 @@ import (
 	"MengGoods/app/product/controller/api"
 	"MengGoods/app/product/domain/service"
 	"MengGoods/app/product/infrastructure/cache"
+	"MengGoods/app/product/infrastructure/cos"
 	"MengGoods/app/product/infrastructure/es"
 	"MengGoods/app/product/infrastructure/mq"
 	"MengGoods/app/product/infrastructure/mysql"
@@ -31,12 +32,14 @@ func InjectProductServiceImpl() product.ProductService {
 	if err != nil {
 		panic(err)
 	}
+	productCos := cos.NewProductCos(client.NewCosClient())
 	productEs := es.NewProductEs(esClient)
-	userRpc := prpc.NewProductClient()
-	productRpc := prpc.NewProductRpc(userRpc)
-	ProductService := service.NewProductUsecase(productDB, productCache, productMq, productEs, productRpc)
+	userRpc := prpc.NewUserClient()
+	stockRpc := prpc.NewStockClient()
+	productRpc := prpc.NewProductRpc(userRpc, stockRpc)
+	ProductService := service.NewProductService(productDB, productCache, productMq, productEs, productRpc, productCos)
 	ProductService.Init()
-	productUsecase := usecase.NewProductUsecase(productDB, productCache, productMq, productEs, productRpc)
+	productUsecase := usecase.NewProductUsecase(ProductService, productDB, productCache, productMq, productEs, productRpc, productCos)
 	productServiceImpl := api.NewProductServiceImpl(productUsecase)
 	return productServiceImpl
 }

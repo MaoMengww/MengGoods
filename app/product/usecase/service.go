@@ -7,11 +7,13 @@ import (
 	"MengGoods/pkg/utils"
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/redis/go-redis/v9"
 )
 
 func (u *ProductUsecase) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
+	fmt.Printf("44444444spu: %v\n", spu)
 	//校验输入合法性
 	if err := u.service.VerifySpu(spu); err != nil {
 		return 0, err
@@ -30,7 +32,7 @@ func (u *ProductUsecase) UpdateSpu(ctx context.Context, spu *model.Spu) error {
 		return err
 	}
 	//验证权限
-	isOwner, err := u.db.IsSpuOwer(ctx, spu.Id)
+	isOwner, err := u.db.IsSpuOwer(ctx, spu.SpuId)
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
@@ -47,7 +49,7 @@ func (u *ProductUsecase) UpdateSku(ctx context.Context, sku *model.Sku) error {
 		return err
 	}
 	//验证权限
-	isOwner, err := u.db.IsSkuOwer(ctx, sku.Id)
+	isOwner, err := u.db.IsSkuOwer(ctx, sku.SkuId)
 	if err != nil {
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, err.Error())
 	}
@@ -155,4 +157,12 @@ func (s *ProductUsecase) GetSkusByIds(ctx context.Context, ids []int64) ([]*mode
 
 func (s *ProductUsecase) GetSpuList(ctx context.Context, req *product.GetSpuReq) ([]*model.SpuEs, int64, error) {
 	return s.es.SearchSpu(ctx, req)
+}
+
+func (s *ProductUsecase) UploadSkuImage(ctx context.Context, skuId int64, skuImageData []byte, fileName string) (string, error) {
+	return s.service.UploadSkuImage(ctx, skuId, skuImageData, fileName)
+}
+
+func (s *ProductUsecase) UploadSpuImage(ctx context.Context, spuId int64, spuImageData []byte, fileName string) (string, error) {
+	return s.service.UploadSpuImage(ctx, spuId, spuImageData, fileName)
 }

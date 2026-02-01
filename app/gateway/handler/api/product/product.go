@@ -5,6 +5,7 @@ import (
 	"MengGoods/kitex_gen/product"
 	"MengGoods/pkg/base"
 	"MengGoods/pkg/merror"
+	"MengGoods/pkg/utils"
 	"context"
 
 	"strconv"
@@ -37,15 +38,15 @@ func UpdateSpu(ctx context.Context, app *app.RequestContext) {
 	idStr := app.Param("spu_id")
 	req.SpuId, err = strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
-		base.ResErr(app, merror.NewMerror(merror.ParamIDInvalid, err.Error()))
+		base.ResErr(app, merror.NewMerror(merror.ParamIDInvalid, idStr + " is invalid"))
 		return
 	}
-	resp, err := rpc.UpdateSpu(ctx, &req)
+	_, err = rpc.UpdateSpu(ctx, &req)
 	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
-	base.ResData(app, resp)
+	base.ResSuccess(app)
 }
 
 func DeleteSpu(ctx context.Context, app *app.RequestContext) {
@@ -61,12 +62,12 @@ func DeleteSpu(ctx context.Context, app *app.RequestContext) {
 		base.ResErr(app, merror.NewMerror(merror.ParamIDInvalid, err.Error()))
 		return
 	}
-	resp, err := rpc.DeleteSpu(ctx, &req)
+	_, err = rpc.DeleteSpu(ctx, &req)
 	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
-	base.ResData(app, resp)
+	base.ResSuccess(app)
 }
 
 func UpdateSku(ctx context.Context, app *app.RequestContext) {
@@ -82,12 +83,12 @@ func UpdateSku(ctx context.Context, app *app.RequestContext) {
 		base.ResErr(app, merror.NewMerror(merror.ParamIDInvalid, err.Error()))
 		return
 	}
-	resp, err := rpc.UpdateSku(ctx, &req)
+	_, err = rpc.UpdateSku(ctx, &req)
 	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
-	base.ResData(app, resp)
+	base.ResSuccess(app)
 }
 
 func DeleteSku(ctx context.Context, app *app.RequestContext) {
@@ -103,12 +104,12 @@ func DeleteSku(ctx context.Context, app *app.RequestContext) {
 		base.ResErr(app, merror.NewMerror(merror.ParamIDInvalid, err.Error()))
 		return
 	}
-	resp, err := rpc.DeleteSku(ctx, &req)
+	_, err = rpc.DeleteSku(ctx, &req)
 	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
-	base.ResData(app, resp)
+	base.ResSuccess(app)
 }
 
 func GetSpuById(ctx context.Context, app *app.RequestContext) {
@@ -167,12 +168,12 @@ func DeleteCategory(ctx context.Context, app *app.RequestContext) {
 		base.ResErr(app, err)
 		return
 	}
-	resp, err := rpc.DeleteCategory(ctx, &req)
+	_, err = rpc.DeleteCategory(ctx, &req)
 	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
-	base.ResData(app, resp)
+	base.ResSuccess(app)
 }
 
 func GetSpu(ctx context.Context, app *app.RequestContext) {
@@ -197,10 +198,76 @@ func UpdateCategory(ctx context.Context, app *app.RequestContext) {
 		base.ResErr(app, err)
 		return
 	}
-	resp, err := rpc.UpdateCategory(ctx, &req)
+	_, err = rpc.UpdateCategory(ctx, &req)
 	if err != nil {
 		base.ResErr(app, err)
 		return
 	}
-	base.ResData(app, resp)
+	base.ResSuccess(app)
+}
+
+func UploadSkuImage(ctx context.Context, app *app.RequestContext) {
+	var req product.UploadSkuImageReq
+	pathSkuId := app.Param("sku_Id")
+	skuId, err := strconv.ParseInt(pathSkuId, 10, 64)
+	if err != nil {
+		base.ResErr(app, merror.NewMerror(merror.ParamSkuIdInvalid, "invalid sku id"))
+		return
+	}
+	req.SkuId = skuId
+	file, err := app.FormFile("image")
+	if err != nil {
+		base.ResErr(app, merror.NewMerror(merror.InvalidImageFileType, "image file type not supported"))
+		return
+	}
+	if !utils.CheckImageFileType(file) {
+		base.ResErr(app, merror.NewMerror(merror.InvalidImageFileType, "image file type not supported"))
+		return
+	}
+	datas, err := utils.FileToBytes(file)
+	if err != nil {
+		base.ResErr(app, merror.NewMerror(merror.InvalidImageFileType, "image file type not supported"))
+		return
+	}
+	req.ImageData = datas
+	req.ImageName = file.Filename
+	_, err = rpc.UploadSkuImage(ctx, &req)
+	if err != nil {
+		base.ResErr(app, err)
+		return
+	}
+	base.ResSuccess(app)
+}
+
+func UploadSpuImage(ctx context.Context, c *app.RequestContext) {
+	var req product.UploadSpuImageReq
+	pathSpuId := c.Param("spu_Id")
+	spuId, err := strconv.ParseInt(pathSpuId, 10, 64)
+	if err != nil {
+		base.ResErr(c, merror.NewMerror(merror.ParamSpuIdInvalid, "invalid spu id"))
+		return
+	}
+	req.SpuId = spuId
+	file, err := c.FormFile("image")
+	if err != nil {
+		base.ResErr(c, merror.NewMerror(merror.InvalidImageFileType, "image file type not supported"))
+		return
+	}
+	if !utils.CheckImageFileType(file) {
+		base.ResErr(c, merror.NewMerror(merror.InvalidImageFileType, "image file type not supported"))
+		return
+	}
+	datas, err := utils.FileToBytes(file)
+	if err != nil {
+		base.ResErr(c, merror.NewMerror(merror.InvalidImageFileType, "image file type not supported"))
+		return
+	}
+	req.ImageData = datas
+	req.ImageName = file.Filename
+	_, err = rpc.UploadSpuImage(ctx, &req)
+	if err != nil {
+		base.ResErr(c, err)
+		return
+	}
+	base.ResSuccess(c)
 }

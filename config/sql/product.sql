@@ -23,7 +23,6 @@ CREATE TABLE `sku` (
     `price` BIGINT NOT NULL COMMENT '商品sku价格',
     `description` VARCHAR(255) NOT NULL COMMENT '商品sku描述',
     `image_url` VARCHAR(255) NOT NULL COMMENT '商品sku图片url',
-    `sale` BIGINT NOT NULL DEFAULT 0 COMMENT '商品sku销量',
     `spu_id` BIGINT NOT NULL COMMENT '商品id',
     `properties` VARCHAR(255) NOT NULL COMMENT '商品sku属性',
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

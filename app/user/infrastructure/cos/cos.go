@@ -1,6 +1,7 @@
 package cos
 
 import (
+	"MengGoods/pkg/merror"
 	"bytes"
 	"context"
 	"fmt"
@@ -34,7 +35,7 @@ func (c *UserCos) UploadAvatar(ctx context.Context, avatarData []byte, fileName 
 	reader := bytes.NewReader(avatarData)
 	_, err := c.client.Object.Put(ctx, objectKey, reader, nil)
 	if err != nil {
-		return "", err
+		return "", merror.NewMerror(merror.InternalCosErrorCode, err.Error())
 	}
 	// 3. 拼接 URL (仿照 DomTok GetImageUrl)
 	return fmt.Sprintf("%s/%s", c.client.BaseURL.BucketURL, objectKey), nil

@@ -28,6 +28,8 @@ const (
 	ParamCouponTypeInvalid                           //优惠券类型无效
 	ParamCouponStatusInvalid                         //优惠券状态无效
 	ParamCouponTotalNumInvalid                       //优惠券总数量无效
+	ParamSpuIdInvalid                                //商品ID无效
+	ParamSkuIdInvalid                                //SKU ID无效
 )
 
 // 业务相关
@@ -75,6 +77,7 @@ const (
 	InternalESErrorCode                      //es错误
 	InternalKafkaErrorCode                   //kafka错误
 	InternalRabbitMqErrorCode                //rabbitmq错误
+	InternalCosErrorCode                     //cos错误
 )
 
 const (

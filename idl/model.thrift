@@ -53,10 +53,8 @@ struct SkuInfo {
 struct CreateSkuItem {
     1: string name;
     2: string description;
-    3: i64 stock;
-    4: i64 price;
-    5: string skuImageURL;
-    6: string properties;
+    3: i64 price;
+    4: string properties;
 }
 
 enum SpuStatus {

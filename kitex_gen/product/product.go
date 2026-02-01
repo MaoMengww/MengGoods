@@ -9,12 +9,10 @@ import (
 )
 
 type CreateSpuReq struct {
-	Name               string                 `thrift:"name,1" frugal:"1,default,string" json:"name"`
-	Description        string                 `thrift:"description,2" frugal:"2,default,string" json:"description"`
-	CategoryId         int64                  `thrift:"categoryId,3" frugal:"3,default,i64" json:"categoryId"`
-	MainSpuImageURL    string                 `thrift:"mainSpuImageURL,4" frugal:"4,default,string" json:"mainSpuImageURL"`
-	SliderSpuImageURLs string                 `thrift:"sliderSpuImageURLs,5" frugal:"5,default,string" json:"sliderSpuImageURLs"`
-	Sku                []*model.CreateSkuItem `thrift:"sku,6" frugal:"6,default,list<model.CreateSkuItem>" json:"sku"`
+	Name        string                 `thrift:"name,1" frugal:"1,default,string" json:"name"`
+	Description string                 `thrift:"description,2" frugal:"2,default,string" json:"description"`
+	CategoryId  int64                  `thrift:"categoryId,3" frugal:"3,default,i64" json:"categoryId"`
+	Sku         []*model.CreateSkuItem `thrift:"sku,4" frugal:"4,default,list<model.CreateSkuItem>" json:"sku"`
 }
 
 func NewCreateSpuReq() *CreateSpuReq {
@@ -36,14 +34,6 @@ func (p *CreateSpuReq) GetCategoryId() (v int64) {
 	return p.CategoryId
 }
 
-func (p *CreateSpuReq) GetMainSpuImageURL() (v string) {
-	return p.MainSpuImageURL
-}
-
-func (p *CreateSpuReq) GetSliderSpuImageURLs() (v string) {
-	return p.SliderSpuImageURLs
-}
-
 func (p *CreateSpuReq) GetSku() (v []*model.CreateSkuItem) {
 	return p.Sku
 }
@@ -55,12 +45,6 @@ func (p *CreateSpuReq) SetDescription(val string) {
 }
 func (p *CreateSpuReq) SetCategoryId(val int64) {
 	p.CategoryId = val
-}
-func (p *CreateSpuReq) SetMainSpuImageURL(val string) {
-	p.MainSpuImageURL = val
-}
-func (p *CreateSpuReq) SetSliderSpuImageURLs(val string) {
-	p.SliderSpuImageURLs = val
 }
 func (p *CreateSpuReq) SetSku(val []*model.CreateSkuItem) {
 	p.Sku = val
@@ -77,9 +61,7 @@ var fieldIDToName_CreateSpuReq = map[int16]string{
 	1: "name",
 	2: "description",
 	3: "categoryId",
-	4: "mainSpuImageURL",
-	5: "sliderSpuImageURLs",
-	6: "sku",
+	4: "sku",
 }
 
 type CreateSpuResp struct {
@@ -130,12 +112,10 @@ var fieldIDToName_CreateSpuResp = map[int16]string{
 }
 
 type UpdateSpuReq struct {
-	SpuId              int64   `thrift:"spuId,1,required" frugal:"1,required,i64" json:"spuId"`
-	Name               *string `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
-	Description        *string `thrift:"description,3,optional" frugal:"3,optional,string" json:"description,omitempty"`
-	CategoryId         *int64  `thrift:"categoryId,4,optional" frugal:"4,optional,i64" json:"categoryId,omitempty"`
-	MainSpuImageURL    *string `thrift:"mainSpuImageURL,5,optional" frugal:"5,optional,string" json:"mainSpuImageURL,omitempty"`
-	SliderSpuImageURLs *string `thrift:"sliderSpuImageURLs,6,optional" frugal:"6,optional,string" json:"sliderSpuImageURLs,omitempty"`
+	SpuId       int64   `thrift:"spuId,1,required" frugal:"1,required,i64" json:"spuId"`
+	Name        *string `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
+	Description *string `thrift:"description,3,optional" frugal:"3,optional,string" json:"description,omitempty"`
+	CategoryId  *int64  `thrift:"categoryId,4,optional" frugal:"4,optional,i64" json:"categoryId,omitempty"`
 }
 
 func NewUpdateSpuReq() *UpdateSpuReq {
@@ -175,24 +155,6 @@ func (p *UpdateSpuReq) GetCategoryId() (v int64) {
 	}
 	return *p.CategoryId
 }
-
-var UpdateSpuReq_MainSpuImageURL_DEFAULT string
-
-func (p *UpdateSpuReq) GetMainSpuImageURL() (v string) {
-	if !p.IsSetMainSpuImageURL() {
-		return UpdateSpuReq_MainSpuImageURL_DEFAULT
-	}
-	return *p.MainSpuImageURL
-}
-
-var UpdateSpuReq_SliderSpuImageURLs_DEFAULT string
-
-func (p *UpdateSpuReq) GetSliderSpuImageURLs() (v string) {
-	if !p.IsSetSliderSpuImageURLs() {
-		return UpdateSpuReq_SliderSpuImageURLs_DEFAULT
-	}
-	return *p.SliderSpuImageURLs
-}
 func (p *UpdateSpuReq) SetSpuId(val int64) {
 	p.SpuId = val
 }
@@ -204,12 +166,6 @@ func (p *UpdateSpuReq) SetDescription(val *string) {
 }
 func (p *UpdateSpuReq) SetCategoryId(val *int64) {
 	p.CategoryId = val
-}
-func (p *UpdateSpuReq) SetMainSpuImageURL(val *string) {
-	p.MainSpuImageURL = val
-}
-func (p *UpdateSpuReq) SetSliderSpuImageURLs(val *string) {
-	p.SliderSpuImageURLs = val
 }
 
 func (p *UpdateSpuReq) IsSetName() bool {
@@ -224,14 +180,6 @@ func (p *UpdateSpuReq) IsSetCategoryId() bool {
 	return p.CategoryId != nil
 }
 
-func (p *UpdateSpuReq) IsSetMainSpuImageURL() bool {
-	return p.MainSpuImageURL != nil
-}
-
-func (p *UpdateSpuReq) IsSetSliderSpuImageURLs() bool {
-	return p.SliderSpuImageURLs != nil
-}
-
 func (p *UpdateSpuReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -244,8 +192,6 @@ var fieldIDToName_UpdateSpuReq = map[int16]string{
 	2: "name",
 	3: "description",
 	4: "categoryId",
-	5: "mainSpuImageURL",
-	6: "sliderSpuImageURLs",
 }
 
 type UpdateSpuResp struct {
@@ -291,8 +237,7 @@ type UpdateSkuReq struct {
 	Name        *string `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
 	Description *string `thrift:"description,3,optional" frugal:"3,optional,string" json:"description,omitempty"`
 	Price       *int64  `thrift:"price,4,optional" frugal:"4,optional,i64" json:"price,omitempty"`
-	SkuImageURL *string `thrift:"skuImageURL,5,optional" frugal:"5,optional,string" json:"skuImageURL,omitempty"`
-	Properties  *string `thrift:"properties,6,optional" frugal:"6,optional,string" json:"properties,omitempty"`
+	Properties  *string `thrift:"properties,5,optional" frugal:"5,optional,string" json:"properties,omitempty"`
 }
 
 func NewUpdateSkuReq() *UpdateSkuReq {
@@ -333,15 +278,6 @@ func (p *UpdateSkuReq) GetPrice() (v int64) {
 	return *p.Price
 }
 
-var UpdateSkuReq_SkuImageURL_DEFAULT string
-
-func (p *UpdateSkuReq) GetSkuImageURL() (v string) {
-	if !p.IsSetSkuImageURL() {
-		return UpdateSkuReq_SkuImageURL_DEFAULT
-	}
-	return *p.SkuImageURL
-}
-
 var UpdateSkuReq_Properties_DEFAULT string
 
 func (p *UpdateSkuReq) GetProperties() (v string) {
@@ -362,9 +298,6 @@ func (p *UpdateSkuReq) SetDescription(val *string) {
 func (p *UpdateSkuReq) SetPrice(val *int64) {
 	p.Price = val
 }
-func (p *UpdateSkuReq) SetSkuImageURL(val *string) {
-	p.SkuImageURL = val
-}
 func (p *UpdateSkuReq) SetProperties(val *string) {
 	p.Properties = val
 }
@@ -379,10 +312,6 @@ func (p *UpdateSkuReq) IsSetDescription() bool {
 
 func (p *UpdateSkuReq) IsSetPrice() bool {
 	return p.Price != nil
-}
-
-func (p *UpdateSkuReq) IsSetSkuImageURL() bool {
-	return p.SkuImageURL != nil
 }
 
 func (p *UpdateSkuReq) IsSetProperties() bool {
@@ -401,8 +330,7 @@ var fieldIDToName_UpdateSkuReq = map[int16]string{
 	2: "name",
 	3: "description",
 	4: "price",
-	5: "skuImageURL",
-	6: "properties",
+	5: "properties",
 }
 
 type UpdateSkuResp struct {
@@ -1114,6 +1042,194 @@ var fieldIDToName_GetSpuResp = map[int16]string{
 	3: "total",
 }
 
+type UploadSpuImageReq struct {
+	SpuId     int64  `thrift:"spuId,1" frugal:"1,default,i64" json:"spuId"`
+	ImageData []byte `thrift:"imageData,2" frugal:"2,default,binary" json:"imageData"`
+	ImageName string `thrift:"imageName,3" frugal:"3,default,string" json:"imageName"`
+}
+
+func NewUploadSpuImageReq() *UploadSpuImageReq {
+	return &UploadSpuImageReq{}
+}
+
+func (p *UploadSpuImageReq) InitDefault() {
+}
+
+func (p *UploadSpuImageReq) GetSpuId() (v int64) {
+	return p.SpuId
+}
+
+func (p *UploadSpuImageReq) GetImageData() (v []byte) {
+	return p.ImageData
+}
+
+func (p *UploadSpuImageReq) GetImageName() (v string) {
+	return p.ImageName
+}
+func (p *UploadSpuImageReq) SetSpuId(val int64) {
+	p.SpuId = val
+}
+func (p *UploadSpuImageReq) SetImageData(val []byte) {
+	p.ImageData = val
+}
+func (p *UploadSpuImageReq) SetImageName(val string) {
+	p.ImageName = val
+}
+
+func (p *UploadSpuImageReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UploadSpuImageReq(%+v)", *p)
+}
+
+var fieldIDToName_UploadSpuImageReq = map[int16]string{
+	1: "spuId",
+	2: "imageData",
+	3: "imageName",
+}
+
+type UploadSpuImageResp struct {
+	Base     *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	ImageURL string          `thrift:"imageURL,2" frugal:"2,default,string" json:"imageURL"`
+}
+
+func NewUploadSpuImageResp() *UploadSpuImageResp {
+	return &UploadSpuImageResp{}
+}
+
+func (p *UploadSpuImageResp) InitDefault() {
+}
+
+var UploadSpuImageResp_Base_DEFAULT *model.BaseResp
+
+func (p *UploadSpuImageResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return UploadSpuImageResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+func (p *UploadSpuImageResp) GetImageURL() (v string) {
+	return p.ImageURL
+}
+func (p *UploadSpuImageResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *UploadSpuImageResp) SetImageURL(val string) {
+	p.ImageURL = val
+}
+
+func (p *UploadSpuImageResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *UploadSpuImageResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UploadSpuImageResp(%+v)", *p)
+}
+
+var fieldIDToName_UploadSpuImageResp = map[int16]string{
+	1: "base",
+	2: "imageURL",
+}
+
+type UploadSkuImageReq struct {
+	SkuId     int64  `thrift:"skuId,1" frugal:"1,default,i64" json:"skuId"`
+	ImageData []byte `thrift:"imageData,2" frugal:"2,default,binary" json:"imageData"`
+	ImageName string `thrift:"imageName,3" frugal:"3,default,string" json:"imageName"`
+}
+
+func NewUploadSkuImageReq() *UploadSkuImageReq {
+	return &UploadSkuImageReq{}
+}
+
+func (p *UploadSkuImageReq) InitDefault() {
+}
+
+func (p *UploadSkuImageReq) GetSkuId() (v int64) {
+	return p.SkuId
+}
+
+func (p *UploadSkuImageReq) GetImageData() (v []byte) {
+	return p.ImageData
+}
+
+func (p *UploadSkuImageReq) GetImageName() (v string) {
+	return p.ImageName
+}
+func (p *UploadSkuImageReq) SetSkuId(val int64) {
+	p.SkuId = val
+}
+func (p *UploadSkuImageReq) SetImageData(val []byte) {
+	p.ImageData = val
+}
+func (p *UploadSkuImageReq) SetImageName(val string) {
+	p.ImageName = val
+}
+
+func (p *UploadSkuImageReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UploadSkuImageReq(%+v)", *p)
+}
+
+var fieldIDToName_UploadSkuImageReq = map[int16]string{
+	1: "skuId",
+	2: "imageData",
+	3: "imageName",
+}
+
+type UploadSkuImageResp struct {
+	Base     *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	ImageURL string          `thrift:"imageURL,2" frugal:"2,default,string" json:"imageURL"`
+}
+
+func NewUploadSkuImageResp() *UploadSkuImageResp {
+	return &UploadSkuImageResp{}
+}
+
+func (p *UploadSkuImageResp) InitDefault() {
+}
+
+var UploadSkuImageResp_Base_DEFAULT *model.BaseResp
+
+func (p *UploadSkuImageResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return UploadSkuImageResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+func (p *UploadSkuImageResp) GetImageURL() (v string) {
+	return p.ImageURL
+}
+func (p *UploadSkuImageResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *UploadSkuImageResp) SetImageURL(val string) {
+	p.ImageURL = val
+}
+
+func (p *UploadSkuImageResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *UploadSkuImageResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UploadSkuImageResp(%+v)", *p)
+}
+
+var fieldIDToName_UploadSkuImageResp = map[int16]string{
+	1: "base",
+	2: "imageURL",
+}
+
 type ProductService interface {
 	CreateSpu(ctx context.Context, req *CreateSpuReq) (r *CreateSpuResp, err error)
 
@@ -1136,6 +1252,10 @@ type ProductService interface {
 	DeleteCategory(ctx context.Context, req *DeleteCategoryReq) (r *DeleteCategoryResp, err error)
 
 	GetSpuList(ctx context.Context, req *GetSpuReq) (r *GetSpuResp, err error)
+
+	UploadSpuImage(ctx context.Context, req *UploadSpuImageReq) (r *UploadSpuImageResp, err error)
+
+	UploadSkuImage(ctx context.Context, req *UploadSkuImageReq) (r *UploadSkuImageResp, err error)
 }
 
 type ProductServiceCreateSpuArgs struct {
@@ -1971,5 +2091,157 @@ func (p *ProductServiceGetSpuListResult) String() string {
 }
 
 var fieldIDToName_ProductServiceGetSpuListResult = map[int16]string{
+	0: "success",
+}
+
+type ProductServiceUploadSpuImageArgs struct {
+	Req *UploadSpuImageReq `thrift:"req,1" frugal:"1,default,UploadSpuImageReq" json:"req"`
+}
+
+func NewProductServiceUploadSpuImageArgs() *ProductServiceUploadSpuImageArgs {
+	return &ProductServiceUploadSpuImageArgs{}
+}
+
+func (p *ProductServiceUploadSpuImageArgs) InitDefault() {
+}
+
+var ProductServiceUploadSpuImageArgs_Req_DEFAULT *UploadSpuImageReq
+
+func (p *ProductServiceUploadSpuImageArgs) GetReq() (v *UploadSpuImageReq) {
+	if !p.IsSetReq() {
+		return ProductServiceUploadSpuImageArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *ProductServiceUploadSpuImageArgs) SetReq(val *UploadSpuImageReq) {
+	p.Req = val
+}
+
+func (p *ProductServiceUploadSpuImageArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *ProductServiceUploadSpuImageArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ProductServiceUploadSpuImageArgs(%+v)", *p)
+}
+
+var fieldIDToName_ProductServiceUploadSpuImageArgs = map[int16]string{
+	1: "req",
+}
+
+type ProductServiceUploadSpuImageResult struct {
+	Success *UploadSpuImageResp `thrift:"success,0,optional" frugal:"0,optional,UploadSpuImageResp" json:"success,omitempty"`
+}
+
+func NewProductServiceUploadSpuImageResult() *ProductServiceUploadSpuImageResult {
+	return &ProductServiceUploadSpuImageResult{}
+}
+
+func (p *ProductServiceUploadSpuImageResult) InitDefault() {
+}
+
+var ProductServiceUploadSpuImageResult_Success_DEFAULT *UploadSpuImageResp
+
+func (p *ProductServiceUploadSpuImageResult) GetSuccess() (v *UploadSpuImageResp) {
+	if !p.IsSetSuccess() {
+		return ProductServiceUploadSpuImageResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *ProductServiceUploadSpuImageResult) SetSuccess(x interface{}) {
+	p.Success = x.(*UploadSpuImageResp)
+}
+
+func (p *ProductServiceUploadSpuImageResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *ProductServiceUploadSpuImageResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ProductServiceUploadSpuImageResult(%+v)", *p)
+}
+
+var fieldIDToName_ProductServiceUploadSpuImageResult = map[int16]string{
+	0: "success",
+}
+
+type ProductServiceUploadSkuImageArgs struct {
+	Req *UploadSkuImageReq `thrift:"req,1" frugal:"1,default,UploadSkuImageReq" json:"req"`
+}
+
+func NewProductServiceUploadSkuImageArgs() *ProductServiceUploadSkuImageArgs {
+	return &ProductServiceUploadSkuImageArgs{}
+}
+
+func (p *ProductServiceUploadSkuImageArgs) InitDefault() {
+}
+
+var ProductServiceUploadSkuImageArgs_Req_DEFAULT *UploadSkuImageReq
+
+func (p *ProductServiceUploadSkuImageArgs) GetReq() (v *UploadSkuImageReq) {
+	if !p.IsSetReq() {
+		return ProductServiceUploadSkuImageArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *ProductServiceUploadSkuImageArgs) SetReq(val *UploadSkuImageReq) {
+	p.Req = val
+}
+
+func (p *ProductServiceUploadSkuImageArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *ProductServiceUploadSkuImageArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ProductServiceUploadSkuImageArgs(%+v)", *p)
+}
+
+var fieldIDToName_ProductServiceUploadSkuImageArgs = map[int16]string{
+	1: "req",
+}
+
+type ProductServiceUploadSkuImageResult struct {
+	Success *UploadSkuImageResp `thrift:"success,0,optional" frugal:"0,optional,UploadSkuImageResp" json:"success,omitempty"`
+}
+
+func NewProductServiceUploadSkuImageResult() *ProductServiceUploadSkuImageResult {
+	return &ProductServiceUploadSkuImageResult{}
+}
+
+func (p *ProductServiceUploadSkuImageResult) InitDefault() {
+}
+
+var ProductServiceUploadSkuImageResult_Success_DEFAULT *UploadSkuImageResp
+
+func (p *ProductServiceUploadSkuImageResult) GetSuccess() (v *UploadSkuImageResp) {
+	if !p.IsSetSuccess() {
+		return ProductServiceUploadSkuImageResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *ProductServiceUploadSkuImageResult) SetSuccess(x interface{}) {
+	p.Success = x.(*UploadSkuImageResp)
+}
+
+func (p *ProductServiceUploadSkuImageResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *ProductServiceUploadSkuImageResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ProductServiceUploadSkuImageResult(%+v)", *p)
+}
+
+var fieldIDToName_ProductServiceUploadSkuImageResult = map[int16]string{
 	0: "success",
 }

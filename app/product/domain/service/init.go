@@ -6,25 +6,27 @@ import (
 	"context"
 )
 
-type ProductUsecase struct {
+type ProductService struct {
 	db    repository.ProductDB
 	cache repository.ProductCache
 	mq    repository.ProductMq
 	es    repository.ProductEs
 	rpc   repository.ProductRpc
+	cos   repository.ProductCos
 }
 
-func NewProductUsecase(db repository.ProductDB, cache repository.ProductCache, mq repository.ProductMq, es repository.ProductEs, rpc repository.ProductRpc) *ProductUsecase {
-	return &ProductUsecase{
+func NewProductService(db repository.ProductDB, cache repository.ProductCache, mq repository.ProductMq, es repository.ProductEs, rpc repository.ProductRpc, cos repository.ProductCos) *ProductService {
+	return &ProductService{
 		db:    db,
 		cache: cache,
 		es:    es,
 		mq:    mq,
 		rpc:   rpc,
+		cos:   cos,
 	}
 }
 
-func (s *ProductUsecase) Init() {
+func (s *ProductService) Init() {
 	if err := s.ConsumeCreateSpuInfo(context.Background()); err != nil {
 		logger.CtxFatalf(context.Background(), "Consume create spu info error: %v", err)
 	}

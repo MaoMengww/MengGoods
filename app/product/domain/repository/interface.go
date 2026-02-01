@@ -29,6 +29,9 @@ type ProductDB interface {
 	IsSpuExist(ctx context.Context, spuId int64) (bool, error)
 	IsSkuExist(ctx context.Context, skuId int64) (bool, error)
 	IsCategoryExist(ctx context.Context, categoryId int64) (bool, error)
+
+	UploadSpuImage(ctx context.Context, spuId int64, imageUrl string) error
+	UploadSkuImage(ctx context.Context, skuId int64, imageUrl string) error
 }
 
 type ProductCache interface {
@@ -51,6 +54,7 @@ type ProductMq interface {
 	ConsumeDeleteSpuInfo(ctx context.Context, fn func(ctx context.Context, spuId int64) error) error
 }
 
+
 type ProductEs interface {
 	AddSpuItem(ctx context.Context, spu *model.SpuEs) error
 	UptateSpuItem(ctx context.Context, spu *model.SpuEs) error
@@ -62,3 +66,7 @@ type ProductRpc interface {
 	IsAdmin(ctx context.Context) (bool, error)
 }
 
+type ProductCos interface {
+	UploadSpuImage(ctx context.Context, spuImageData []byte, fileName string) (string, error)
+	UploadSkuImage(ctx context.Context, skuImageData []byte, fileName string) (string, error)
+}

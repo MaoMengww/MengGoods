@@ -460,10 +460,8 @@ var fieldIDToName_SkuInfo = map[int16]string{
 type CreateSkuItem struct {
 	Name        string `thrift:"name,1" frugal:"1,default,string" json:"name"`
 	Description string `thrift:"description,2" frugal:"2,default,string" json:"description"`
-	Stock       int64  `thrift:"stock,3" frugal:"3,default,i64" json:"stock"`
-	Price       int64  `thrift:"price,4" frugal:"4,default,i64" json:"price"`
-	SkuImageURL string `thrift:"skuImageURL,5" frugal:"5,default,string" json:"skuImageURL"`
-	Properties  string `thrift:"properties,6" frugal:"6,default,string" json:"properties"`
+	Price       int64  `thrift:"price,3" frugal:"3,default,i64" json:"price"`
+	Properties  string `thrift:"properties,4" frugal:"4,default,string" json:"properties"`
 }
 
 func NewCreateSkuItem() *CreateSkuItem {
@@ -481,16 +479,8 @@ func (p *CreateSkuItem) GetDescription() (v string) {
 	return p.Description
 }
 
-func (p *CreateSkuItem) GetStock() (v int64) {
-	return p.Stock
-}
-
 func (p *CreateSkuItem) GetPrice() (v int64) {
 	return p.Price
-}
-
-func (p *CreateSkuItem) GetSkuImageURL() (v string) {
-	return p.SkuImageURL
 }
 
 func (p *CreateSkuItem) GetProperties() (v string) {
@@ -502,14 +492,8 @@ func (p *CreateSkuItem) SetName(val string) {
 func (p *CreateSkuItem) SetDescription(val string) {
 	p.Description = val
 }
-func (p *CreateSkuItem) SetStock(val int64) {
-	p.Stock = val
-}
 func (p *CreateSkuItem) SetPrice(val int64) {
 	p.Price = val
-}
-func (p *CreateSkuItem) SetSkuImageURL(val string) {
-	p.SkuImageURL = val
 }
 func (p *CreateSkuItem) SetProperties(val string) {
 	p.Properties = val
@@ -525,10 +509,8 @@ func (p *CreateSkuItem) String() string {
 var fieldIDToName_CreateSkuItem = map[int16]string{
 	1: "name",
 	2: "description",
-	3: "stock",
-	4: "price",
-	5: "skuImageURL",
-	6: "properties",
+	3: "price",
+	4: "properties",
 }
 
 type CategoryInfo struct {
