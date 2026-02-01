@@ -34,12 +34,14 @@ const (
 const (
 	UserAlreadyExist                        = 30001 + iota //用户已存在
 	UserNotExist                                           //用户不存在
-	AddressNotExist                                       //地址不存在
+	AddressNotExist                                        //地址不存在
 	PasswordIncorrect                                      //密码错误
-	CodeIsNotMatch                                        //验证码错误
+	CodeIsNotMatch                                         //验证码错误
 	UserIsBanned                                           //用户已被ban
 	UserNotBanned                                          //用户未被ban
 	PasswordNotMatch                                       //密码错误
+	InvalidImageFileType                                   //无效的图片文件类型
+	InvalidFile                                            //无效的文件
 	TokenExpired                                           //token过期
 	AuthNoOperatePermissionCode                            //无操作权限
 	PermissionDenied                                       //权限不足

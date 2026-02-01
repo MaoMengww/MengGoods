@@ -4,6 +4,7 @@ import (
 	"MengGoods/app/user/domain/model"
 	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/constants"
+	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
 	"MengGoods/pkg/utils"
 	"context"
@@ -99,8 +100,9 @@ func (s *UserService) UserLogin(ctx context.Context, uid int64) error {
 		//检查token是否过期
 		claims, err := utils.CheckToken(oldToken)
 		if err != nil {
+			logger.Error(ctx, fmt.Sprintf("failed to check token, err2:%v", err))
 			return merror.NewMerror(
-				merror.TokenExpired,
+				merror.InternalServerErrorCode,
 				fmt.Sprintf("failed to check token, err2:%v", err),
 			)
 		}
@@ -266,20 +268,31 @@ func (u *UserService) SendCode(ctx context.Context, email string) error {
 	return nil
 }
 
-func(u *UserService) UpdatePassword(ctx context.Context, password string, code string) error {
+func (u *UserService) UpdatePassword(ctx context.Context, password string, code string) error {
 	uid, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
 		return err
 	}
 	getedCode, err := u.cache.GetCode(ctx, u.cache.GetCodeKey(ctx, uid))
-	if err != nil{
-		return  err
+	if err != nil {
+		return err
 	}
-	if getedCode != code{
+	if getedCode != code {
 		return merror.NewMerror(merror.CodeIsNotMatch, "code is not match")
 	}
 	if err := u.db.UpdatePassword(ctx, password, uid); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (u *UserService) UploadAvatar(ctx context.Context, avatarData []byte, fileName string) (string, error) {
+	avatarURL, err := u.cos.UploadAvatar(ctx, avatarData, fileName)
+	if err != nil {
+		return "", err
+	}
+	if err := u.db.UploadAvatar(ctx, avatarURL); err != nil {
+		return "", err
+	}
+	return avatarURL, nil
 }

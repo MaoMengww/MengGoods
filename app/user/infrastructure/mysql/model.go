@@ -5,6 +5,7 @@ type User struct {
 	Username string `gorm:"column:username"`
 	Password string `gorm:"column:password"`
 	Email    string `gorm:"column:email"`
+	AvatarURL string `gorm:"column:avatar"`
 	Role     int64  `gorm:"column:role"`
 }
 

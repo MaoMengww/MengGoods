@@ -7,6 +7,7 @@ import (
 	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/logger"
+	"MengGoods/pkg/merror"
 	"MengGoods/pkg/utils"
 	"context"
 
@@ -194,4 +195,36 @@ func ResetPassword(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	base.ResSuccess(c)
+}
+
+func LoadAvatar(ctx context.Context, c *app.RequestContext) {
+	var req user.UploadAvatarReq
+	file, err := c.FormFile("file")
+	if err != nil {
+		base.ResErr(c, merror.NewMerror(merror.InvalidFile, "upload file failed"))
+		return
+	}
+	ok := utils.CheckImageFileType(file)
+	if !ok {
+		base.ResErr(c, merror.NewMerror(merror.InvalidImageFileType, "file type is not image"))
+		return
+	}
+	avatarData, err := utils.FileToBytes(file)
+	if err != nil {
+		base.ResErr(c, err)
+		return
+	}
+	req.AvatarData = avatarData
+	req.AvatarName = file.Filename
+	resp, err := rpc.UploadAvatar(ctx, &req)
+	if err != nil {
+		base.ResErr(c, err)
+		return
+	}
+	resp, err = rpc.UploadAvatar(ctx, &req)
+	if err != nil {
+		base.ResErr(c, err)
+		return
+	}
+	base.ResData(c, resp)
 }

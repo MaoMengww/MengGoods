@@ -188,3 +188,18 @@ func (s *UserServiceImpl) ResetPwd(ctx context.Context, req *user.ResetPwdReq) (
 	resp = r
 	return r, nil
 }
+
+func (s *UserServiceImpl) UploadAvatar(ctx context.Context, req *user.UploadAvatarReq) (resp *user.UploadAvatarResp, err error) {
+	// TODO: Your code here...
+	r := new(user.UploadAvatarResp)
+	avatarURL, err := s.usecase.UploadAvatar(ctx, req.AvatarData, req.AvatarName)
+	if err != nil {
+		r.Base = base.BuildBaseResp(err)
+		return r, nil
+	}
+	r.AvatarURL = avatarURL
+	r.Base = base.BuildBaseResp(nil)
+	resp = r
+	return r, nil
+}
+

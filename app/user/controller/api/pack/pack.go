@@ -10,6 +10,7 @@ func BuildUserInfo(user *domainModel.User) *model.UserInfo {
 		Id:       user.UserId,
 		Username: user.Username,
 		Email:    user.Email,
+		Avatar:   user.AvatarURL,
 		Role:     user.Role,
 	}
 }

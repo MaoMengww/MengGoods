@@ -9,9 +9,10 @@ import (
 )
 
 type RegisterReq struct {
-	Username string `thrift:"username,1,required" frugal:"1,required,string" json:"username"`
-	Password string `thrift:"password,2,required" frugal:"2,required,string" json:"password"`
-	Email    string `thrift:"email,3,required" frugal:"3,required,string" json:"email"`
+	Username   string `thrift:"username,1,required" frugal:"1,required,string" json:"username"`
+	Password   string `thrift:"password,2,required" frugal:"2,required,string" json:"password"`
+	AvatarName string `thrift:"avatarName,4,required" frugal:"4,required,string" json:"avatarName"`
+	Email      string `thrift:"email,5,required" frugal:"5,required,string" json:"email"`
 }
 
 func NewRegisterReq() *RegisterReq {
@@ -29,6 +30,10 @@ func (p *RegisterReq) GetPassword() (v string) {
 	return p.Password
 }
 
+func (p *RegisterReq) GetAvatarName() (v string) {
+	return p.AvatarName
+}
+
 func (p *RegisterReq) GetEmail() (v string) {
 	return p.Email
 }
@@ -37,6 +42,9 @@ func (p *RegisterReq) SetUsername(val string) {
 }
 func (p *RegisterReq) SetPassword(val string) {
 	p.Password = val
+}
+func (p *RegisterReq) SetAvatarName(val string) {
+	p.AvatarName = val
 }
 func (p *RegisterReq) SetEmail(val string) {
 	p.Email = val
@@ -52,7 +60,8 @@ func (p *RegisterReq) String() string {
 var fieldIDToName_RegisterReq = map[int16]string{
 	1: "username",
 	2: "password",
-	3: "email",
+	4: "avatarName",
+	5: "email",
 }
 
 type RegisterResp struct {
@@ -100,6 +109,91 @@ func (p *RegisterResp) String() string {
 var fieldIDToName_RegisterResp = map[int16]string{
 	1: "base",
 	2: "userId",
+}
+
+type UploadAvatarReq struct {
+	AvatarData []byte `thrift:"avatarData,1" frugal:"1,default,binary" json:"avatarData"`
+	AvatarName string `thrift:"avatarName,2" frugal:"2,default,string" json:"avatarName"`
+}
+
+func NewUploadAvatarReq() *UploadAvatarReq {
+	return &UploadAvatarReq{}
+}
+
+func (p *UploadAvatarReq) InitDefault() {
+}
+
+func (p *UploadAvatarReq) GetAvatarData() (v []byte) {
+	return p.AvatarData
+}
+
+func (p *UploadAvatarReq) GetAvatarName() (v string) {
+	return p.AvatarName
+}
+func (p *UploadAvatarReq) SetAvatarData(val []byte) {
+	p.AvatarData = val
+}
+func (p *UploadAvatarReq) SetAvatarName(val string) {
+	p.AvatarName = val
+}
+
+func (p *UploadAvatarReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UploadAvatarReq(%+v)", *p)
+}
+
+var fieldIDToName_UploadAvatarReq = map[int16]string{
+	1: "avatarData",
+	2: "avatarName",
+}
+
+type UploadAvatarResp struct {
+	Base      *model.BaseResp `thrift:"base,1" frugal:"1,default,model.BaseResp" json:"base"`
+	AvatarURL string          `thrift:"avatarURL,2" frugal:"2,default,string" json:"avatarURL"`
+}
+
+func NewUploadAvatarResp() *UploadAvatarResp {
+	return &UploadAvatarResp{}
+}
+
+func (p *UploadAvatarResp) InitDefault() {
+}
+
+var UploadAvatarResp_Base_DEFAULT *model.BaseResp
+
+func (p *UploadAvatarResp) GetBase() (v *model.BaseResp) {
+	if !p.IsSetBase() {
+		return UploadAvatarResp_Base_DEFAULT
+	}
+	return p.Base
+}
+
+func (p *UploadAvatarResp) GetAvatarURL() (v string) {
+	return p.AvatarURL
+}
+func (p *UploadAvatarResp) SetBase(val *model.BaseResp) {
+	p.Base = val
+}
+func (p *UploadAvatarResp) SetAvatarURL(val string) {
+	p.AvatarURL = val
+}
+
+func (p *UploadAvatarResp) IsSetBase() bool {
+	return p.Base != nil
+}
+
+func (p *UploadAvatarResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UploadAvatarResp(%+v)", *p)
+}
+
+var fieldIDToName_UploadAvatarResp = map[int16]string{
+	1: "base",
+	2: "avatarURL",
 }
 
 type LoginReq struct {
@@ -978,6 +1072,8 @@ type UserService interface {
 	SendCode(ctx context.Context, req *SendCodeReq) (r *SendCodeResp, err error)
 
 	ResetPwd(ctx context.Context, req *ResetPwdReq) (r *ResetPwdResp, err error)
+
+	UploadAvatar(ctx context.Context, req *UploadAvatarReq) (r *UploadAvatarResp, err error)
 }
 
 type UserServiceRegisterArgs struct {
@@ -1889,5 +1985,81 @@ func (p *UserServiceResetPwdResult) String() string {
 }
 
 var fieldIDToName_UserServiceResetPwdResult = map[int16]string{
+	0: "success",
+}
+
+type UserServiceUploadAvatarArgs struct {
+	Req *UploadAvatarReq `thrift:"req,1" frugal:"1,default,UploadAvatarReq" json:"req"`
+}
+
+func NewUserServiceUploadAvatarArgs() *UserServiceUploadAvatarArgs {
+	return &UserServiceUploadAvatarArgs{}
+}
+
+func (p *UserServiceUploadAvatarArgs) InitDefault() {
+}
+
+var UserServiceUploadAvatarArgs_Req_DEFAULT *UploadAvatarReq
+
+func (p *UserServiceUploadAvatarArgs) GetReq() (v *UploadAvatarReq) {
+	if !p.IsSetReq() {
+		return UserServiceUploadAvatarArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *UserServiceUploadAvatarArgs) SetReq(val *UploadAvatarReq) {
+	p.Req = val
+}
+
+func (p *UserServiceUploadAvatarArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *UserServiceUploadAvatarArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserServiceUploadAvatarArgs(%+v)", *p)
+}
+
+var fieldIDToName_UserServiceUploadAvatarArgs = map[int16]string{
+	1: "req",
+}
+
+type UserServiceUploadAvatarResult struct {
+	Success *UploadAvatarResp `thrift:"success,0,optional" frugal:"0,optional,UploadAvatarResp" json:"success,omitempty"`
+}
+
+func NewUserServiceUploadAvatarResult() *UserServiceUploadAvatarResult {
+	return &UserServiceUploadAvatarResult{}
+}
+
+func (p *UserServiceUploadAvatarResult) InitDefault() {
+}
+
+var UserServiceUploadAvatarResult_Success_DEFAULT *UploadAvatarResp
+
+func (p *UserServiceUploadAvatarResult) GetSuccess() (v *UploadAvatarResp) {
+	if !p.IsSetSuccess() {
+		return UserServiceUploadAvatarResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *UserServiceUploadAvatarResult) SetSuccess(x interface{}) {
+	p.Success = x.(*UploadAvatarResp)
+}
+
+func (p *UserServiceUploadAvatarResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UserServiceUploadAvatarResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UserServiceUploadAvatarResult(%+v)", *p)
+}
+
+var fieldIDToName_UserServiceUploadAvatarResult = map[int16]string{
 	0: "success",
 }

@@ -35,7 +35,7 @@ func InitKeys() error {
 		err = fmt.Errorf("failed to parse public key: %w", err)
 		return err
 	}
-	return err
+	return nil
 }
 
 // 创建两种网关token,一种是access token，第二种是 refresh token

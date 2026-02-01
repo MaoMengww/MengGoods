@@ -7,14 +7,16 @@ import (
 type UserService struct {
 	db    repository.UserDB
 	cache repository.UserCache
+	cos   repository.UserCos
 }
 
-func NewUserService(db repository.UserDB, cache repository.UserCache) *UserService {
-	if db == nil || cache == nil {
-		panic("db or cache is nil")
+func NewUserService(db repository.UserDB, cache repository.UserCache, cos repository.UserCos) *UserService {
+	if db == nil || cache == nil || cos == nil {
+		panic("db or cache or cos is nil")
 	}
 	return &UserService{
 		db:    db,
 		cache: cache,
+		cos:   cos,
 	}
 }

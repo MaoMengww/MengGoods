@@ -23,6 +23,7 @@ type Client interface {
 	Logout(ctx context.Context, req *user.LogoutReq, callOptions ...callopt.Option) (r *user.LogoutResp, err error)
 	SendCode(ctx context.Context, req *user.SendCodeReq, callOptions ...callopt.Option) (r *user.SendCodeResp, err error)
 	ResetPwd(ctx context.Context, req *user.ResetPwdReq, callOptions ...callopt.Option) (r *user.ResetPwdResp, err error)
+	UploadAvatar(ctx context.Context, req *user.UploadAvatarReq, callOptions ...callopt.Option) (r *user.UploadAvatarResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -112,4 +113,9 @@ func (p *kUserServiceClient) SendCode(ctx context.Context, req *user.SendCodeReq
 func (p *kUserServiceClient) ResetPwd(ctx context.Context, req *user.ResetPwdReq, callOptions ...callopt.Option) (r *user.ResetPwdResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.ResetPwd(ctx, req)
+}
+
+func (p *kUserServiceClient) UploadAvatar(ctx context.Context, req *user.UploadAvatarReq, callOptions ...callopt.Option) (r *user.UploadAvatarResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UploadAvatar(ctx, req)
 }

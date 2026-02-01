@@ -38,7 +38,7 @@ func UserInit() {
 	c, err := userservice.NewClient(
 		"user",
 		client.WithResolver(r),
-		client.WithRPCTimeout(3*time.Second),
+		client.WithRPCTimeout(30*time.Second),
 		client.WithFailureRetry(retry.NewFailurePolicy()),
 		client.WithTransportProtocol(transport.TTHeader),
 		client.WithCircuitBreaker(cbSuite),
@@ -202,6 +202,21 @@ func ResetPwd(ctx context.Context, c *user.ResetPwdReq) (resp *mresp.ResetPwdRes
 	}
 	if r.Base.Code != merror.SuccessCode {
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
+	}
+	return resp, nil
+}
+
+func UploadAvatar(ctx context.Context, c *user.UploadAvatarReq) (resp *mresp.UploadAvatarResp, err error) {
+	r, err := UserClient.UploadAvatar(ctx, c)
+	if err != nil {
+		logger.CtxErrorf(ctx, err.Error())
+		return nil, merror.NewMerror(merror.InternalServerErrorCode, err.Error())
+	}
+	if r.Base.Code != merror.SuccessCode {
+		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
+	}
+	resp = &mresp.UploadAvatarResp{
+		Url: r.AvatarURL,
 	}
 	return resp, nil
 }

@@ -14,6 +14,7 @@ var Conf Config
 type Config struct {
 	MySQL         MySQLConfig    `mapstructure:"mysql"`
 	Redis         RedisConfig    `mapstructure:"redis"`
+	Cos           CosConfig      `mapstructure:"cos"`
 	Etcd          EtcdConfig     `mapstructure:"etcd"`
 	Kafka         KafkaConfig    `mapstructure:"kafka"`
 	Elasticsearch elasticsearch  `mapstructure:"elasticsearch"`
@@ -43,6 +44,12 @@ type RedisConfig struct {
 	Addr     string `mapstructure:"addr"`
 	Password string `mapstructure:"password"`
 	DB       int    `mapstructure:"db"`
+}
+type CosConfig struct {
+	Bucket    string `mapstructure:"bucket"`
+	Region    string `mapstructure:"region"`
+	SecretId  string `mapstructure:"secretId"`
+	SecretKey string `mapstructure:"secretKey"`
 }
 
 type EtcdConfig struct {

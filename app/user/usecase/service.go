@@ -189,3 +189,7 @@ func (u *userUsecase) SendCode(ctx context.Context, email string) error {
 func (u *userUsecase) UpdatePassword(ctx context.Context, code string, password string) error {
 	return u.service.UpdatePassword(ctx, password, code)
 }
+
+func (u *userUsecase) UploadAvatar(ctx context.Context, avatarData []byte, fileName string) (string, error) {
+	return u.service.UploadAvatar(ctx, avatarData, fileName)
+}

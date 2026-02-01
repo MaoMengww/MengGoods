@@ -8,6 +8,7 @@ import (
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/middleware"
+	"MengGoods/pkg/utils"
 	"context"
 	"net"
 
@@ -22,6 +23,7 @@ import (
 func Init() {
 	config.Init()
 	logger.InitLogger()
+	utils.InitKeys()
 }
 
 func main() {

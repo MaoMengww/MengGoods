@@ -20,21 +20,24 @@ type UserUsecase interface {
 	SetAdmin(ctx context.Context, password string, uid int64) error
 	SendCode(ctx context.Context, email string) error
 	UpdatePassword(ctx context.Context, code string, password string) error
+	UploadAvatar(ctx context.Context, avatarData []byte, fileName string) (string, error)
 }
 
 type userUsecase struct {
 	db      repository.UserDB
 	cache   repository.UserCache
 	service *service.UserService
+	cos     repository.UserCos
 }
 
-func NewUserUsecase(db repository.UserDB, cache repository.UserCache, svc *service.UserService) *userUsecase {
-	if db == nil || cache == nil || svc == nil {
-		panic("db or cache or svc is nil")
+func NewUserUsecase(db repository.UserDB, cache repository.UserCache, svc *service.UserService, cos repository.UserCos) *userUsecase {
+	if db == nil || cache == nil || svc == nil || cos == nil {
+		panic("db or cache or svc or cos is nil")
 	}
 	return &userUsecase{
 		db:      db,
 		cache:   cache,
 		service: svc,
+		cos:     cos,
 	}
 }

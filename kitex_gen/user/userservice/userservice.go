@@ -97,6 +97,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"UploadAvatar": kitex.NewMethodInfo(
+		uploadAvatarHandler,
+		newUserServiceUploadAvatarArgs,
+		newUserServiceUploadAvatarResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -379,6 +386,24 @@ func newUserServiceResetPwdResult() interface{} {
 	return user.NewUserServiceResetPwdResult()
 }
 
+func uploadAvatarHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceUploadAvatarArgs)
+	realResult := result.(*user.UserServiceUploadAvatarResult)
+	success, err := handler.(user.UserService).UploadAvatar(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUploadAvatarArgs() interface{} {
+	return user.NewUserServiceUploadAvatarArgs()
+}
+
+func newUserServiceUploadAvatarResult() interface{} {
+	return user.NewUserServiceUploadAvatarResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -504,6 +529,16 @@ func (p *kClient) ResetPwd(ctx context.Context, req *user.ResetPwdReq) (r *user.
 	_args.Req = req
 	var _result user.UserServiceResetPwdResult
 	if err = p.c.Call(ctx, "ResetPwd", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UploadAvatar(ctx context.Context, req *user.UploadAvatarReq) (r *user.UploadAvatarResp, err error) {
+	var _args user.UserServiceUploadAvatarArgs
+	_args.Req = req
+	var _result user.UserServiceUploadAvatarResult
+	if err = p.c.Call(ctx, "UploadAvatar", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

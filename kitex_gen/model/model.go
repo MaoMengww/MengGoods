@@ -102,7 +102,8 @@ type UserInfo struct {
 	Id       int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
 	Username string `thrift:"username,2" frugal:"2,default,string" json:"username"`
 	Email    string `thrift:"email,3" frugal:"3,default,string" json:"email"`
-	Role     int64  `thrift:"role,4" frugal:"4,default,i64" json:"role"`
+	Avatar   string `thrift:"avatar,4" frugal:"4,default,string" json:"avatar"`
+	Role     int64  `thrift:"role,5" frugal:"5,default,i64" json:"role"`
 }
 
 func NewUserInfo() *UserInfo {
@@ -124,6 +125,10 @@ func (p *UserInfo) GetEmail() (v string) {
 	return p.Email
 }
 
+func (p *UserInfo) GetAvatar() (v string) {
+	return p.Avatar
+}
+
 func (p *UserInfo) GetRole() (v int64) {
 	return p.Role
 }
@@ -135,6 +140,9 @@ func (p *UserInfo) SetUsername(val string) {
 }
 func (p *UserInfo) SetEmail(val string) {
 	p.Email = val
+}
+func (p *UserInfo) SetAvatar(val string) {
+	p.Avatar = val
 }
 func (p *UserInfo) SetRole(val int64) {
 	p.Role = val
@@ -151,7 +159,8 @@ var fieldIDToName_UserInfo = map[int16]string{
 	1: "id",
 	2: "username",
 	3: "email",
-	4: "role",
+	4: "avatar",
+	5: "role",
 }
 
 type AddressInfo struct {

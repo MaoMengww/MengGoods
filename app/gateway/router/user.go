@@ -25,5 +25,6 @@ func InitUserRouter(h *server.Hertz) {
 		user.POST("/logOut", api.Logout)
 		user.POST("/sendCode", api.SendCode)
 		user.POST("/resetPassword", api.ResetPassword)
+		user.POST("/uploadAvatar", api.LoadAvatar)
 	}
 }

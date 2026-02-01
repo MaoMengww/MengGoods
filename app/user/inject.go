@@ -4,6 +4,7 @@ import (
 	"MengGoods/app/user/controller/api"
 	"MengGoods/app/user/domain/service"
 	"MengGoods/app/user/infrastructure/cache"
+	"MengGoods/app/user/infrastructure/cos"
 	"MengGoods/app/user/infrastructure/mysql"
 	"MengGoods/app/user/usecase"
 	"MengGoods/config"
@@ -20,9 +21,10 @@ func InjectUserServiceImpl() *api.UserServiceImpl {
 	if err != nil {
 		panic(err)
 	}
+	userCos := cos.NewUserCos(client.NewCosClient())
 	userCache := cache.NewUserCache(cacheClient)
-	svc := service.NewUserService(userDB, userCache)
-	usecase := usecase.NewUserUsecase(userDB, userCache, svc)
+	svc := service.NewUserService(userDB, userCache, userCos)
+	usecase := usecase.NewUserUsecase(userDB, userCache, svc, userCos)
 	serviceImpl := api.NewUserServiceImpl(usecase)
 	return serviceImpl
 }

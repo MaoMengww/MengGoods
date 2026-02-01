@@ -7,12 +7,24 @@ include "model.thrift"
 struct RegisterReq {
     1: required string username;
     2: required string password;
-    3: required string email;
+    4: required string avatarName;
+    5: required string email;
 }
 
 struct RegisterResp {
     1: required model.BaseResp base;
     2: required i64 userId;
+}
+
+//上传头像
+struct UploadAvatarReq {
+    1: binary avatarData;
+    2: string avatarName;
+}
+
+struct UploadAvatarResp {
+    1: model.BaseResp base;
+    2: string avatarURL;
 }
 
 //登录
@@ -142,4 +154,5 @@ service UserService {
     LogoutResp logout(1: LogoutReq req);
     SendCodeResp SendCode(1: SendCodeReq req);
     ResetPwdResp ResetPwd(1: ResetPwdReq req);
+    UploadAvatarResp UploadAvatar(1: UploadAvatarReq req);
 }

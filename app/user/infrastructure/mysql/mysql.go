@@ -21,10 +21,10 @@ func NewUserDB(db *gorm.DB) *UserDB {
 func (u *UserDB) IsUserExist(ctx context.Context, username string) (bool, error) {
 	var count int64
 	err := u.db.WithContext(ctx).Model(&User{}).Where("username = ?", username).Count(&count).Error
-	if err == gorm.ErrRecordNotFound{
+	if err == gorm.ErrRecordNotFound {
 		return false, nil
 	}
-	if err != nil{
+	if err != nil {
 		return false, err
 	}
 	return count > 0, nil
@@ -46,46 +46,48 @@ func (u *UserDB) CreateUser(ctx context.Context, user *model.User) (int64, error
 func (u *UserDB) GetUserByID(ctx context.Context, uid int64) (*model.User, error) {
 	var user User
 	err := u.db.WithContext(ctx).First(&user, uid).Error
-	if err == gorm.ErrRecordNotFound{
+	if err == gorm.ErrRecordNotFound {
 		return nil, merror.NewMerror(merror.UserNotExist, "user not exist")
 	}
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return &model.User{
-		UserId:   user.UserId,
-		Username: user.Username,
-		Password: user.Password,
-		Email:    user.Email,
-		Role:     user.Role,
+		UserId:    user.UserId,
+		Username:  user.Username,
+		Password:  user.Password,
+		AvatarURL: user.AvatarURL,
+		Email:     user.Email,
+		Role:      user.Role,
 	}, nil
 }
 
 func (u *UserDB) GetUserByName(ctx context.Context, username string) (*model.User, error) {
 	var user User
 	err := u.db.WithContext(ctx).First(&user, "username = ?", username).Error
-	if err == gorm.ErrRecordNotFound{
+	if err == gorm.ErrRecordNotFound {
 		return nil, merror.NewMerror(merror.UserNotExist, "user not exist")
 	}
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return &model.User{
-		UserId:   user.UserId,
-		Username: user.Username,
-		Password: user.Password,
-		Email:    user.Email,
-		Role:     user.Role,
+		UserId:    user.UserId,
+		Username:  user.Username,
+		Password:  user.Password,
+		AvatarURL: user.AvatarURL,
+		Email:     user.Email,
+		Role:      user.Role,
 	}, nil
 }
 
 func (u *UserDB) GetAddress(ctx context.Context, id int64) ([]*model.Address, error) {
 	var addrs []*Address
 	err := u.db.WithContext(ctx).Where("user_id = ?", id).Find(&addrs).Error
-	if err == gorm.ErrRecordNotFound{
+	if err == gorm.ErrRecordNotFound {
 		return nil, merror.NewMerror(merror.AddressNotExist, "address not exist")
 	}
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 
@@ -134,21 +136,36 @@ func (u *UserDB) AddAddress(ctx context.Context, addr *model.Address) (int64, er
 
 func (u *UserDB) SetUserAdmin(ctx context.Context, uid int64) error {
 	err := u.db.WithContext(ctx).Model(&User{}).Where("user_id = ?", uid).Update("role", constants.Admin).Error
-	if err == gorm.ErrRecordNotFound{
+	if err == gorm.ErrRecordNotFound {
 		return merror.NewMerror(merror.UserNotExist, "user not exist")
 	}
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func(u *UserDB) UpdatePassword(ctx context.Context, password string, uid int64) error {
+func (u *UserDB) UpdatePassword(ctx context.Context, password string, uid int64) error {
 	err := u.db.WithContext(ctx).Model(&User{}).Where("user_id = ?", uid).Update("password", password).Error
-	if err == gorm.ErrRecordNotFound{
+	if err == gorm.ErrRecordNotFound {
 		return merror.NewMerror(merror.UserNotExist, "user not exist")
 	}
-	if err != nil{
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UserDB) UploadAvatar(ctx context.Context, avatarURL string) error {
+	uid, err := mcontext.GetUserIDFromContext(ctx)
+	if err != nil {
+		return err
+	}
+	err = u.db.WithContext(ctx).Model(&User{}).Where("user_id = ?", uid).Update("avatar", avatarURL).Error
+	if err == gorm.ErrRecordNotFound {
+		return merror.NewMerror(merror.UserNotExist, "user not exist")
+	}
+	if err != nil {
 		return err
 	}
 	return nil

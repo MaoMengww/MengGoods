@@ -9,7 +9,8 @@ struct UserInfo {
     1: i64 id;
     2: string username;
     3: string email;
-    4: i64 role;
+    4: string avatar;
+    5: i64 role;
 }
 
 //userID放在context中隐式透传

@@ -15,6 +15,7 @@ type UserDB interface {
 	GetAddressByID(ctx context.Context, addressId int64) (*model.Address, error)
 	SetUserAdmin(ctx context.Context, uid int64) error
 	UpdatePassword(ctx context.Context, password string, uid int64) error
+	UploadAvatar(ctx context.Context, avatarURL string) error
 }
 
 // 缓存
@@ -31,4 +32,8 @@ type UserCache interface {
 	GetCodeKey(ctx context.Context, uid int64) string             //获取验证码key
 	GetToken(ctx context.Context, key string) (string, error)     //获取key对应的token
 	IsExist(ctx context.Context, key string) (bool, error)        //判断key是否存在
+}
+
+type UserCos interface { 
+	UploadAvatar(ctx context.Context, avatarData []byte, fileName string) (string, error) //上传用户头像
 }

@@ -39,3 +39,7 @@ type SendCodeResp struct {
 
 type ResetPwdResp struct {
 }
+
+type UploadAvatarResp struct {
+	Url string `json:"url"`
+}

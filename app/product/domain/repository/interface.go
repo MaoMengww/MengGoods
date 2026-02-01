@@ -61,3 +61,4 @@ type ProductEs interface {
 type ProductRpc interface {
 	IsAdmin(ctx context.Context) (bool, error)
 }
+
