@@ -7,13 +7,35 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
+)
+
+var (
+	privateKey interface{}
+	publicKey  interface{}
 )
 
 type Claims struct {
 	Type int64 `json:"type"`
 	Uid  int64 `json:"uid"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
+}
+
+func InitKeys() error {
+	var err error
+	// 解析私钥
+	privateKey, err = jwt.ParseEdPrivateKeyFromPEM([]byte(config.Conf.JWT.PrivateKey))
+	if err != nil {
+		err = fmt.Errorf("failed to parse private key: %w", err)
+		return err
+	}
+	// 解析公钥
+	publicKey, err = jwt.ParseEdPublicKeyFromPEM([]byte(config.Conf.JWT.PublicKey))
+	if err != nil {
+		err = fmt.Errorf("failed to parse public key: %w", err)
+		return err
+	}
+	return err
 }
 
 // 创建两种网关token,一种是access token，第二种是 refresh token
@@ -47,39 +69,17 @@ func CreateToken(tokenType int64, uid int64) (string, error) {
 	claims := Claims{
 		Type: tokenType,
 		Uid:  uid,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(expiredDuration).Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expiredDuration)),
 			Issuer:    config.Conf.JWT.Issuer,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodEdDSA, claims)
-	privateKey, err := parsePrivateKey(config.Conf.JWT.PrivateKey)
-	if err != nil {
-		return "", err
-	}
 	tokenString, err := token.SignedString(privateKey)
 	if err != nil {
 		return "", err
 	}
 	return tokenString, nil
-}
-
-// jwt解析私钥
-func parsePrivateKey(key string) (interface{}, error) {
-	parsedKey, err := jwt.ParseEdPrivateKeyFromPEM([]byte(key))
-	if err != nil {
-		return nil, err
-	}
-	return parsedKey, nil
-}
-
-// jwt解析公钥
-func parsePublicKey(key string) (interface{}, error) {
-	parsedKey, err := jwt.ParseEdPublicKeyFromPEM([]byte(key))
-	if err != nil {
-		return nil, err
-	}
-	return parsedKey, nil
 }
 
 // 验证并解析claims
@@ -102,10 +102,6 @@ func verifyToken(token string, key interface{}) (*Claims, error) {
 
 // 验证token
 func CheckToken(token string) (*Claims, error) {
-	publicKey, err := parsePublicKey(config.Conf.JWT.PublicKey)
-	if err != nil {
-		return nil, err
-	}
 	claims, err := verifyToken(token, publicKey)
 	if err != nil {
 		return nil, err

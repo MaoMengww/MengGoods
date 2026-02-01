@@ -7,6 +7,7 @@ import (
 
 	//	"MengGoods/pkg/base"
 	"MengGoods/pkg/logger"
+	"MengGoods/pkg/utils"
 	//	"context"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -17,6 +18,10 @@ func main() {
 	logger.InitLogger()
 	/* p := base.InitTracing("gateway")
 	defer p(context.Background()) */
+	err := utils.InitKeys()
+	if err != nil {
+		logger.Fatal("InitKeys failed, err:%v", err)
+	}
 	rpc.UserInit()
 	rpc.ProductInit()
 	rpc.CouponInit()

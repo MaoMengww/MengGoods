@@ -105,7 +105,7 @@ func (s *UserService) UserLogin(ctx context.Context, uid int64) error {
 			)
 		}
 		//检查token是否过期
-		if claims.ExpiresAt < time.Now().Unix() {
+		if claims.ExpiresAt.Unix() < time.Now().Unix() {
 			return merror.NewMerror(
 				merror.TokenExpired,
 				"token has expired",

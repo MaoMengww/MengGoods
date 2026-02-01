@@ -9,7 +9,7 @@ require (
 	github.com/cloudwego/gopkg v0.1.7
 	github.com/cloudwego/hertz v0.10.3
 	github.com/cloudwego/kitex v0.15.2
-	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/hertz-contrib/opensergo v0.0.1
 	github.com/kitex-contrib/obs-opentelemetry v0.3.0
 	github.com/kitex-contrib/registry-etcd v0.3.0
