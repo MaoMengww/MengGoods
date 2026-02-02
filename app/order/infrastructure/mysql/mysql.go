@@ -36,9 +36,13 @@ func (d *OrderDB) UpdateOrderStatus(ctx context.Context, orderId int64, status i
 }
 
 func (d *OrderDB) CreateOrder(ctx context.Context, order *model.Order, orderItem []*model.OrderItem) error {
+	userId, err := mcontext.GetUserIDFromContext(ctx)
+	if err != nil {
+		return merror.NewMerror(merror.InternalDatabaseErrorCode, "Get user id from context failed, err:"+err.Error())
+	}
 	orderDB := &Orders{
 		OrderId:          order.OrderId,
-		UserId:           order.UserId,
+		UserId:           userId,
 		TotalPrice:       order.TotalPrice,
 		PayPrice:         order.PayPrice,
 		ReceiverName:     order.ReceiverName,
@@ -60,7 +64,7 @@ func (d *OrderDB) CreateOrder(ctx context.Context, order *model.Order, orderItem
 	for i, item := range orderItem {
 		orderItems[i] = &OrderItem{
 			OrderId:           item.OrderId,
-			SellerId:          item.UserId,
+			UserId:            item.UserId,
 			ProductId:         item.ProductId,
 			ProductName:       item.ProductName,
 			ProductImage:      item.ProductImage,
@@ -117,6 +121,8 @@ func (d *OrderDB) ViewOrderById(ctx context.Context, orderId int64) (*model.Orde
 	for _, itemDB := range orderItemsDB {
 		orderItem := &model.OrderItem{
 			OrderItemId:       itemDB.OrderItemId,
+			UserId:            itemDB.UserId,
+			SellerID:          itemDB.SellerId,
 			OrderId:           itemDB.OrderId,
 			ProductId:         itemDB.ProductId,
 			ProductName:       itemDB.ProductName,
@@ -209,6 +215,7 @@ func (d *OrderDB) GetOrderItem(ctx context.Context, orderItemId int64) (*model.O
 	return &model.OrderItem{
 		OrderItemId:       itemDB.OrderItemId,
 		OrderId:           itemDB.OrderId,
+		UserId:            itemDB.UserId,
 		ProductId:         itemDB.ProductId,
 		ProductName:       itemDB.ProductName,
 		ProductImage:      itemDB.ProductImage,

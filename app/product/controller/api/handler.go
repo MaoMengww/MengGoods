@@ -7,7 +7,6 @@ import (
 	product "MengGoods/kitex_gen/product"
 	"MengGoods/pkg/base"
 	"context"
-	"fmt"
 )
 
 // ProductServiceImpl implements the last service interface defined in the IDL.
@@ -24,7 +23,6 @@ func NewProductServiceImpl(usecase *usecase.ProductUsecase) *ProductServiceImpl 
 // CreateSpu implements the ProductServiceImpl interface.
 func (s *ProductServiceImpl) CreateSpu(ctx context.Context, req *product.CreateSpuReq) (resp *product.CreateSpuResp, err error) {
 	resp = new(product.CreateSpuResp)
-	fmt.Printf("2222222req: %v\n", req)
 	resp.SpuId, err = s.usecase.CreateSpu(ctx, &model.Spu{
 		Name:        req.Name,
 		Description: req.Description,
@@ -43,7 +41,7 @@ func (s *ProductServiceImpl) CreateSpu(ctx context.Context, req *product.CreateS
 func (s *ProductServiceImpl) UpdateSpu(ctx context.Context, req *product.UpdateSpuReq) (resp *product.UpdateSpuResp, err error) {
 	resp = new(product.UpdateSpuResp)
 	err = s.usecase.UpdateSpu(ctx, &model.Spu{
-		SpuId:          req.SpuId,
+		SpuId:       req.SpuId,
 		Name:        *req.Name,
 		Description: *req.Description,
 		CategoryId:  *req.CategoryId,

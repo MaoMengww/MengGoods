@@ -39,7 +39,11 @@ func (u *Usecase) IsOrderExist(ctx context.Context, orderId int64) (bool, int64,
 }
 
 func (u *Usecase) GetOrderItem(ctx context.Context, orderItemId int64) (*model.OrderItem, error) {
-	return u.OrderDB.GetOrderItem(ctx, orderItemId)
+	item, err := u.OrderDB.GetOrderItem(ctx, orderItemId)
+	if err != nil {
+		return nil, err
+	}
+	return item, nil
 }
 
 func (u *Usecase) GetOrderInfo(ctx context.Context, orderId int64) (*model.Order, error) {

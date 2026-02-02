@@ -55,6 +55,7 @@ func ToDomainOrderItem(orderItem *model.OrderItem) *mModel.OrderItem {
 	return &mModel.OrderItem{
 		OrderId:           orderItem.OrderId,
 		OrderItemId:       orderItem.Id,
+		UserId:            orderItem.UserId,
 		ProductId:         orderItem.ProductId,
 		ProductImage:      orderItem.ProductImage,
 		ProductName:       orderItem.ProductName,
@@ -67,13 +68,14 @@ func ToDomainOrderItem(orderItem *model.OrderItem) *mModel.OrderItem {
 
 func ToRpcOrderItem(orderItem *mModel.OrderItem) *model.OrderItem {
 	return &model.OrderItem{
-		OrderId:           orderItem.OrderId,
 		Id:                orderItem.OrderItemId,
+		UserId:            orderItem.UserId,
+		OrderId:           orderItem.OrderId,
 		ProductId:         orderItem.ProductId,
-		ProductImage:      orderItem.ProductImage,
 		ProductName:       orderItem.ProductName,
-		ProductNum:        int64(orderItem.ProductNum),
+		ProductImage:      orderItem.ProductImage,
 		ProductPrice:      orderItem.ProductPrice,
+		ProductNum:        int64(orderItem.ProductNum),
 		ProductTotalPrice: orderItem.ProductTotalPrice,
 		ProductProperties: orderItem.ProductProperties,
 	}

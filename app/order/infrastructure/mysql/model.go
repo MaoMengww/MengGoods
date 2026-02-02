@@ -23,6 +23,7 @@ type Orders struct {
 type OrderItem struct {
 	OrderItemId       int64  `gorm:"primaryKey;column:order_item_id"`
 	OrderId           int64  `gorm:"column:order_id"`
+	UserId            int64  `gorm:"column:user_id"`
 	SellerId          int64  `gorm:"column:seller_id"`
 	ProductId         int64  `gorm:"column:product_id"`
 	ProductName       string `gorm:"column:product_name"`

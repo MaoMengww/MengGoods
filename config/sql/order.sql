@@ -25,6 +25,7 @@ CREATE TABLE `orders` (
 CREATE TABLE `order_item` (
     `order_item_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '使用自增主键',
     `order_id` BIGINT NOT NULL COMMENT '订单 id',
+    `user_id` BIGINT NOT NULL COMMENT '用户 id',
     `seller_id` BIGINT NOT NULL COMMENT '卖家 id',
     `product_id` BIGINT NOT NULL COMMENT '商品 id',
     `product_name` VARCHAR(255) NOT NULL COMMENT '商品名称',

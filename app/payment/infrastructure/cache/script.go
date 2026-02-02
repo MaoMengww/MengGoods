@@ -19,29 +19,24 @@ type Script struct {
 
 var scripts = map[ScriptKey]*Script{
 	GetTTLAndDelPaymentTokenScriptKey: {
-		Hash: string(GetTTLAndDelPaymentTokenScriptKey),	
-		Script: `
-			local exists = redis.call("EXISTS", KEYS[1])
-
-			if exists == 1 then
-   		 		if redis.call("GET", KEYS[1]) == ARGV[1] then
-        			local ttl = redis.call("TTL", KEYS[1])
-        			redis.call("DEL", KEYS[1])
-        			return {ttl, 1} -- 返回 ttl 1代表成功删除
-    			end
-			end
-			return {-1, 0}
-		`,
+		Hash: string(GetTTLAndDelPaymentTokenScriptKey),
+		Script: `local exists = redis.call("EXISTS", KEYS[1])
+if exists == 1 then
+    if redis.call("GET", KEYS[1]) == ARGV[1] then
+        local ttl = redis.call("TTL", KEYS[1])
+        redis.call("DEL", KEYS[1])
+        return {ttl, 1}
+    end
+end
+return {-1, 0}`,
 	},
 	SetOrIncrRefundKeyScriptKey: {
-		Hash: string(SetOrIncrRefundKeyScriptKey),	
-		Script: `
-    			local current = redis.call("INCR", KEYS[1])
-				if current == 1 then
-    				redis.call("EXPIRE", KEYS[1], 60)
-				end
-				return current
-		`,
+		Hash: string(SetOrIncrRefundKeyScriptKey),
+		Script: `local current = redis.call("INCR", KEYS[1])
+if current == 1 then
+    redis.call("EXPIRE", KEYS[1], 60)
+end
+return current`,
 	},
 }
 

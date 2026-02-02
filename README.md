@@ -1,3 +1,5 @@
+[log](./docs/image/main.png)
+
 ![architecture](./docs/image/architecture.png)
 
 ### 接口文档

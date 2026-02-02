@@ -17,7 +17,7 @@ func NewPaymentDB(db *gorm.DB) *PaymentDB {
 	return &PaymentDB{DB: db}
 }
 
-func(d *PaymentDB) CreatePaymentOrder(ctx context.Context, paymentOrder *model.PaymentOrder) error {
+func (d *PaymentDB) CreatePaymentOrder(ctx context.Context, paymentOrder *model.PaymentOrder) error {
 	paymentOrderDB := PaymentOrder{
 		PaymentNo: paymentOrder.PaymentNo,
 		OrderId:   paymentOrder.OrderId,
@@ -25,13 +25,13 @@ func(d *PaymentDB) CreatePaymentOrder(ctx context.Context, paymentOrder *model.P
 		Amount:    paymentOrder.Amount,
 		Method:    paymentOrder.Method,
 		Status:    paymentOrder.Status,
-		CreatedAt: time.Now().Unix(),
-		UpdatedAt: time.Now().Unix(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	return d.DB.WithContext(ctx).Create(&paymentOrderDB).Error
 }
 
-func(d *PaymentDB) CreateRefundOrder(ctx context.Context, refundOrder *model.PaymentRefund) error {
+func (d *PaymentDB) CreateRefundOrder(ctx context.Context, refundOrder *model.PaymentRefund) error {
 	refundOrderDB := PaymentRefund{
 		RefundNo:    refundOrder.RefundNo,
 		OrderItemID: refundOrder.OrderItemId,
@@ -40,13 +40,13 @@ func(d *PaymentDB) CreateRefundOrder(ctx context.Context, refundOrder *model.Pay
 		Amount:      refundOrder.Amount,
 		Reason:      refundOrder.Reason,
 		Status:      refundOrder.Status,
-		CreatedAt:   time.Now().Unix(),
-		UpdatedAt:   time.Now().Unix(),
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}
 	return d.DB.WithContext(ctx).Create(&refundOrderDB).Error
 }
 
-func(d *PaymentDB) GetPaymentOrderByOrderId(ctx context.Context, orderId int64) (*model.PaymentOrder, error) {
+func (d *PaymentDB) GetPaymentOrderByOrderId(ctx context.Context, orderId int64) (*model.PaymentOrder, error) {
 	var paymentOrderDB PaymentOrder
 	err := d.DB.WithContext(ctx).Where("order_id = ?", orderId).First(&paymentOrderDB).Error
 	if err != nil {
@@ -62,7 +62,7 @@ func(d *PaymentDB) GetPaymentOrderByOrderId(ctx context.Context, orderId int64) 
 	}, nil
 }
 
-func(d *PaymentDB) GetRefundOrderByOrderItemId(ctx context.Context, orderItemId int64) (*model.PaymentRefund, error) {
+func (d *PaymentDB) GetRefundOrderByOrderItemId(ctx context.Context, orderItemId int64) (*model.PaymentRefund, error) {
 	var refundOrderDB PaymentRefund
 	err := d.DB.WithContext(ctx).Where("order_item_id = ?", orderItemId).First(&refundOrderDB).Error
 	if err != nil {
@@ -79,14 +79,14 @@ func(d *PaymentDB) GetRefundOrderByOrderItemId(ctx context.Context, orderItemId 
 	}, nil
 }
 
-func(d *PaymentDB) ConfirmPaymentOrder(ctx context.Context, paymentOrder *model.PaymentOrder) error {
+func (d *PaymentDB) ConfirmPaymentOrder(ctx context.Context, paymentOrder *model.PaymentOrder) error {
 	tx := d.DB.WithContext(ctx).Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
 		}
 	}()
-	if err := tx.Where("order_id = ?", paymentOrder.OrderId).Update("status", constants.PaymentOrderStatusPaid).Error; err != nil {
+	if err := tx.Model(&PaymentOrder{}).Where("order_id = ?", paymentOrder.OrderId).Update("payment_status", constants.PaymentOrderStatusPaid).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -104,14 +104,14 @@ func(d *PaymentDB) ConfirmPaymentOrder(ctx context.Context, paymentOrder *model.
 	return tx.Commit().Error
 }
 
-func(d *PaymentDB) ConfirmRefundOrder(ctx context.Context, refundOrder *model.PaymentRefund) error {
+func (d *PaymentDB) ConfirmRefundOrder(ctx context.Context, refundOrder *model.PaymentRefund) error {
 	tx := d.DB.WithContext(ctx).Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
 		}
 	}()
-	if err := tx.Where("order_item_id = ?", refundOrder.OrderItemId).Update("status", constants.RefundStatusSuccess).Error; err != nil {
+	if err := tx.Model(&PaymentRefund{}).Where("order_item_id = ?", refundOrder.OrderItemId).Update("refund_status", constants.RefundStatusSuccess).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -129,11 +129,10 @@ func(d *PaymentDB) ConfirmRefundOrder(ctx context.Context, refundOrder *model.Pa
 	return tx.Commit().Error
 }
 
-func(d *PaymentDB) UpdateRefundOrderStatus(ctx context.Context, orderItemId int64, status int) error {
-	return d.DB.WithContext(ctx).Where("order_item_id = ?", orderItemId).Update("status", status).Error
+func (d *PaymentDB) UpdateRefundOrderStatus(ctx context.Context, orderItemId int64, status int) error {
+	return d.DB.WithContext(ctx).Model(&PaymentRefund{}).Where("order_item_id = ?", orderItemId).Update("refund_status", status).Error
 }
 
-func(d *PaymentDB) UpdatePaymentOrderStatus(ctx context.Context, paymentNo string, status int) error {
-	return d.DB.WithContext(ctx).Where("payment_no = ?", paymentNo).Update("status", status).Error
+func (d *PaymentDB) UpdatePaymentOrderStatus(ctx context.Context, paymentNo string, status int) error {
+	return d.DB.WithContext(ctx).Model(&PaymentOrder{}).Where("payment_no = ?", paymentNo).Update("payment_status", status).Error
 }
-

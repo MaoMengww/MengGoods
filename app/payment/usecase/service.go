@@ -9,7 +9,7 @@ import (
 	"context"
 )
 
-func(u *PaymentUsecase) GetPaymentToken(ctx context.Context, orderId int64, method int) (string, int64, error) {
+func (u *PaymentUsecase) GetPaymentToken(ctx context.Context, orderId int64, method int) (string, int64, error) {
 	err := u.PaymentService.GetOrderStatus(ctx, orderId)
 	if err != nil {
 		return "", 0, err
@@ -32,8 +32,12 @@ func(u *PaymentUsecase) GetPaymentToken(ctx context.Context, orderId int64, meth
 	return token, expiredTime, nil
 }
 
-func(u *PaymentUsecase) Payment(ctx context.Context, orderId int64, token string) error {
-	err := u.PaymentService.GetOrderStatus(ctx, orderId)
+func (u *PaymentUsecase) Payment(ctx context.Context, orderId int64, token string) error {
+	userId, err := mcontext.GetUserIDFromContext(ctx)
+	if err != nil {
+		return err
+	}
+	err = u.PaymentService.GetOrderStatus(ctx, orderId)
 	if err != nil {
 		return err
 	}
@@ -42,7 +46,7 @@ func(u *PaymentUsecase) Payment(ctx context.Context, orderId int64, token string
 	if !ok && err == nil {
 		return merror.NewMerror(merror.PaymentTokenNotExistOrExpired, "payment token not exist or expired")
 	}
-	
+
 	//redis错误, 尝试查询数据库
 	var paymentOrder *model.PaymentOrder
 	if err != nil {
@@ -58,10 +62,14 @@ func(u *PaymentUsecase) Payment(ctx context.Context, orderId int64, token string
 		}
 	}
 	if paymentOrder == nil {
-		paymentOrder, err = u.PaymentDB.GetPaymentOrderByOrderId(ctx, orderId) 
+		paymentOrder, err = u.PaymentDB.GetPaymentOrderByOrderId(ctx, orderId)
 		if err != nil {
 			return err
 		}
+	}
+	//验证支付订单属于当前用户
+	if paymentOrder.UserId != userId {
+		return merror.NewMerror(merror.PaymentOrderNotBelongToUserErrorCode, "payment order not belong to user")
 	}
 	//锁定，方便后台对账系统及时发现异常支付订单
 	if err := u.PaymentDB.UpdatePaymentOrderStatus(ctx, paymentOrder.PaymentNo, constants.PaymentOrderStatusProcessing); err != nil {
@@ -70,7 +78,7 @@ func(u *PaymentUsecase) Payment(ctx context.Context, orderId int64, token string
 
 	//模拟银行返回结果
 	MockBankResult := true
-	if MockBankResult{
+	if MockBankResult {
 		err = u.PaymentService.ConfirmPaymentOrder(ctx, paymentOrder)
 		if err != nil {
 			//支付成功库没更新, 打日志依靠后台对账系统
@@ -81,12 +89,12 @@ func(u *PaymentUsecase) Payment(ctx context.Context, orderId int64, token string
 		}
 		return nil
 	} else {
-        _ = u.PaymentDB.UpdatePaymentOrderStatus(ctx, paymentOrder.PaymentNo, constants.PaymentOrderStatusWaiting)
-        // 2. 归还 Token (允许用户重试)
-        if err == nil { // 只有 Redis 正常时才归还
-             _ = u.PaymentService.SetPaymentToken(ctx, orderId, token, expiredTime)
-        }
-        return merror.NewMerror(merror.InternalServerErrorCode, "payment failed by bank")
+		_ = u.PaymentDB.UpdatePaymentOrderStatus(ctx, paymentOrder.PaymentNo, constants.PaymentOrderStatusWaiting)
+		// 2. 归还 Token (允许用户重试)
+		if err == nil { // 只有 Redis 正常时才归还
+			_ = u.PaymentService.SetPaymentToken(ctx, orderId, token, expiredTime)
+		}
+		return merror.NewMerror(merror.InternalServerErrorCode, "payment failed by bank")
 	}
 }
 
@@ -118,11 +126,11 @@ func (u *PaymentUsecase) ReviewRefund(ctx context.Context, orderItemId int64, ap
 	if err != nil {
 		return err
 	}
-	paymentRefund , err := u.PaymentDB.GetRefundOrderByOrderItemId(ctx, orderItemId)
+	paymentRefund, err := u.PaymentDB.GetRefundOrderByOrderItemId(ctx, orderItemId)
 	if err != nil {
 		return err
 	}
-	if userId != paymentRefund.SellerId{
+	if userId != paymentRefund.SellerId {
 		return merror.NewMerror(merror.PaymentOrderNotBelongToSellerErrorCode, "payment order not belong to seller")
 	}
 	if paymentRefund.Status == constants.RefundStatusProcessing {
@@ -144,5 +152,3 @@ func (u *PaymentUsecase) ReviewRefund(ctx context.Context, orderItemId int64, ap
 	}
 	return nil
 }
-
-

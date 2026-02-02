@@ -26,6 +26,7 @@ func (s *PaymentServiceImpl) GetPaymentToken(ctx context.Context, req *payment.G
 		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
+	resp.Base = base.BuildBaseResp(nil)
 	resp.PaymentToken = token
 	resp.ExpiredAt = expiredAt
 	return

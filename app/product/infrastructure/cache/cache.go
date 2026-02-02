@@ -16,7 +16,7 @@ type ProductCache struct {
 }
 
 func NewProductCache(redisClient *redis.Client) *ProductCache {
-	return &ProductCache{
+	return&ProductCache{
 		redisClient: redisClient,
 	}
 }

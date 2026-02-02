@@ -29,12 +29,12 @@ func Payment(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.Payment(ctx, &req)
+	_, err := rpc.Payment(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func PaymentRefund(ctx context.Context, c *app.RequestContext) {
@@ -43,12 +43,12 @@ func PaymentRefund(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.PaymentRefund(ctx, &req)
+	_, err := rpc.PaymentRefund(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func ReviewRefund(ctx context.Context, c *app.RequestContext) {
@@ -57,10 +57,10 @@ func ReviewRefund(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.ReviewRefund(ctx, &req)
+	_, err := rpc.ReviewRefund(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }

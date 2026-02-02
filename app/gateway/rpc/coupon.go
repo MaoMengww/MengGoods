@@ -9,7 +9,6 @@ import (
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
 	"context"
-	"fmt"
 
 	"time"
 
@@ -61,7 +60,6 @@ func GetCouponInfo(ctx context.Context, req *coupon.GetCouponInfoReq) (resp *mre
 	if r.Base.Code != merror.SuccessCode {
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
 	}
-	fmt.Printf("r: %v", r)
 	resp = &mresp.GetCouponInfoResp{
 		Coupon: *r.Coupon,
 	}

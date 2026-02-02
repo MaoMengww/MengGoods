@@ -142,7 +142,7 @@ func (s *PaymentService) GetOrderStatus(ctx context.Context, orderId int64) erro
 	if !ok {
 		return merror.NewMerror(merror.OrderNotExistErrorCode, "order not exist")
 	}
-	if expiredTime > time.Now().Unix() {
+	if expiredTime < time.Now().Unix() {
 		return merror.NewMerror(merror.OrderExpiredErrorCode, "payment order expired")
 	}
 	return nil
