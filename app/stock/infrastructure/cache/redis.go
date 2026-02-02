@@ -33,7 +33,9 @@ func (p *StockCache) SetStock(ctx context.Context, key string, count int32) erro
 
 func (p *StockCache) GetStock(ctx context.Context, key string) (int32, error) {
 	value, err := p.Client.Get(ctx, key).Int()
-	if err != nil {
+	if err == redis.Nil {
+		return 0, merror.NewMerror(merror.CodeIsNotMatch, "stock cache not exist")
+	} else if err != nil {
 		return 0, merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("get stock cache error: %v", err))
 	}
 	return int32(value), nil

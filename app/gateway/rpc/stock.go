@@ -96,7 +96,14 @@ func GetStocks(ctx context.Context, req *stock.GetStocksReq) (resp *mresp.GetSto
 	if r.Base.Code != merror.SuccessCode {
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
 	}
+	var stocks []*mresp.StockItem
+	for _, stock := range r.Stocks {
+		stocks = append(stocks, &mresp.StockItem{
+			SkuId: int64(stock.SkuId),
+			Stock: int64(stock.Count),
+		})
+	}
 	return &mresp.GetStocksResp{
-		Stocks: make([]*mresp.GetStockResp, 0, len(r.Stocks)),
+		Stocks: stocks,
 	}, nil
 }

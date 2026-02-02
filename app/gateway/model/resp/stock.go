@@ -5,7 +5,12 @@ type GetStockResp struct {
 }
 
 type GetStocksResp struct {
-	Stocks []*GetStockResp `json:"stocks"`
+	Stocks []*StockItem `json:"stocks"`
+}
+
+type StockItem struct {
+	SkuId int64 `json:"skuId"`
+	Stock int64 `json:"stock"`
 }
 
 type CreateStockResp struct {
