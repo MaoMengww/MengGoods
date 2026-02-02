@@ -7,6 +7,7 @@ import (
 	"MengGoods/pkg/merror"
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -37,26 +38,38 @@ func (p *CartCache) AddCartItem(ctx context.Context, cartItem *model.CartItem) e
 	if err != nil {
 		return err
 	}
-	val, err := p.Client.HGet(ctx, key, strconv.FormatInt(cartItem.SkuID, 10)).Result()
+
+	field := strconv.FormatInt(cartItem.SkuID, 10)
+	val, err := p.Client.HGet(ctx, key, field).Result()
+
+	// 最终要存入的对象
+	var finalItem *model.CartItem
+
 	if err == redis.Nil {
-		p.Client.HSet(ctx, key, strconv.FormatInt(cartItem.SkuID, 10), cartItem)
+		finalItem = cartItem
 	} else if err != nil {
-		return merror.NewMerror(merror.InternalCacheErrorCode, "failed to add cart item")
+		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("redis error: %v", err))
 	} else {
 		var oldCartItem model.CartItem
-		err := json.Unmarshal([]byte(val), &oldCartItem)
-		if err != nil {
-			return merror.NewMerror(merror.InternalCacheErrorCode, "failed to add cart item")
-		}
-		oldCartItem.Count += cartItem.Count
-		pipe := p.Client.Pipeline()
-		pipe.HSet(ctx, key, strconv.FormatInt(cartItem.SkuID, 10), oldCartItem)
-		pipe.Expire(ctx, key, time.Duration(constants.CartExpireTime))
-		_, err = pipe.Exec(ctx)
-		if err != nil {
-			return merror.NewMerror(merror.InternalCacheErrorCode, "failed to add cart item")
+		if err := json.Unmarshal([]byte(val), &oldCartItem); err != nil {
+			finalItem = cartItem
+		} else {
+			oldCartItem.Count += cartItem.Count
+			finalItem = &oldCartItem
 		}
 	}
+	data, err := json.Marshal(finalItem)
+	if err != nil {
+		return merror.NewMerror(merror.InternalCacheErrorCode, "marshal cart item failed")
+	}
+	pipe := p.Client.Pipeline()
+	pipe.HSet(ctx, key, field, data)
+	pipe.Expire(ctx, key, time.Duration(constants.CartExpireTime)*time.Second)
+
+	if _, err = pipe.Exec(ctx); err != nil {
+		return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("execute pipeline failed: %v", err))
+	}
+
 	return nil
 }
 
@@ -89,7 +102,7 @@ func (p *CartCache) DeleteCart(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	err = p.Client.HDel(ctx, key).Err()
+	err = p.Client.Del(ctx, key).Err()
 	if err != nil {
 		return merror.NewMerror(merror.InternalCacheErrorCode, "failed to delete cart")
 	}
@@ -97,16 +110,20 @@ func (p *CartCache) DeleteCart(ctx context.Context) error {
 }
 
 func (p *CartCache) UpdateCartItem(ctx context.Context, cartItem *model.CartItem) error {
-	key, err := p.GetCartKey(ctx)
-	if err != nil {
-		return err
-	}
-	pipe := p.Client.Pipeline()
-	pipe.HSet(ctx, key, strconv.FormatInt(cartItem.SkuID, 10), cartItem)
-	pipe.Expire(ctx, key, time.Duration(constants.CartExpireTime))
-	_, err = pipe.Exec(ctx)
-	if err != nil {
-		return merror.NewMerror(merror.InternalCacheErrorCode, "failed to update cart item")
-	}
-	return nil
+    key, err := p.GetCartKey(ctx)
+    if err != nil {
+        return err
+    }
+    data, err := json.Marshal(cartItem)
+    if err != nil {
+        return merror.NewMerror(merror.InternalCacheErrorCode, "marshal cart item failed")
+    }
+    pipe := p.Client.Pipeline()
+    pipe.HSet(ctx, key, strconv.FormatInt(cartItem.SkuID, 10), data) 
+    pipe.Expire(ctx, key, time.Duration(constants.CartExpireTime)*time.Second) 
+    _, err = pipe.Exec(ctx)
+    if err != nil {
+        return merror.NewMerror(merror.InternalCacheErrorCode, fmt.Sprintf("update cart redis failed: %v", err))
+    }
+    return nil
 }

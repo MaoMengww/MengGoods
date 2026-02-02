@@ -7,13 +7,11 @@ import (
 	"MengGoods/pkg/utils"
 	"context"
 	"encoding/json"
-	"fmt"
 
 	"github.com/redis/go-redis/v9"
 )
 
 func (u *ProductUsecase) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
-	fmt.Printf("44444444spu: %v\n", spu)
 	//校验输入合法性
 	if err := u.service.VerifySpu(spu); err != nil {
 		return 0, err

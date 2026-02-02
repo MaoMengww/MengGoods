@@ -16,12 +16,12 @@ func AddCartItem(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.AddCartItem(ctx, &req)
+	_, err = rpc.AddCartItem(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func GetCartItem(ctx context.Context, c *app.RequestContext) {
@@ -46,12 +46,12 @@ func UpdateCartItem(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.UpdateCartItem(ctx, &req)
+	_, err = rpc.UpdateCartItem(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func DeleteCartItem(ctx context.Context, c *app.RequestContext) {
@@ -61,10 +61,10 @@ func DeleteCartItem(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.DeleteCartItem(ctx, &req)
+	_, err = rpc.DeleteCartItem(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
