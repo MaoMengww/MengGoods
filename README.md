@@ -1,4 +1,4 @@
-[log](./docs/image/main.png)
+![log](./docs/image/main.png)
 
 ![architecture](./docs/image/architecture.png)
 
