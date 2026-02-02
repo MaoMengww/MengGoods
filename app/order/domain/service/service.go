@@ -92,6 +92,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, addressId int64, couponI
 		ReceiverProvince: addressInfo.Province,
 		ReceiverCity:     addressInfo.City,
 		ReceiverDetail:   addressInfo.Detail,
+		ExpireTime:       time.Now().Add(180 * time.Minute), // 设置订单30分钟后过期
 	}
 	err = s.OrderRpc.LockCoupon(ctx, couponId)
 	if err != nil {

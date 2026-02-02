@@ -58,14 +58,14 @@ func ConfirmReceiptOrder(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.ConfirmReceiptOrder(ctx, &order.ConfirmReceiptOrderReq{
+	_, err = rpc.ConfirmReceiptOrder(ctx, &order.ConfirmReceiptOrderReq{
 		OrderId: orderId,
 	})
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func CancelOrder(ctx context.Context, c *app.RequestContext) {

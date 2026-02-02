@@ -56,12 +56,26 @@ func (d *OrderDB) CreateOrder(ctx context.Context, order *model.Order, orderItem
 		CreateTime: time.Now(),
 		MsgStatus:  constants.MsgWaited,
 	}
+	orderItems := make([]*OrderItem, len(orderItem))
+	for i, item := range orderItem {
+		orderItems[i] = &OrderItem{
+			OrderId:           item.OrderId,
+			SellerId:          item.UserId,
+			ProductId:         item.ProductId,
+			ProductName:       item.ProductName,
+			ProductImage:      item.ProductImage,
+			ProductPrice:      item.ProductPrice,
+			ProductNum:        item.ProductNum,
+			ProductTotalPrice: item.ProductTotalPrice,
+			ProductProperties: item.ProductProperties,
+		}
+	}
 	tx := d.db.WithContext(ctx).Begin()
 	if err := tx.Create(orderDB).Error; err != nil {
 		tx.Rollback()
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, "Create order failed, err:"+err.Error())
 	}
-	if err := tx.Create(orderItem).Error; err != nil {
+	if err := tx.Create(orderItems).Error; err != nil {
 		tx.Rollback()
 		return merror.NewMerror(merror.InternalDatabaseErrorCode, "Create order items failed, err:"+err.Error())
 	}
@@ -125,9 +139,30 @@ func (d *OrderDB) ViewOrderList(ctx context.Context, status int, pageNum int, pa
 	if err != nil {
 		return nil, err
 	}
-	var orders []*model.Order
-	if err := d.db.WithContext(ctx).Where("user_id = ? AND order_status = ?", userId, status).Order("create_time desc").Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&orders).Error; err != nil {
+	var ordersDB []*Orders
+	if err := d.db.WithContext(ctx).Where("user_id = ? AND order_status = ?", userId, status).Order("create_time desc").Offset((pageNum - 1) * pageSize).Limit(pageSize).Find(&ordersDB).Error; err != nil {
 		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, "View order list failed, err:"+err.Error())
+	}
+	var orders []*model.Order
+	for _, orderDB := range ordersDB {
+		order := &model.Order{
+			OrderId:          orderDB.OrderId,
+			UserId:           orderDB.UserId,
+			CreateTime:       orderDB.CreateTime,
+			UpdateTime:       orderDB.UpdateTime,
+			ExpireTime:       orderDB.ExpireTime,
+			CancelTime:       orderDB.CancelTime,
+			CancelReason:     orderDB.CancelReason,
+			TotalPrice:       orderDB.TotalPrice,
+			PayPrice:         orderDB.PayPrice,
+			ReceiverName:     orderDB.ReceiverName,
+			ReceiverEmail:    orderDB.ReceiverEmail,
+			ReceiverProvince: orderDB.ReceiverProvince,
+			ReceiverCity:     orderDB.ReceiverCity,
+			ReceiverDetail:   orderDB.ReceiverDetail,
+			OrderStatus:      orderDB.OrderStatus,
+		}
+		orders = append(orders, order)
 	}
 	return orders, nil
 }

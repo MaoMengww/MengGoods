@@ -26,6 +26,7 @@ func (s *OrderServiceImpl) CreateOrder(ctx context.Context, req *order.CreateOrd
 		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
+	resp.Base = base.BuildBaseResp(nil)
 	resp.OrderId = orderId
 	return resp, nil
 }
@@ -39,6 +40,7 @@ func (s *OrderServiceImpl) ViewOrderById(ctx context.Context, req *order.ViewOrd
 		return resp, nil
 	}
 	resp.Order = pack.ToRpcOrderWithItems(orderWithItems)
+	resp.Base = base.BuildBaseResp(nil)
 	return resp, nil
 }
 
@@ -52,6 +54,7 @@ func (s *OrderServiceImpl) ViewOrderList(ctx context.Context, req *order.ViewOrd
 		return resp, nil
 	}
 	resp.OrderList = pack.ToRpcOrderList(orderList)
+	resp.Base = base.BuildBaseResp(nil)
 	return resp, nil
 }
 
@@ -102,6 +105,7 @@ func (s *OrderServiceImpl) GetPayAmount(ctx context.Context, req *order.GetPayAm
 		return resp, nil
 	}
 	resp.Amount = amount
+	resp.Base = base.BuildBaseResp(nil)
 	return resp, nil
 }
 
@@ -113,6 +117,7 @@ func (s *OrderServiceImpl) GetOrderItem(ctx context.Context, req *order.GetOrder
 		return resp, nil
 	}
 	resp.OrderItem = pack.ToRpcOrderItem(orderItem)
+	resp.Base = base.BuildBaseResp(nil)
 	return resp, nil
 }
 
@@ -124,6 +129,7 @@ func (s *OrderServiceImpl) GetOrderInfo(ctx context.Context, req *order.GetOrder
 		return resp, nil
 	}
 	resp.OrderInfo = pack.ToRpcOrder(orderInfo)
+	resp.Base = base.BuildBaseResp(nil)
 	return resp, nil
 }
 
@@ -136,5 +142,6 @@ func (s *OrderServiceImpl) IsOrderExist(ctx context.Context, req *order.IsOrderE
 	}
 	resp.Exist = exist
 	resp.ExpiredAt = expiredAt
+	resp.Base = base.BuildBaseResp(nil)
 	return resp, nil
 }

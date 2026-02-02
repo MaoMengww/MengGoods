@@ -37,7 +37,7 @@ CREATE TABLE `order_item` (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单商品表';
 
 -- 本表用于解决双写不一致问题(不会rocketmq的坏处)
-CREATE TABLE `order_mq_msg` (
+CREATE TABLE `mq_msg` (
     `msg_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '使用自增主键',
     `order_id` BIGINT NOT NULL COMMENT '订单 id',
     `coupon_id` BIGINT NULL DEFAULT NULL COMMENT '优惠券 id',

@@ -28,6 +28,10 @@ func ToDomainOrder(order *model.OrderInfo) *mModel.Order {
 }
 
 func ToRpcOrder(order *mModel.Order) *model.OrderInfo {
+	var cancelTime int64
+	if order.CancelTime != nil {
+		cancelTime = order.CancelTime.Unix()
+	}
 	return &model.OrderInfo{
 		Id:               order.OrderId,
 		UserId:           order.UserId,
@@ -42,7 +46,7 @@ func ToRpcOrder(order *mModel.Order) *model.OrderInfo {
 		CreateTime:       order.CreateTime.Unix(),
 		UpdateTime:       order.UpdateTime.Unix(),
 		ExpireTime:       order.ExpireTime.Unix(),
-		CancelTime:       order.CancelTime.Unix(),
+		CancelTime:       cancelTime,
 		CancelReason:     order.CancelReason,
 	}
 }
