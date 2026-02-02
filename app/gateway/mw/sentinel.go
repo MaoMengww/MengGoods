@@ -17,7 +17,7 @@ func Sentinel() app.HandlerFunc {
 	once.Do(initSentinel)
 	return adapter.SentinelServerMiddleware(
 		adapter.WithServerResourceExtractor(func(ctx context.Context, rc *app.RequestContext) string {
-			return "gataway"
+			return "gateway"
 		}),
 		adapter.WithServerBlockFallback(func(ctx context.Context, rc *app.RequestContext) {
 			logger.Warnf("request has been rejected by the getway, client.ip:%v\n", rc.ClientIP())
