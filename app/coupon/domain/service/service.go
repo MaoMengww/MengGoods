@@ -2,7 +2,6 @@ package service
 
 import (
 	"MengGoods/app/coupon/domain/model"
-	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
 	"MengGoods/pkg/utils"
@@ -48,22 +47,23 @@ func (s *CouponService) ClaimCoupon(ctx context.Context, batchId int64) error {
 	return nil
 }
 
-func (s *CouponService) HandleClaimCoupon(ctx context.Context, batchId int64) error {
+func (s *CouponService) HandleClaimCoupon(ctx context.Context, userId int64, batchId int64) error {
 	batch, err := s.CouponDB.GetCouponBatchByID(ctx, batchId)
-	if err != nil {
-		return err
-	}
-	userId, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
 		return err
 	}
 	expireTime := time.Now().Unix() + int64(batch.Duration)
 	coupon := &model.Coupon{
-		CouponId:  utils.GenerateID(),
-		BatchId:   batch.BatchId,
-		Status:    constants.CouponStatusUnused,
-		ExpiredAt: expireTime,
-		UserId:    userId,
+		CouponId:       utils.GenerateID(),
+		BatchId:        batch.BatchId,
+		Type:           batch.Type,
+		Threshold:      batch.Threshold,
+		DiscountAmount: batch.DiscountAmount,
+		DiscountRate:   batch.DiscountPercent,
+		Status:         constants.CouponStatusUnused,
+		CreatedAt:      batch.CreatedAt,
+		ExpiredAt:      expireTime,
+		UserId:         userId,
 	}
 	if expireTime > time.Now().Unix() {
 		coupon.Status = constants.CouponStatusExpired

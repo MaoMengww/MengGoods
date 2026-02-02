@@ -24,7 +24,7 @@ CREATE TABLE `coupon`(
     `type` TINYINT NOT NULL DEFAULT 0 COMMENT '优惠券类型, 0: 满减券, 1: 折扣券',
     `threshold` BIGINT NOT NULL DEFAULT 0 COMMENT '优惠券使用门槛(分)',
     `discount_amount` BIGINT NOT NULL DEFAULT 0 COMMENT '优惠券折扣金额(分)',
-    `discount_rate` DECIMAL(10,2) NOT NULL DEFAULT 0.00 COMMENT '优惠券折扣比例',
+    `discount_rate` INT NOT NULL DEFAULT 0 COMMENT '优惠券折扣比例(%)',
     `status` TINYINT NOT NULL DEFAULT 0 COMMENT '优惠券状态, 0: 未使用, 1: 已冻结, 2: 已使用, 3: 已过期',
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '领取时间',
     `expired_at` DATETIME NULL DEFAULT NULL COMMENT '过期时间',

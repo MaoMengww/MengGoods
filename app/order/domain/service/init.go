@@ -13,11 +13,13 @@ type OrderService struct {
 }
 
 func NewOrderService(orderDB repository.OrderDB, orderMq repository.OrderMq, orderRpc repository.OrderRpc) *OrderService {
-	return &OrderService{
+	service := &OrderService{
 		OrderDB:  orderDB,
 		OrderMq:  orderMq,
 		OrderRpc: orderRpc,
 	}
+	service.Init()
+	return service
 }
 
 func (s *OrderService) Init() {

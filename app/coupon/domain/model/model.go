@@ -17,12 +17,16 @@ type CouponBatch struct {
 }
 
 type Coupon struct {
-	CouponId  int64
-	BatchId   int64
-	OrderId   int64
-	UserId    int64
-	Status    int
-	CreatedAt int64
-	ExpiredAt int64
-	UsedAt    int64
+	CouponId       int64
+	BatchId        int64
+	OrderId        int64
+	UserId         int64
+	Type           int
+	Threshold      int64
+	DiscountAmount int64
+	DiscountRate   int
+	Status         int
+	CreatedAt      int64
+	ExpiredAt      int64
+	UsedAt         int64
 }

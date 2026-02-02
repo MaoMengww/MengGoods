@@ -12,11 +12,13 @@ type CouponService struct {
 }
 
 func NewCouponService(couponDB repository.CouponDB, couponCache repository.CouponCache, couponMq repository.CouponMq) *CouponService {
-	return &CouponService{
+	service := &CouponService{
 		CouponDB:    couponDB,
 		CouponCache: couponCache,
 		CouponMq:    couponMq,
 	}
+	service.Init()
+	return service
 }
 
 func (s *CouponService) Init() {

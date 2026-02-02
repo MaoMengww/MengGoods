@@ -16,7 +16,7 @@ type ProductService struct {
 }
 
 func NewProductService(db repository.ProductDB, cache repository.ProductCache, mq repository.ProductMq, es repository.ProductEs, rpc repository.ProductRpc, cos repository.ProductCos) *ProductService {
-	return &ProductService{
+	service := &ProductService{
 		db:    db,
 		cache: cache,
 		es:    es,
@@ -24,6 +24,8 @@ func NewProductService(db repository.ProductDB, cache repository.ProductCache, m
 		rpc:   rpc,
 		cos:   cos,
 	}
+	service.Init()
+	return service
 }
 
 func (s *ProductService) Init() {

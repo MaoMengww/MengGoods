@@ -26,7 +26,7 @@ func GetCouponInfo(ctx context.Context, c *app.RequestContext) {
 	base.ResData(c, resp.Coupon)
 }
 
-func CreateCouponBatch(ctx context.Context, c *app.RequestContext) { 
+func CreateCouponBatch(ctx context.Context, c *app.RequestContext) {
 	var req coupon.CreateCouponBatchReq
 	if err := c.BindAndValidate(&req); err != nil {
 		base.ResErr(c, err)

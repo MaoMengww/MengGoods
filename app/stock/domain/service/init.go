@@ -12,11 +12,13 @@ type StockService struct {
 }
 
 func NewStockService(db repository.StockDB, cache repository.StockCache, mq repository.StockMq) *StockService {
-	return &StockService{
+	service := &StockService{
 		StockDB:    db,
 		StockCache: cache,
 		StockMq:    mq,
 	}
+	service.Init()
+	return service
 }
 
 func (s *StockService) Init() {

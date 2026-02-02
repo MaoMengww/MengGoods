@@ -38,7 +38,6 @@ func InjectProductServiceImpl() product.ProductService {
 	stockRpc := prpc.NewStockClient()
 	productRpc := prpc.NewProductRpc(userRpc, stockRpc)
 	ProductService := service.NewProductService(productDB, productCache, productMq, productEs, productRpc, productCos)
-	ProductService.Init()
 	productUsecase := usecase.NewProductUsecase(ProductService, productDB, productCache, productMq, productEs, productRpc, productCos)
 	productServiceImpl := api.NewProductServiceImpl(productUsecase)
 	return productServiceImpl

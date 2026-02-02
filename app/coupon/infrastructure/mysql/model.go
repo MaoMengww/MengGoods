@@ -21,7 +21,7 @@ type CouponBatch struct {
 type Coupon struct {
 	CouponId       int64     `gorm:"primaryKey;column:coupon_id"`
 	BatchId        int64     `gorm:"column:batch_id"`
-	OrderId        int64     `gorm:"column:user_order_id"`
+	OrderId        int64     `gorm:"column:used_order_id"`
 	UserId         int64     `gorm:"column:user_id"`
 	Type           int       `gorm:"column:type"`
 	Threshold      int64     `gorm:"column:threshold"`

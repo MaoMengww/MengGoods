@@ -26,7 +26,6 @@ func InjectStockUsecaseImpl() stock.StockService {
 	mqClient := client.NewKafka()
 	stockMq := mq.NewStockMq(mqClient)
 	stockService := service.NewStockService(stockDB, stockCache, stockMq)
-	stockService.Init()
 	stockUsecase := usecase.NewStockUsecase(stockDB, stockCache, stockMq, stockService)
 	stockServiceImpl := api.NewStockServiceImpl(stockUsecase)
 	return stockServiceImpl

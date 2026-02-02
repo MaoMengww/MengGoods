@@ -29,5 +29,5 @@ type CouponCache interface {
 
 type CouponMq interface {
 	SendClaimCoupon(ctx context.Context, batchId int64) error
-	ConsumeClaimCoupon(ctx context.Context, fn func(ctx context.Context, batchId int64) error) error
+	ConsumeClaimCoupon(ctx context.Context, fn func(ctx context.Context, userId int64, batchId int64) error) error
 }
