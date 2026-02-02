@@ -46,12 +46,12 @@ func GetCoupon(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	resp, err := rpc.GetCoupon(ctx, &req)
+	_, err := rpc.GetCoupon(ctx, &req)
 	if err != nil {
 		base.ResErr(c, err)
 		return
 	}
-	base.ResData(c, resp)
+	base.ResSuccess(c)
 }
 
 func GetCouponList(ctx context.Context, c *app.RequestContext) {

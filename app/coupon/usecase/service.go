@@ -2,8 +2,10 @@ package usecase
 
 import (
 	"MengGoods/app/coupon/domain/model"
+	"MengGoods/pkg/merror"
 	"MengGoods/pkg/utils"
 	"context"
+	"time"
 )
 
 func (u *CouponUsecase) CreateCouponBatch(ctx context.Context, batch *model.CouponBatch) (int64, error) {
@@ -17,7 +19,22 @@ func (u *CouponUsecase) CreateCouponBatch(ctx context.Context, batch *model.Coup
 	if err != nil {
 		return 0, err
 	}
-	return u.couponDB.CreateCouponBatch(ctx, batch)
+	batchId, err := u.couponDB.CreateCouponBatch(ctx, batch)
+	if err != nil {
+		return 0, err
+	}
+	durantion := batch.EndTime - time.Now().Unix()
+	if durantion < 0 {
+		return 0, merror.NewMerror(merror.CouponExpired, "coupon is expired")
+	}
+	if int64(batch.Duration) < durantion {
+		durantion = int64(batch.Duration)
+	}
+	key := u.couponCache.GetCouponBatchKey(ctx, batchId)
+	if err := u.couponCache.SetCoupon(ctx, key, batch.TotalNum, time.Duration(durantion)*time.Second); err != nil {
+		return 0, err
+	}
+	return batchId, nil
 }
 
 func (u *CouponUsecase) GetCoupon(ctx context.Context, batchId int64) error {

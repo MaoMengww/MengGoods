@@ -15,6 +15,6 @@ func InitCouponRouter(h *server.Hertz) {
 		coupon.POST("/create", api.CreateCouponBatch)
 		coupon.GET("/list", api.GetCouponList)
 		coupon.GET("/:couponId", api.GetCouponInfo)
-		coupon.GET("/get", api.GetCoupon)
+		coupon.POST("/get", api.GetCoupon)
 	}
 }

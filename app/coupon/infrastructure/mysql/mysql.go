@@ -6,6 +6,7 @@ import (
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
 	"context"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -39,16 +40,16 @@ func (c *CouponDB) GetCouponBatchByID(ctx context.Context, batchId int64) (*mode
 }
 
 func (c *CouponDB) CreateCouponBatch(ctx context.Context, batch *model.CouponBatch) (int64, error) {
-	CouponBatch := &model.CouponBatch{
+	CouponBatch := &CouponBatch{
 		BatchName:       batch.BatchName,
 		Remark:          batch.Remark,
 		Type:            batch.Type,
 		Threshold:       batch.Threshold,
 		DiscountAmount:  batch.DiscountAmount,
-		DiscountPercent: batch.DiscountPercent,
-		TotalNum:        batch.TotalNum,
-		StartTime:       batch.StartTime,
-		EndTime:         batch.EndTime,
+		DiscountRate:    batch.DiscountPercent,
+		TotalNum:        int(batch.TotalNum),
+		StartTime:       time.Unix(batch.StartTime, 0),
+		EndTime:         time.Unix(batch.EndTime, 0),
 		Duration:        batch.Duration,
 	}
 	err := c.db.WithContext(ctx).Create(CouponBatch).Error

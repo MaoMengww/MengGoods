@@ -72,6 +72,9 @@ func CreateCouponBatch(ctx context.Context, req *coupon.CreateCouponBatchReq) (r
 	if r.Base.Code != merror.SuccessCode {
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
 	}
+	resp = &mresp.CreateCouponBatchResp{
+		BatchId: r.BatchId,
+	}
 	return
 }
 

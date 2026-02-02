@@ -32,7 +32,7 @@ func NewCouponCache(redisClient *redis.Client) *CouponCache {
 }
 
 func (c *CouponCache) GetCouponBatchKey(ctx context.Context, batchId int64) string {
-	return fmt.Sprintf("MengGoods:coupon:%d", batchId)
+	return fmt.Sprintf("MengGoods:coupon:%v", batchId)
 }
 func (c *CouponCache) SetCoupon(ctx context.Context, key string, totalNum int64, duration time.Duration) error {
 	return c.redisClient.Set(ctx, key, totalNum, duration).Err()

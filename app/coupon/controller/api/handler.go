@@ -24,7 +24,7 @@ func (s *CouponServiceImpl) GetCouponInfo(ctx context.Context, req *coupon.GetCo
 	resp = new(coupon.GetCouponInfoResp)
 	coupon, err := s.Usecase.GetCouponInfo(ctx, req.CouponId)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.Coupon = pack.ToRpcCoupon(coupon)
@@ -49,7 +49,7 @@ func (s *CouponServiceImpl) CreateCouponBatch(ctx context.Context, req *coupon.C
 	}
 	id, err := s.Usecase.CreateCouponBatch(ctx, couponBatch)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.BatchId = id
@@ -63,7 +63,7 @@ func (s *CouponServiceImpl) GetCoupon(ctx context.Context, req *coupon.GetCoupon
 	resp = new(coupon.GetCouponResp)
 	err = s.Usecase.GetCoupon(ctx, req.BatchId)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
@@ -75,7 +75,7 @@ func (s *CouponServiceImpl) GetCouponList(ctx context.Context, req *coupon.GetCo
 	resp = new(coupon.GetCouponListResp)
 	coupons, err := s.Usecase.GetCouponList(ctx, int(req.Status))
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.CouponList = pack.ToRpcCoupons(coupons)
@@ -89,7 +89,7 @@ func (s *CouponServiceImpl) LockCoupon(ctx context.Context, req *coupon.LockCoup
 	resp = new(coupon.LockCouponResp)
 	err = s.Usecase.LockCoupon(ctx, req.CouponId)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
@@ -101,7 +101,7 @@ func (s *CouponServiceImpl) ReleaseCoupon(ctx context.Context, req *coupon.Relea
 	resp = new(coupon.ReleaseCouponResp)
 	err = s.Usecase.ReleaseCoupon(ctx, req.CouponId)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
@@ -113,7 +113,7 @@ func (s *CouponServiceImpl) RedeemCoupon(ctx context.Context, req *coupon.Redeem
 	resp = new(coupon.RedeemCouponResp)
 	err = s.Usecase.RedeemCoupon(ctx, req.CouponId, req.OrderId)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)
@@ -124,7 +124,7 @@ func (s *CouponServiceImpl) LetCouponExpire(ctx context.Context, req *coupon.Let
 	resp = new(coupon.LetCouponExpireResp)
 	err = s.Usecase.LetCouponExpire(ctx, req.CouponId)
 	if err != nil {
-		resp.Base = base.BuildBaseResp(nil)
+		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
 	resp.Base = base.BuildBaseResp(nil)

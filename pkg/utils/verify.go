@@ -1,5 +1,9 @@
 package utils
 
+//
+// 感觉这是一个失败的设计，应该放进各领域中，懒得改的
+//
+
 import (
 	"MengGoods/pkg/constants"
 	"MengGoods/pkg/merror"
@@ -167,7 +171,7 @@ func VerifyCount(count int32) VerifyOps {
 
 func VerifyCouponName(name string) VerifyOps {
 	return func() error {
-		if len(name) > 30 {
+		if len(name) > 60 {
 			return merror.NewMerror(
 				merror.ParamCouponNameTooLong,
 				"coupon name too long",
