@@ -21,7 +21,9 @@
 2、填写config.yaml文件
 2、make start-all
 ```
-**### ✨优点**
+
+
+### ✨优点
 
 - 使用布隆过滤器解决缓冲穿透、使用singleflight解决缓存击穿、使用sentinel-golang实现限流及熔断解决缓存雪崩
 - 采用本地消息表模式实现分布式事务的最终一致性
@@ -32,6 +34,8 @@
 - 使用雪花算法实现分布式唯一ID
 
 
+      
+
 ### ⛏️架构图
 
 ![architecture](./docs/image/architecture.png)
@@ -41,6 +45,7 @@
 [接口文档](https://4721v9dymm.apifox.cn)
 
 
+            
 
 ### 📌单服务架构（整洁架构）
 
