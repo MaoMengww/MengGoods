@@ -19,7 +19,7 @@ services:
       - MengGoods
 
   redis:
-    image: redis:latest
+    image: redis/redis-stack-server:latest
     ports:
       - "6379:6379"
     container_name: redis-1

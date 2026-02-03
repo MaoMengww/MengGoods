@@ -29,6 +29,16 @@ func NewProductService(db repository.ProductDB, cache repository.ProductCache, m
 }
 
 func (s *ProductService) Init() {
+	spuIds, skuIds, err := s.db.GetAllSpuIdAndSkuId(context.Background())
+	if err != nil {
+		logger.CtxFatalf(context.Background(), "Get all spu id and sku id error: %v", err)
+	}
+	if err := s.cache.LoadBloomFilter(context.Background(), spuIds, skuIds); err != nil {
+		logger.CtxFatalf(context.Background(), "Load bloom filter error: %v", err)
+	}
+	if err := s.cache.LoadBloomFilter(context.Background(), spuIds, skuIds); err != nil {
+		logger.CtxFatalf(context.Background(), "Load bloom filter error: %v", err)
+	}
 	if err := s.ConsumeCreateSpuInfo(context.Background()); err != nil {
 		logger.CtxFatalf(context.Background(), "Consume create spu info error: %v", err)
 	}

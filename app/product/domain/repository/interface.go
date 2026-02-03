@@ -32,6 +32,8 @@ type ProductDB interface {
 
 	UploadSpuImage(ctx context.Context, spuId int64, imageUrl string) error
 	UploadSkuImage(ctx context.Context, skuId int64, imageUrl string) error
+
+	GetAllSpuIdAndSkuId(ctx context.Context)(spuIds []int64, skuIds []int64, err error)
 }
 
 type ProductCache interface {
@@ -39,10 +41,11 @@ type ProductCache interface {
 	GetSkuKey(ctx context.Context, skuId int64) string
 	SetSpu(ctx context.Context, spu *model.SpuEs) error
 	SetSku(ctx context.Context, sku *model.SkuEs) error
-	GetSpu(ctx context.Context, key string) (string, error)
-	GetSku(ctx context.Context, key string) (string, error)
+	GetSpu(ctx context.Context, spuId int64) (string, error)
+	GetSku(ctx context.Context, skuId int64) (string, error)
 	DeleteSpu(ctx context.Context, key string) error
 	DeleteSku(ctx context.Context, key string) error
+	LoadBloomFilter(ctx context.Context, spuIds []int64, skuIds []int64) error
 }
 
 type ProductMq interface {

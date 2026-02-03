@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"time"
 
+	"golang.org/x/sync/singleflight"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +21,20 @@ func NewProductDB(db *gorm.DB) *PrductDB {
 	return &PrductDB{
 		db: db,
 	}
+}
+
+var g singleflight.Group
+
+func (p *PrductDB) GetAllSpuIdAndSkuId(ctx context.Context)(spuIds []int64, skuIds []int64, err error) {
+	err = p.db.WithContext(ctx).Model(&Spu{}).Pluck("spu_id", &spuIds).Error
+	if err != nil {
+		return nil, nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get all spu id failed: %v", err))
+	}
+	err = p.db.WithContext(ctx).Model(&Sku{}).Pluck("sku_id", &skuIds).Error
+	if err != nil {
+		return nil, nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get all sku id failed: %v", err))
+	}
+	return spuIds, skuIds, nil
 }
 
 func (p *PrductDB) CreateSpu(ctx context.Context, spu *model.Spu) (int64, error) {
@@ -164,23 +179,33 @@ func (p *PrductDB) UpdateCategory(ctx context.Context, category *model.Category)
 func (p *PrductDB) GetSpuById(ctx context.Context, spuId int64) (*model.Spu, error) {
 	// 查询spu
 	var spu Spu
-	err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).First(&spu).Error
+	groupKey := fmt.Sprintf("get_spu_%d", spuId)
+	v, err, shared := g.Do(groupKey, func() (interface{}, error) {
+		err := p.db.WithContext(ctx).Where("spu_id = ?", spuId).First(&spu).Error
+		if err != nil {
+			return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
+		}
+		return &model.Spu{
+			SpuId:           spu.SpuId,
+			UserId:          spu.Creator,
+			Name:            spu.Name,
+			Description:     spu.Description,
+			CategoryId:      int64(spu.Category),
+			MainImageURL:    spu.MainImageURL,
+			SliderImageURLs: spu.SliderImageURLs,
+			CreateTime:      spu.CreateAt,
+			UpdateTime:      spu.UpdateAt,
+			Status:          int32(spu.Status),
+			Price:           spu.Price,
+		}, nil
+	})
 	if err != nil {
-		return nil, merror.NewMerror(merror.InternalDatabaseErrorCode, fmt.Sprintf("get spu failed: %v", err))
+		return nil, err
 	}
-	return &model.Spu{
-		SpuId:           spu.SpuId,
-		UserId:          spu.Creator,
-		Name:            spu.Name,
-		Description:     spu.Description,
-		CategoryId:      int64(spu.Category),
-		MainImageURL:    spu.MainImageURL,
-		SliderImageURLs: spu.SliderImageURLs,
-		CreateTime:      spu.CreateAt,
-		UpdateTime:      spu.UpdateAt,
-		Status:          int32(spu.Status),
-		Price:           spu.Price,
-	}, nil
+	if shared {
+		fmt.Printf("Cache hit for spu_id %d\n", spuId)
+	}
+	return v.(*model.Spu), nil
 }
 
 func (p *PrductDB) GetSkuById(ctx context.Context, skuId int64) (*model.Sku, error) {

@@ -115,9 +115,8 @@ func (u *ProductUsecase) DeleteCategory(ctx context.Context, categoryId int64) e
 }
 
 func (u *ProductUsecase) GetSpuById(ctx context.Context, spuId int64) (*model.Spu, error) {
-	key := u.cache.GetSpuKey(ctx, spuId)
 	var spu *model.Spu
-	spuStr, err := u.cache.GetSpu(ctx, key)
+	spuStr, err := u.cache.GetSpu(ctx, spuId)
 	if err == nil {
 		json.Unmarshal([]byte(spuStr), &spu)
 		return spu, nil
@@ -142,7 +141,19 @@ func (s *ProductUsecase) CreateCategory(ctx context.Context, category *model.Cat
 }
 
 func (s *ProductUsecase) GetSkuById(ctx context.Context, skuId int64) (*model.Sku, error) {
-	return s.db.GetSkuById(ctx, skuId)
+	var sku *model.Sku
+	skuStr, err := s.cache.GetSku(ctx, skuId)
+	if err == nil {
+		json.Unmarshal([]byte(skuStr), &sku)
+		return sku, nil
+	} else if err != redis.Nil {
+		return nil, merror.NewMerror(merror.RedisNotFound, "sku not found")
+	}
+	sku, err = s.db.GetSkuById(ctx, skuId)
+	if err != nil {
+		return nil, err
+	}
+	return sku, nil
 }
 
 func (s *ProductUsecase) GetSpusByIds(ctx context.Context, ids []int64) ([]*model.Spu, error) {
