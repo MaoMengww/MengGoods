@@ -4,6 +4,7 @@
 
 - **后端框架**：Kitex 、Hertz 
 - **消息队列**：Kafka、RabbitMQ
+- **安全鉴权**：JWT
 - **配置管理**：Viper
 - **日志服务**:  Elasticsearch（同时用于搜索功能的实现）、Filebeat、Kibana、Zap
 - **数据库**：MySQL、Redis、GORM
@@ -11,7 +12,24 @@
 - **对象储存**：腾讯云COS
 - **服务注册与发现**：Etcd
 - **限流**：sentinel-golang
-- **other**：lua、布隆过滤器、docker-compose
+- **other**：lua、布隆过滤器、docker-compose、singleflight、Snowflake
+
+
+### 🚀 快速开始
+```
+1、克隆本项目
+2、填写config.yaml文件
+2、make start-all
+```
+### ✨优点
+1、使用布隆过滤器解决缓冲穿透、使用singleflight解决缓存击穿、使用sentinel-golang实现限流及熔断解决缓存雪崩
+2、采用本地消息表模式实现分布式事务的最终一致性
+3、OpenTelemetry + EFK 实现可观测性和日志搜索, 减少问题排查难度
+4、使用redis lua脚本防止超卖和高并发查写一致
+5、使用kafka解决大数据高吞吐的数据流、使用rabbitMq解决例如订单等延时任务
+6、采用整洁架构对服务进行深度解耦
+7、使用雪花算法实现分布式唯一ID
+
 
 ### ⛏️架构图
 
@@ -23,7 +41,7 @@
 
 
 
-### 📌单服务框架（整洁架构）
+### 📌单服务架构（整洁架构）
 
 使用接口使依赖倒置， 耦合度低（如更换消息队列只需重写infrastructure里的方法）
 
