@@ -6,11 +6,12 @@
 - **消息队列**：Kafka、RabbitMQ
 - **配置管理**：Viper
 - **日志服务**:  Elasticsearch（同时用于搜索功能的实现）、Filebeat、Kibana、Zap
-- **数据库**：MySQL、Redis（lua脚本）、GORM
+- **数据库**：MySQL、Redis、GORM
 - **可观测性**：Prometheus、Grafana、Jaeger、OpenTelemetry
 - **对象储存**：腾讯云COS
 - **服务注册与发现**：Etcd
 - **限流**：sentinel-golang
+- **other**：lua、布隆过滤器、docker-compose
 
 ### ⛏️架构图
 
