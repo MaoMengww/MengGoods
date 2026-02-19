@@ -12,26 +12,26 @@
 - **对象储存**：腾讯云COS
 - **服务注册与发现**：Etcd
 - **限流**：sentinel-golang
-- **other**：lua、布隆过滤器、docker-compose、singleflight、Snowflake
+- **other**：lua、布隆过滤器、docker-compose、dockerfile、singleflight、Snowflake
 
 
 ### 🚀 快速开始
 ```
 1、克隆本项目
 2、填写config.yaml文件
-2、make start-all
 ```
 
 
 ### ✨优点
 
-- 使用布隆过滤器解决缓冲穿透、使用singleflight解决缓存击穿、使用添加随机偏移量解决缓存雪崩
+- 使用布隆过滤器解决缓冲穿透、使用singleflight解决缓存击穿、使用添加随机偏移量以及限流解决缓存雪崩
 - 采用本地消息表模式实现分布式事务的最终一致性
 - OpenTelemetry + EFK 实现可观测性和日志搜索, 减少问题排查难度
 - 使用redis lua脚本防止超卖和高并发查写一致
 - 使用kafka解决大数据高吞吐的数据流、使用rabbitMq解决例如订单等延时任务
 - 采用整洁架构对服务进行深度解耦
 - 使用雪花算法实现分布式唯一ID
+- 使用容器化部署，方便快捷
 
 
       

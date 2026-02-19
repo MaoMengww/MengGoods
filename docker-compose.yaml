@@ -3,6 +3,146 @@ networks:
     driver: bridge
 
 services:
+  gateway-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: gateway
+    container_name: meng-gateway
+    restart: always
+    ports:
+      - "10000:8888" 
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - etcd      
+    networks:
+      - MengGoods
+
+  # 2. 用户服务 (User)
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: user
+    container_name: meng-user
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    networks:
+      - MengGoods
+
+  product-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: product
+    container_name: meng-product
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+      - elasticsearch 
+      - kafka         
+    networks:
+      - MengGoods
+
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: order
+    container_name: meng-order
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+      - rabbitmq  
+    networks:
+      - MengGoods
+
+  cart-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: cart
+    container_name: meng-cart
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    networks:
+      - MengGoods
+  stock-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: stock
+    container_name: meng-stock
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+      - rabbitmq     
+    networks:
+      - MengGoods
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: payment
+    container_name: meng-payment
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    networks:
+      - MengGoods
+
+  coupon-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVICE_NAME: coupon
+    container_name: meng-coupon
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+      - kafka         
+    networks:
+      - MengGoods
   mysql:
     image: mysql:latest
     container_name: mysql-1
@@ -10,8 +150,8 @@ services:
       - "3306:3306"
     environment:
       - TZ=${TZ}
-      - MYSQL_PASSWORD=123456              # 设置 Mysql 用户密码
-      - MYSQL_ROOT_PASSWORD=123456    # 设置 Mysql root 用户密码
+      - MYSQL_PASSWORD=123456        
+      - MYSQL_ROOT_PASSWORD=123456   
     restart: always
     volumes:
       - ./data/mysql:/var/lib/mysql
