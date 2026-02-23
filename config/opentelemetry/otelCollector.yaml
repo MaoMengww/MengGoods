@@ -14,19 +14,9 @@ receivers:
           static_configs:
             - targets: ['0.0.0.0:8888']
               
-  mysql:
-    endpoint: "mysql-1:3306"
-    username: "root"
-    password: "123456"
-    collection_interval: 10s
-    metrics:
-      mysql.connection.count:
-        enabled: true
-      mysql.query.count:
-        enabled: true
 
   redis:
-    endpoint: "redis:6379"  
+    endpoint: "redis-1:6379"  
     password: "123456"      
     collection_interval: 10s
     transport: tcp
@@ -64,6 +54,6 @@ service:
 
     # 指标监控流水线
     metrics:
-      receivers: [otlp, prometheus/internal, mysql, redis] 
+      receivers: [otlp, prometheus/internal, redis] 
       processors: [batch]
       exporters: [prometheus]

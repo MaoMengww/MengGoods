@@ -20,6 +20,8 @@
 1、克隆本项目
 2、填写config.yaml文件
 3、docker-compose up -d
+4、根据config/sql文件创建表格
+5、make start_all
 ```
 
 
