@@ -19,6 +19,7 @@
 ```
 1、克隆本项目
 2、填写config.yaml文件
+3、docker-compose up -d
 ```
 
 
