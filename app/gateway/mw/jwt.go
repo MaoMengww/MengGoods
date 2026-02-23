@@ -21,19 +21,10 @@ func AuthMiddleware() app.HandlerFunc {
 			c.Abort()
 			return
 		}
-		access, refresh, err := utils.CreateGatewayToken(claims.Uid)
-		if err != nil {
-			logger.CtxError(ctx, err)
-			base.ResErr(c, err)
-			c.Abort()
-			return
-		}
 
 		// 实现规范化服务透传，不需要中间进行编解码
 		ctx = mcontext.WithUserIDInContext(ctx, claims.Uid)
 		ctx = mcontext.WithStreamUserIDInContext(ctx, claims.Uid)
-		c.Header(constants.AccessTokenHeader, access)
-		c.Header(constants.RefreshTokenHeader, refresh)
 		c.Next(ctx)
 	}
 }

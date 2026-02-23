@@ -65,6 +65,7 @@ const (
 	OrderExpiredErrorCode                                  //支付订单已过期
 	RefundOrderNotExistErrorCode                           //退款订单不存在
 	RefundOrderProcessingErrorCode                         //退款正在处理中
+	InvalidToken                                           //无效的token
 
 )
 

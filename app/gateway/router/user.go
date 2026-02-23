@@ -13,6 +13,7 @@ func InitUserRouter(h *server.Hertz) {
 	{
 		user.POST("/register", api.Register)
 		user.POST("/login", api.Login)
+		user.POST("/refresh", api.RefreshToken)
 	}
 	user.Use(mw.AuthMiddleware())
 	{

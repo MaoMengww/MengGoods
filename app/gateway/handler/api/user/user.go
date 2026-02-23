@@ -52,6 +52,31 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	base.ResData(c, resp)
 }
 
+func RefreshToken(ctx context.Context, c *app.RequestContext) {
+	refreshToken := c.GetHeader(constants.RefreshTokenHeader)
+	if len(refreshToken) == 0 {
+		base.ResErr(c, merror.NewMerror(merror.InvalidToken, "refresh token is required"))
+		return
+	}
+	claims, err := utils.CheckToken(string(refreshToken))
+	if err != nil {
+		logger.CtxError(ctx, err)
+		base.ResErr(c, merror.NewMerror(merror.InvalidToken, err.Error()))
+		return
+	}
+	newAccessToken, newRefresh, err := utils.CreateGatewayToken(claims.Uid)
+	if err != nil {
+		logger.CtxError(ctx, err)
+		base.ResErr(c, merror.NewMerror(merror.InvalidToken, err.Error()))
+		return
+	}
+
+	c.Header(constants.AccessTokenHeader, newAccessToken)
+	c.Header(constants.RefreshTokenHeader, newRefresh)
+
+	base.ResSuccess(c)
+}
+
 func GetUserInfo(ctx context.Context, c *app.RequestContext) {
 	uid, err := mcontext.GetUserIDFromContext(ctx)
 	if err != nil {
