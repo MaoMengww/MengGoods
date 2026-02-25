@@ -8,14 +8,21 @@ type RegisterResp struct {
 
 type LoginResp struct {
 	User model.UserInfo `json:"user"`
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+type RefreshResp struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type AddAddressResp struct {
-	AddressId int64 `json:"addressId"`
+	AddressId int64 `json:"address_id"`
 }
 
 type GetAddressResp struct {
-	AddressList []*model.AddressInfo `json:"addressList"`
+	AddressList []*model.AddressInfo `json:"address_list"`
 }
 
 type BanUserResp struct {

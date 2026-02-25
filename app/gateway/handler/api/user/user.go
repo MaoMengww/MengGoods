@@ -1,6 +1,7 @@
 package api
 
 import (
+	"MengGoods/app/gateway/model/resp"
 	"MengGoods/app/gateway/rpc"
 	"MengGoods/kitex_gen/user"
 	"MengGoods/pkg/base"
@@ -41,14 +42,6 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		base.ResErr(c, err)
 		return
 	}
-	accessToken, refresh, err := utils.CreateGatewayToken(resp.User.Id)
-	if err != nil {
-		logger.CtxError(ctx, err)
-		base.ResErr(c, err)
-		return
-	}
-	c.Header(constants.AccessTokenHeader, accessToken)
-	c.Header(constants.RefreshTokenHeader, refresh)
 	base.ResData(c, resp)
 }
 
@@ -61,20 +54,20 @@ func RefreshToken(ctx context.Context, c *app.RequestContext) {
 	claims, err := utils.CheckToken(string(refreshToken))
 	if err != nil {
 		logger.CtxError(ctx, err)
-		base.ResErr(c, merror.NewMerror(merror.InvalidToken, err.Error()))
+		base.ResErr(c, merror.NewMerror(merror.InvalidToken, "refresh token is invalid"))
 		return
 	}
 	newAccessToken, newRefresh, err := utils.CreateGatewayToken(claims.Uid)
 	if err != nil {
 		logger.CtxError(ctx, err)
-		base.ResErr(c, merror.NewMerror(merror.InvalidToken, err.Error()))
+		base.ResErr(c, merror.NewMerror(merror.InvalidToken, "refresh token is invalid"))
 		return
 	}
-
-	c.Header(constants.AccessTokenHeader, newAccessToken)
-	c.Header(constants.RefreshTokenHeader, newRefresh)
-
-	base.ResSuccess(c)
+	resp := &resp.RefreshResp{
+		AccessToken:  newAccessToken,
+		RefreshToken: newRefresh,
+	}
+	base.ResData(c, resp)
 }
 
 func GetUserInfo(ctx context.Context, c *app.RequestContext) {

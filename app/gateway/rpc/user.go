@@ -8,6 +8,7 @@ import (
 	"MengGoods/pkg/base/mcontext"
 	"MengGoods/pkg/logger"
 	"MengGoods/pkg/merror"
+	"MengGoods/pkg/utils"
 
 	//"MengGoods/pkg/middleware"
 	"context"
@@ -77,12 +78,20 @@ func Login(ctx context.Context, req *user.LoginReq) (resp *mresp.LoginResp, err 
 	if r.Base.Code != merror.SuccessCode {
 		return nil, merror.NewMerror(r.Base.Code, r.Base.Message)
 	}
+	accessToken, refresh, err := utils.CreateGatewayToken(r.UserInfo.Id)
+	if err != nil {
+		logger.CtxError(ctx, err)
+		return nil, merror.NewMerror(merror.InternalServerErrorCode, err.Error())
+	}
 	//base是服务器内部字段, 不需要返回给前端
 	resp = &mresp.LoginResp{
-		User: *r.UserInfo,
+		User:         *r.UserInfo,
+		AccessToken:  accessToken,
+		RefreshToken: refresh,
 	}
 	return resp, nil
 }
+
 
 func AddAddress(ctx context.Context, req *user.AddAddressReq) (resp *mresp.AddAddressResp, err error) {
 	r, err := UserClient.AddAddress(ctx, req)

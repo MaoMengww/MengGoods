@@ -24,7 +24,7 @@ services:
     ports:
       - "6379:6379"
     container_name: redis-1
-    command: redis-server --requirepass 123456
+    command: redis-server --loadmodule /opt/redis-stack/lib/redisbloom.so --requirepass 123456
     restart: always
     volumes:
       - ./data/redis:/data
