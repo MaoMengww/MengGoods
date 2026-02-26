@@ -65,7 +65,7 @@ func (s *CouponService) HandleClaimCoupon(ctx context.Context, userId int64, bat
 		ExpiredAt:      expireTime,
 		UserId:         userId,
 	}
-	if expireTime > time.Now().Unix() {
+	if time.Now().Unix() > expireTime{
 		coupon.Status = constants.CouponStatusExpired
 	}
 	if err := s.CouponDB.CreateCoupon(ctx, coupon); err != nil {
